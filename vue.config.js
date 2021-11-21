@@ -10,6 +10,11 @@ module.exports = {
   ],
 
   pwa: {
+    name: 'GBM alive',
+    themeColor: '#4DBA87',
+    msTileColor: '#000000',
+    appleMobileWebAppCapable: 'yes',
+    appleMobileWebAppStatusBarStyle: 'black',
     workboxOptions: {
       skipWaiting: true,
       clientsClaim: true,
