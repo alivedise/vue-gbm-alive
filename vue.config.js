@@ -1,6 +1,10 @@
 module.exports = {
   lintOnSave: false,
 
+  publicPath: process.env.NODE_ENV === 'production'
+    ? '/vue-gbm-alive/'
+    : '/',
+
   transpileDependencies: [
     'vuetify',
   ],
