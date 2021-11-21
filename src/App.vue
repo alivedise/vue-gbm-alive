@@ -16,7 +16,7 @@
         target="_blank"
         text
       >
-        <span class="mr-2">v0.0.1</span>
+        <span class="mr-2">v0.0.1a</span>
       </v-btn>
     </v-app-bar>
 
