@@ -11,7 +11,7 @@ module.exports = {
 
   pwa: {
     name: 'GBM alive',
-    themeColor: '#4DBA87',
+    themeColor: '#0186d1',
     msTileColor: '#000000',
     appleMobileWebAppCapable: 'yes',
     appleMobileWebAppStatusBarStyle: 'black',
