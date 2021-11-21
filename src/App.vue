@@ -191,7 +191,10 @@ export default {
 
   mounted() {
     window.app = this;
-    axios.get('/parts.json', {
+    const prefix = process.env.NODE_ENV === 'production'
+      ? '/vue-gbm-alive/'
+      : '/';
+    axios.get(`${prefix}parts.json`, {
       responseType: 'json',
     }).then((data) => {
       this.parts = data.data.parts;
