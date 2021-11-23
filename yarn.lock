@@ -1087,6 +1087,11 @@
   resolved "https://registry.yarnpkg.com/@types/range-parser/-/range-parser-1.2.4.tgz#cd667bcfdd025213aafb7ca5915a932590acdcdc"
   integrity sha512-EEhsLsD6UsDM1yFhAvy0Cjr6VwmpMWqFBCb9w07wVugF7w9nfajxLuVmngTIpgS6svCnm6Vaw+MZhoDCKnOfsw==
 
+"@types/semver@^7.3.8":
+  version "7.3.9"
+  resolved "https://registry.yarnpkg.com/@types/semver/-/semver-7.3.9.tgz#152c6c20a7688c30b967ec1841d31ace569863fc"
+  integrity sha512-L/TMpyURfBkf+o/526Zb6kd/tchUP3iBDEPjqjb+U2MAJhVRxxrmr2fwpe08E7QsV7YLcpq0tUaQ9O9x97ZIxQ==
+
 "@types/serve-static@*":
   version "1.13.10"
   resolved "https://registry.yarnpkg.com/@types/serve-static/-/serve-static-1.13.10.tgz#f5e0ce8797d2d7cc5ebeda48a52c96c4fa47a8d9"
@@ -4318,6 +4323,16 @@ getpass@^0.1.1:
   integrity sha1-Xv+OPmhNVprkyysSgmBOi6YhSfo=
   dependencies:
     assert-plus "^1.0.0"
+
+git-describe@^4.1.0:
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/git-describe/-/git-describe-4.1.0.tgz#0c50fa1ec5ead55932b6e875b2299b17ce5e07d3"
+  integrity sha512-NM7JSseVK4Z0r505+2TIrgPQKPvqbOowHP73IY5y69v/t/PmoMleJdij1vTO3qVm1qSvqb6342p1MYSxsnV8QA==
+  dependencies:
+    "@types/semver" "^7.3.8"
+    lodash "^4.17.21"
+  optionalDependencies:
+    semver "^5.6.0"
 
 glob-parent@^3.1.0:
   version "3.1.0"
