@@ -53,7 +53,7 @@
             <v-icon left>
               {{getWordTagIcon(item.wordTag1)}}
             </v-icon>
-            {{item.wordTag1}}
+            {{$t(item.wordTag1)}}
           </v-chip>
         </div>
       </template>
@@ -66,7 +66,7 @@
             <v-icon left>
               {{getWordTagIcon(item.wordTag2)}}
             </v-icon>
-            {{item.wordTag2}}
+            {{$t(item.wordTag2)}}
           </v-chip>
         </div>
       </template>
@@ -115,8 +115,9 @@ export default {
     mappedParts() {
       return this.parts.map((part) => ({
         ...part,
-        passive1: part.passive1 || part.skillName,
-        passive2: part.passive2 || part.skillDescription,
+        machineName: this.$t(part.machineName),
+        passive1: this.$t(part.passive1 || part.skillName),
+        passive2: this.$t(part.passive2 || part.skillDescription),
         power: part.skillTable.length ? (part.skillTable[part.skillTable.length - 1][2]) : '',
         pierce: part.skillTable.length ? (part.skillTable[part.skillTable.length - 1][1]) : '',
         accumluatedMeleeAttack: Math.floor((+part.melee) + (+part.meleeDefense * 0.4)),

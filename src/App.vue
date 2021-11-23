@@ -5,14 +5,14 @@
       color="primary"
       dark
     >
-      <div class="d-flex align-center">
-        GBM database alive
-      </div>
+      <h2 class="d-flex align-center">
+        鋼彈創壞者Mobile資料庫 :Revive by @alivedise
+      </h2>
 
       <v-spacer></v-spacer>
 
       <v-btn
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
+        href="https://github.com/alivedise/vue-gbm-alive"
         target="_blank"
         text
       >
