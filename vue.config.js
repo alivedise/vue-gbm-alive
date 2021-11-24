@@ -32,6 +32,16 @@ module.exports = {
             statuses: [0, 200],
           },
         },
+      }, {
+        urlPattern: new RegExp('wiki'),
+        handler: 'cacheFirst',
+        options: {
+          networkTimeoutSeconds: 20,
+          cacheName: 'wiki-cache',
+          cacheableResponse: {
+            statuses: [0, 200],
+          },
+        },
       }],
     },
   },

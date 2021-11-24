@@ -57,6 +57,25 @@
           </v-chip>
         </div>
       </template>
+      <template v-slot:item.passive2="{ item }">
+        <div v-if="item.skillType" class="p-2">
+          <v-tooltip bottom>
+            <template v-slot:activator="{ on, attrs }">
+              <v-chip
+                label
+                outlined
+                class="ma-2"
+              >
+                {{$t(item.skillType)}}
+              </v-chip>
+            </template>
+            <span>{{item.skillDescription}}</span>
+          </v-tooltip>
+        </div>
+        <div v-else>
+          {{item.passive2}}
+        </div>
+      </template>
       <template v-slot:item.wordTag2="{ item }">
         <div class="p-2">
           <v-chip
@@ -151,7 +170,10 @@ export default {
         '電脳適正': 'mdi-desktop-classic',
         'ジオン': 'mdi-foot-print',
         '砂漠適正': 'mdi-timer-sand',
-        '支援機': 'mdi-handshake'
+        '支援機': 'mdi-handshake',
+        '寒冷地適正': 'mdi-snowflake-alert',
+        '量産機': 'mdi-account-group',
+        '水陸両用': 'mdi-pool'
       };
       return table[wordTag];
     },
