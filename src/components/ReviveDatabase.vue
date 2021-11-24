@@ -14,6 +14,8 @@
       item-key="key"
       class="elevation-1"
       :search="search"
+      sort-by="isNew"
+      sort-desc="false"
    >
       <template v-slot:item.image="{ item }">
         <div class="p-2">
@@ -41,6 +43,21 @@
             outlined
           >
             {{item.pierce}}
+          </v-chip>
+        </div>
+      </template>
+      <template v-slot:item.machineName="{ item }">
+        <div class="p-2">
+          {{$t(item.machineName)}}
+          <v-chip
+            label
+            class="ma-2"
+            x-small
+            color="red"
+            text-color="white"
+            v-if="item.isNew"
+          >
+            NEW
           </v-chip>
         </div>
       </template>
@@ -105,7 +122,7 @@ export default {
     showPositionPicker: false,
     headers: [
       { text: '部位', value: 'position', sort: false },
-      { text: "icon", value: "image", sortable: false },
+      { text: '圖示', value: 'image', sortable: false },
       { text: '名稱', value: 'machineName' },
       { text: '耐力', value: 'stamina' },
       { text: '轉換格攻', value: 'accumluatedMeleeAttack' },

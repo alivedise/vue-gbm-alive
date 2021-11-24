@@ -1,5 +1,6 @@
 import parser from "node-html-parser";
 import fetch from "node-fetch";
+import findElementWithText from './findElementWithText.mjs';
 
 //const URL = `https://wiki.dengekionline.com/gbm/%E3%82%B5%E3%83%BC%E3%83%99%E3%83%AB%EF%BC%88%E6%A0%BC%E9%97%98%EF%BC%89%E4%B8%80%E8%A6%A7/%E3%80%90%E6%94%B9%E9%80%A0BIG%E3%80%91%E3%83%93%E3%83%BC%E3%83%A0%E3%83%BB%E3%82%B5%E3%83%BC%E3%83%99%E3%83%AB%EF%BC%BB%E3%83%A6%E3%83%8B%E3%82%B3%E3%83%BC%E3%83%B3%EF%BC%BD%EF%BC%88T%EF%BC%89%EF%BC%88%E6%A0%BC%E9%97%98%EF%BC%89`;
 //const URL = `https://wiki.dengekionline.com/gbm/Head%EF%BC%88%E9%A0%AD%EF%BC%89%E4%B8%80%E8%A6%A7/%E3%80%90%E6%94%B9%E9%80%A0%E3%80%91%E3%82%A2%E3%82%B9%E3%83%88%E3%83%AC%E3%82%A4_%E3%83%96%E3%83%AB%E3%83%BC%E3%83%95%E3%83%AC%E3%83%BC%E3%83%A0%E3%82%BB%E3%82%AB%E3%83%B3%E3%83%89%E3%83%AA%E3%83%90%E3%82%A4%EF%BC%88%E9%A0%AD%EF%BC%89`;
@@ -8,22 +9,7 @@ import fetch from "node-fetch";
 //const URL = `https://wiki.dengekionline.com/gbm/%E3%83%A2%E3%82%B8%E3%83%A5%E3%83%BC%E3%83%AB%EF%BC%88%E6%A0%BC%E9%97%98%EF%BC%89%E4%B8%80%E8%A6%A7/%E3%82%AF%E3%83%AD%E3%83%BC%E3%83%A2%E3%82%B8%E3%83%A5%E3%83%BC%E3%83%AB%EF%BC%88%E6%A0%BC%E9%97%98%EF%BC%89`;
 const URL = `https://wiki.dengekionline.com/gbm/%E3%83%A2%E3%82%B8%E3%83%A5%E3%83%BC%E3%83%AB%EF%BC%88%E6%A0%BC%E9%97%98%EF%BC%89%E4%B8%80%E8%A6%A7/%E3%82%AF%E3%83%AD%E3%83%BC%E3%83%A2%E3%82%B8%E3%83%A5%E3%83%BC%E3%83%AB%EF%BC%88%E6%A0%BC%E9%97%98%EF%BC%89`;
 
-function findElementWithText(document, tag = 'th', text) {
-  return Array.from(document.querySelectorAll(tag)).find((el) => {
-    if (el.textContent.trim() === text) {
-      return true;
-    }
-    const children = el.childNodes;
-    return children.some(function (value) {
-      if (value.nodeType === 3) {
-        return value.rawText.trim() === text;
-      }
-      return false;
-    });
-  });
-}
-
-async function getHtmlDocumentFromUrl(url = URL) {
+async function getHtmlDocumentFromUrl(url = URL, addDate = '', isAltered = true) {
   return await fetch(url).then((response) =>
     response.text().then((responseHtml) => {
       // parse the HTML string into a DOM-like object we can navigate
@@ -121,6 +107,9 @@ async function getHtmlDocumentFromUrl(url = URL) {
         skillType,
         skillDescription,
         wikiUrl: url,
+        addDate,
+        isNew: addDate !== '',
+        isAltered,
       };
     })
   );
