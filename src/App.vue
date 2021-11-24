@@ -31,6 +31,11 @@ export default {
   name: 'App',
   mounted() {
     window.app = this;
+    setTimeout(() => {
+      if (window.location.hash === '#/') {
+        this.$router.push('/revive');
+      }
+    }, 1000);
   },
   computed: {
     buildID() {

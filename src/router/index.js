@@ -6,12 +6,19 @@ Vue.use(VueRouter);
 const routes = [
   {
     path: '/',
-    component: () => import(/* webpackChunkName: "revive" */ '../components/ReviveDatabase.vue'),
+    redirect: '/revive',
   },
   {
     path: '/revive',
     name: 'Revive',
     component: () => import(/* webpackChunkName: "revive" */ '../components/ReviveDatabase.vue'),
+    children: [
+      {
+        path: ':category',
+        name: 'ReviveCategory',
+        component: () => import(/* webpackChunkName: "revive" */ '../components/ReviveDatabase.vue'),
+      },
+    ],
   },
   {
     path: '/legacy',
