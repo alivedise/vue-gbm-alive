@@ -36,10 +36,12 @@ module.exports = {
         urlPattern: new RegExp('wiki'),
         handler: 'cacheFirst',
         options: {
-          networkTimeoutSeconds: 20,
           cacheName: 'wiki-cache',
-          cacheableResponse: {
-            statuses: [0, 200],
+          expiration: {
+            maxEntries: 50,
+            maxAgeSeconds: 30 * 24 * 60 * 60, // 30 days
+            // Automatically cleanup if quota is exceeded.
+            purgeOnQuotaError: true,
           },
         },
       }],
