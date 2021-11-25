@@ -6,8 +6,12 @@
       dark
     >
       <h2 class="d-flex align-center">
-        鋼彈創壞者Mobile資料庫 :Revive by @alivedise
+        GBMDB :Revive by @alivedise
       </h2>
+      <v-tabs>
+        <v-tab to="/revive">Parts/零件資料庫</v-tab>
+        <v-tab to="/machines">Machines/機體資料庫</v-tab>
+      </v-tabs>
 
       <v-spacer></v-spacer>
 
