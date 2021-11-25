@@ -14,7 +14,8 @@
         {{ $t(value.original) }}
       </v-chip>
       <v-text-field
-        v-model="search"
+        v-model.lazy="search"
+        @change="updateQuery"
         append-icon="mdi-magnify"
         label="Search"
         single-line
@@ -35,7 +36,7 @@
         :items-per-page="20"
         item-key="key"
         class="elevation-1"
-        :search="search"
+        :search="keyword"
         sort-by="isNew"
         sort-desc="false"
       >
@@ -203,9 +204,24 @@ export default {
     category() {
       return this.$route.params.category;
     },
+
+    keyword() {
+      return this.$route.query.keyword;
+    },
+  },
+
+  watch: {
+    keyword(val) {
+      this.search = val;
+    },
   },
 
   methods: {
+    updateQuery() {
+      this.$router.push({ query: {
+        keyword: this.search,
+      }});
+    },
     getWordTagIcon(wordTag) {
       const table = {
         可変: "mdi-car",
@@ -283,6 +299,7 @@ export default {
         this.loading = false;
         this.parts = data.data.wiki;
       });
+    this.search = this.keyword;
   },
 };
 </script>
