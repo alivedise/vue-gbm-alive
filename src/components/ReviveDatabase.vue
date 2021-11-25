@@ -14,8 +14,9 @@
         {{ $t(value.original) }}
       </v-chip>
       <v-text-field
-        v-model.lazy="search"
+        v-model="search"
         @change="updateQuery"
+        @compositionend="endCompose"
         append-icon="mdi-magnify"
         label="Search"
         single-line
@@ -217,6 +218,8 @@ export default {
   },
 
   methods: {
+    endCompose() {
+    },
     updateQuery() {
       this.$router.push({ query: {
         keyword: this.search,

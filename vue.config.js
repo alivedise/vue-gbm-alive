@@ -38,7 +38,7 @@ module.exports = {
         options: {
           cacheName: 'wiki-cache',
           expiration: {
-            maxEntries: 50,
+            maxEntries: 5000,
             maxAgeSeconds: 30 * 24 * 60 * 60, // 30 days
             // Automatically cleanup if quota is exceeded.
             purgeOnQuotaError: true,
