@@ -87,6 +87,19 @@ export default {
         }
         storyMap[machine.story].push(machine);
       });
+      Object.entries(storyMap).forEach(([key, machines]) => {
+        storyMap[key] = machines.sort((a, b) => {
+          if (a.model === b.model) {
+            return 0;
+          }
+          if (a.model > b.model) {
+            return 1;
+          }
+          if (a.model < b.model) {
+            return -1;
+          }
+        });
+      });
       return storyMap;
     },
 
