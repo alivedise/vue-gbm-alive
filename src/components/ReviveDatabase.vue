@@ -51,6 +51,11 @@
             ></v-img>
           </div>
         </template>
+        <template v-slot:item.position="{ item }">
+          <div class="p-2">
+            {{$t(item.position) + (item.integrated ? ` ${item.integrated}` : '')}}
+          </div>
+        </template>
         <template v-slot:item.power="{ item }">
           <div class="p-2">
             <v-chip
@@ -84,7 +89,7 @@
               x-small
               color="red"
               text-color="white"
-              v-if="item.isNew"
+              v-if="item.isNew && item.addDate === '11/24'"
             >
               NEW
             </v-chip>
