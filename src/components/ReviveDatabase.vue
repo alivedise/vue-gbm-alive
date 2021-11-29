@@ -164,7 +164,7 @@ export default {
     mappedParts() {
       const a = this.parts.map((part) => ({
         ...part,
-        machineName: this.$t(part.machineName),
+        machineName: this.$t(part.machineName) || this.$t(part.aiName),
         passive1: this.$t(part.passive1 || part.skillName),
         passive2: this.$t(part.passive2 || part.skillDescription),
         power: part.skillTable.length

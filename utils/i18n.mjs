@@ -1,7 +1,7 @@
 import fs from 'fs';
 
-let rawdata = fs.readFileSync('wiki.json');
-let original = fs.readFileSync('TradChinese.json');
+let rawdata = fs.readFileSync('public/wiki.json');
+let original = fs.readFileSync('src/i18n/languages/TradChinese.json');
 let student = JSON.parse(rawdata);
 let object = JSON.parse(original) || {};
 console.log(student);
@@ -25,7 +25,8 @@ student.wiki.forEach((data) => {
   inject(object, data.weaponAttackType);
   inject(object, data.weaponType);
   inject(object, data.aiName);
+  inject(object, data.subPart);
 });
 
 var json = JSON.stringify(object);
-fs.writeFile('TradChinese.json', json, 'utf8', () => {});
+fs.writeFile('src/i18n/languages/TradChinese.json', json, 'utf8', () => {});

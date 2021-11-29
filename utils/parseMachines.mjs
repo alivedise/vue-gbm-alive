@@ -11,10 +11,12 @@ let original = JSON.parse(raw) || {
 
 // reset isNew
 original.machines.forEach((part) => {
-  part.isNew = false;
+  //part.isNew = false;
 });
 
 const NEW_ONLY_MODE = false;
+
+const NO_UPDATE = true;
 
 const CATEGORY_URL = {
   machine: 'https://wiki.dengekionline.com/gbm/%E6%A9%9F%E4%BD%93%E4%B8%80%E8%A6%A7',
@@ -63,7 +65,9 @@ async function test(url, category) {
           return getMachineDetail(url, next.addDate, isAltered).then((data) => {
             const existed = original.machines.findIndex(r => r.wikiUrl === url);
             if (existed >= 0) {
-              original.machines[existed] = data; // update
+              if (!NO_UPDATE) {
+                original.machines[existed] = data; // update
+              }
             } else {
               original.machines.push(data);
             }

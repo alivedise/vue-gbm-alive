@@ -7,7 +7,9 @@ import findElementWithText from './findElementWithText.mjs';
 //const URL = `https://wiki.dengekionline.com/gbm/Head%EF%BC%88%E9%A0%AD%EF%BC%89%E4%B8%80%E8%A6%A7/%E3%80%90%E6%94%B9%E9%80%A0%E3%80%91%E3%82%A2%E3%82%B9%E3%83%88%E3%83%AC%E3%82%A4_%E3%83%AC%E3%83%83%E3%83%89%E3%83%95%E3%83%AC%E3%83%BC%E3%83%A0%EF%BC%88%E9%A0%AD%EF%BC%89`;
 //const URL = `https://wiki.dengekionline.com/gbm/Head%EF%BC%88%E9%A0%AD%EF%BC%89%E4%B8%80%E8%A6%A7/%E3%80%90%E6%94%B9%E9%80%A0%E3%80%91%E7%99%BE%E5%BC%8F%EF%BC%88%E9%A0%AD%EF%BC%89`;
 //const URL = `https://wiki.dengekionline.com/gbm/%E3%83%A2%E3%82%B8%E3%83%A5%E3%83%BC%E3%83%AB%EF%BC%88%E6%A0%BC%E9%97%98%EF%BC%89%E4%B8%80%E8%A6%A7/%E3%82%AF%E3%83%AD%E3%83%BC%E3%83%A2%E3%82%B8%E3%83%A5%E3%83%BC%E3%83%AB%EF%BC%88%E6%A0%BC%E9%97%98%EF%BC%89`;
-const URL = `https://wiki.dengekionline.com/gbm/%E3%83%A2%E3%82%B8%E3%83%A5%E3%83%BC%E3%83%AB%EF%BC%88%E6%A0%BC%E9%97%98%EF%BC%89%E4%B8%80%E8%A6%A7/%E3%82%AF%E3%83%AD%E3%83%BC%E3%83%A2%E3%82%B8%E3%83%A5%E3%83%BC%E3%83%AB%EF%BC%88%E6%A0%BC%E9%97%98%EF%BC%89`;
+// const URL = `https://wiki.dengekionline.com/gbm/%E3%83%A2%E3%82%B8%E3%83%A5%E3%83%BC%E3%83%AB%EF%BC%88%E6%A0%BC%E9%97%98%EF%BC%89%E4%B8%80%E8%A6%A7/%E3%82%AF%E3%83%AD%E3%83%BC%E3%83%A2%E3%82%B8%E3%83%A5%E3%83%BC%E3%83%AB%EF%BC%88%E6%A0%BC%E9%97%98%EF%BC%89`;
+// const URL = `https://wiki.dengekionline.com/gbm/AI%EF%BC%88%E3%83%91%E3%82%A4%E3%83%AD%E3%83%83%E3%83%88%EF%BC%89%E4%B8%80%E8%A6%A7/%E3%82%B7%E3%83%A3%E3%82%A2%E3%83%BB%E3%82%A2%E3%82%BA%E3%83%8A%E3%83%96%E3%83%AB%EF%BC%88%E3%83%91%E3%82%A4%E3%83%AD%E3%83%83%E3%83%88%EF%BC%89`;
+const URL = `https://wiki.dengekionline.com/gbm/AI%EF%BC%88%E3%83%91%E3%82%A4%E3%83%AD%E3%83%83%E3%83%88%EF%BC%89%E4%B8%80%E8%A6%A7/%E3%80%90%E6%94%B9%E9%80%A0%E3%80%91%E5%88%B9%E9%82%A3%E3%83%BBF%E3%83%BB%E3%82%BB%E3%82%A4%E3%82%A8%E3%82%A4%EF%BC%BB%E3%82%A4%E3%83%8E%E3%83%99%E3%82%A4%E3%82%BF%E3%83%BC%EF%BC%BD%EF%BC%88%E3%83%91%E3%82%A4%E3%83%AD%E3%83%83%E3%83%88%EF%BC%89`;
 
 async function getHtmlDocumentFromUrl(url = URL, addDate = '', isAltered = true) {
   return await fetch(url).then((response) =>
@@ -15,7 +17,7 @@ async function getHtmlDocumentFromUrl(url = URL, addDate = '', isAltered = true)
       // parse the HTML string into a DOM-like object we can navigate
       const document = parser.parse(responseHtml);
       let position = Array.from(document.querySelectorAll('th')).find(el => el.textContent === '部位').nextElementSibling.textContent;
-      let model = Array.from(document.querySelectorAll('th')).find(el => el.textContent === '型番').nextElementSibling.textContent || '';
+      let model = Array.from(document.querySelectorAll('th')).find(el => el.textContent === '型番')?.nextElementSibling.textContent || '';
       let icon = document.querySelector('td img').getAttribute('data-original').split('?')[0];
       let machineName = Array.from(document.querySelectorAll('th')).find(el => el.textContent === '機体')?.nextElementSibling.textContent || '';
       let property = Array.from(document.querySelectorAll('th')).find(el => el.textContent === '属性').nextElementSibling.textContent;
@@ -64,13 +66,13 @@ async function getHtmlDocumentFromUrl(url = URL, addDate = '', isAltered = true)
         });
       }
       let [wordTag1, wordTag2] = findElementWithText(document, 'h3', 'ワードタグ').nextElementSibling.querySelectorAll('th').map((e) => e.textContent);
-      let subPart = findElementWithText(document, 'th', 'パーツ')?.textContent || '';
+      let subPart = findElementWithText(document, 'th', 'パーツ')?.nextElementSibling.textContent || '';
       let weaponType = findElementWithText(document, 'th', '武器種')?.nextElementSibling.textContent || '';
       let weaponAttackType = findElementWithText(document, 'th', 'タイプ')?.nextElementSibling.textContent || '';
       let rarity = findElementWithText(document, 'th', 'レアリティ')?.nextElementSibling.textContent.length || '';
-      let aiTalent = findElementWithText(document, 'th', 'AI特性')?.nextElementSibling.textContent.length || '';
-      let aiJob = findElementWithText(document, 'th', 'ジョブライセンス')?.nextElementSibling.textContent.length || '';
-      let aiName = findElementWithText(document, 'th', 'AI')?.nextElementSibling.textContent.length || '';
+      let aiTalent = findElementWithText(document, 'th', 'AI特性')?.nextElementSibling.textContent || '';
+      let aiJob = findElementWithText(document, 'th', 'ジョブライセンス')?.nextElementSibling.textContent || '';
+      let aiName = findElementWithText(document, 'th', 'AI')?.nextElementSibling.querySelector('span').textContent || '';
       let aiImage = findElementWithText(document, 'th', 'AI')?.nextElementSibling.querySelector('img')?.getAttribute('data-original').split('?')[0] || '';
       let [, stamina, melee, range, meleeDefense, rangeDefense, beamRes, phyRes] = paramHeader.parentNode.querySelectorAll('td').map((el) => el.textContent);
       console.log(position, model, icon, machineName, property, source, stamina, melee, range, meleeDefense, rangeDefense, beamRes, phyRes, passive1, passive2, wordTag1, wordTag2, subPart, rarity, weaponType, weaponAttackType, aiTalent, aiJob, aiImage, aiName, passive2Table, passive1Table, skillTable);
