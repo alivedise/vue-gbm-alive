@@ -33,6 +33,18 @@ const routes = [
     ],
   },
   {
+    path: '/pilots',
+    name: 'Pilot',
+    component: () => import(/* webpackChunkName: "revive" */ '../components/PilotDatabase.vue'),
+    children: [
+      {
+        path: ':category',
+        name: 'PilotModel',
+        component: () => import(/* webpackChunkName: "revive" */ '../components/PilotDatabase.vue'),
+      },
+    ],
+  },
+  {
     path: '/legacy',
     name: 'Legacy',
     // route level code-splitting

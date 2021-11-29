@@ -11,6 +11,7 @@
       <v-tabs>
         <v-tab to="/revive">Parts/零件資料庫</v-tab>
         <v-tab to="/machines">Machines/機體資料庫</v-tab>
+        <v-tab to="/pilots">Pilots/駕駛資料庫</v-tab>
       </v-tabs>
 
       <v-spacer></v-spacer>
