@@ -21,26 +21,38 @@ const routes = [
     ],
   },
   {
+    path: '/calculator',
+    name: 'AdvacnedCalculator',
+    component: () => import(/* webpackChunkName: "calculator" */ '../components/AdvancedCalculator.vue'),
+    children: [
+      {
+        path: ':data',
+        name: 'AdvacnedCalculator',
+        component: () => import(/* webpackChunkName: "calculator" */ '../components/AdvancedCalculator.vue'),
+      },
+    ],
+  },
+  {
     path: '/machines',
     name: 'Machine',
-    component: () => import(/* webpackChunkName: "revive" */ '../components/MachineDatabase.vue'),
+    component: () => import(/* webpackChunkName: "machine" */ '../components/MachineDatabase.vue'),
     children: [
       {
         path: ':category',
         name: 'MachineModel',
-        component: () => import(/* webpackChunkName: "revive" */ '../components/MachineDatabase.vue'),
+        component: () => import(/* webpackChunkName: "machine" */ '../components/MachineDatabase.vue'),
       },
     ],
   },
   {
     path: '/pilots',
     name: 'Pilot',
-    component: () => import(/* webpackChunkName: "revive" */ '../components/PilotDatabase.vue'),
+    component: () => import(/* webpackChunkName: "pilot" */ '../components/PilotDatabase.vue'),
     children: [
       {
         path: ':category',
         name: 'PilotModel',
-        component: () => import(/* webpackChunkName: "revive" */ '../components/PilotDatabase.vue'),
+        component: () => import(/* webpackChunkName: "pilot" */ '../components/PilotDatabase.vue'),
       },
     ],
   },
