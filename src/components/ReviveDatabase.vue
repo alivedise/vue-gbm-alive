@@ -38,8 +38,8 @@
         item-key="key"
         class="elevation-1"
         :search="keyword"
-        sort-by="isNew"
-        sort-desc="false"
+        :sort-by="'addTime'"
+        :sort-desc="true"
       >
         <template v-slot:item.image="{ item }">
           <div class="p-2">
@@ -89,7 +89,7 @@
               x-small
               color="red"
               text-color="white"
-              v-if="item.isNew && item.addDate === '11/24'"
+              v-if="item.isNew && item.addDate === '2021/12/1'"
             >
               NEW
             </v-chip>
@@ -169,6 +169,7 @@ export default {
     mappedParts() {
       const a = this.parts.map((part) => ({
         ...part,
+        addTime: new Date(part.addDate).getTime(),
         machineName: this.$t(part.machineName) || this.$t(part.aiName),
         passive1: this.$t(part.passive1 || part.skillName),
         passive2: this.$t(part.passive2 || part.skillDescription),
