@@ -8,10 +8,23 @@ export default class PartCombinator {
       new Part(null, 'sub'),
     ];
     this.activeSubposition = 0;
+    this.activeWordTags = [];
   }
 
   get isEmpty() {
     return this.parts[0].isEmpty;
+  }
+
+  toggleActivation() {
+    if (this.activeSubposition === 0) {
+      this.activeSubposition = 1;
+    } else {
+      this.activeSubposition = 0;
+    }
+  }
+
+  get wordTags() {
+    return [this.main.wordTag1, this.main.wordTag2, this.sub.wordTag1, this.sub.wordTag2].filter((d) => d !== '');
   }
 
   insert(part) {
@@ -47,31 +60,31 @@ export default class PartCombinator {
   }
 
   get meleeAttack() {
-    return this.parts[0].meleeAttack + this.parts[1].meleeAttack;
+    return this.parts[0].meleeAttack + (this.parts[1].meleeAttack * this.parts[1].calculateSubBonus(this.parts[0]));
   }
 
   get rangeAttack() {
-    return this.parts[0].rangeAttack + this.parts[1].rangeAttack;
+    return this.parts[0].rangeAttack + (this.parts[1].rangeAttack * this.parts[1].calculateSubBonus(this.parts[0]));
   }
 
   get meleeDefense() {
-    return this.parts[0].meleeDefense + this.parts[1].meleeDefense;
+    return this.parts[0].meleeDefense + (this.parts[1].meleeDefense * this.parts[1].calculateSubBonus(this.parts[0]));
   }
 
   get rangeDefense() {
-    return this.parts[0].rangeDefense + this.parts[1].rangeDefense;
+    return this.parts[0].rangeDefense + (this.parts[1].rangeDefense * this.parts[1].calculateSubBonus(this.parts[0]));
   }
 
   get physicalResistence() {
-    return this.parts[0].physicalResistence + this.parts[1].physicalResistence;
+    return this.parts[0].physicalResistence + (this.parts[1].physicalResistence * this.parts[1].calculateSubBonus(this.parts[0]));
   }
 
   get beamResistence() {
-    return this.parts[0].beamResistence + this.part[1].beamResistence;
+    return this.parts[0].beamResistence + (this.parts[1].beamResistence * this.parts[1].calculateSubBonus(this.parts[0]));
   }
 
   get armor() {
-    return this.parts[0].armor + this.parts[1].armor;
+    return this.parts[0].armor + (this.parts[1].armor * this.parts[1].calculateSubBonus(this.parts[0]));
   }
 
   removePart() {

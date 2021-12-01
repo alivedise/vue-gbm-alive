@@ -7,6 +7,7 @@ export default class Part {
     } else {
       this.options = options;
     }
+    this.level = 10;
   }
 
   updatePart(part) {
@@ -15,8 +16,37 @@ export default class Part {
     });
   }
 
+  calculateSubBonus(main) {
+    let bonus = 0;
+    if (main.wordTag1 === this.wordTag1 || main.wordTag1 === this.wordTag2) {
+      bonus += 10;
+    }
+    if (main.wordTag2 === this.wordTag1 || main.wordTag2 === this.wordTag2) {
+      bonus += 10;
+    }
+    if (main.name.indexOf(this.name) >= 0 || this.name.indexOf(main.name) >= 0) {
+      bonus += 30;
+    }
+    if (bonus > 30) {
+      bonus = 30;
+    }
+    bonus += this.level * 0.5;
+    if ((main.name.indexOf('BIG') >= 0 && this.name.indexOf('BIG') < 0) || (main.name.indexOf('BIG') < 0 && this.name.indexOf('BIG') >= 0)) {
+      bonus += 20;
+    }
+    return bonus / 100;
+  }
+
   get name() {
     return this.options.machineName.replace('【改造】', '');
+  }
+
+  get wordTag1() {
+    return this.options.wordTag1;
+  }
+
+  get wordTag2() {
+    return this.options.wordTag2;
   }
 
   get icon() {
@@ -36,30 +66,30 @@ export default class Part {
   }
 
   get meleeAttack() {
-    return this.options.melee;
+    return +this.options.melee;
   }
 
   get rangeAttack() {
-    return this.options.range;
+    return +this.options.range;
   }
 
   get meleeDefense() {
-    return this.options.meleeDefense;
+    return +this.options.meleeDefense;
   }
 
   get rangeDefense() {
-    return this.options.rangeDefense;
+    return +this.options.rangeDefense;
   }
 
   get physicalResistence() {
-    return this.options.phyResist;
+    return +this.options.phyRes;
   }
 
   get beamResistence() {
-    return this.options.beamResist;
+    return +this.options.beamRes;
   }
 
   get armor() {
-    return this.options.armor;
+    return +this.options.stamina;
   }
 }

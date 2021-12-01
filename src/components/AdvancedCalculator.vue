@@ -12,31 +12,75 @@
       <v-col>
         <v-card max-width="375" class="mx-auto">
           <v-list>
-            <v-list-item three-line v-for="(value, key) in position" :key="key" @click="updatePosition(value.original)">
+            <v-list-item
+              three-line
+              v-for="(value, key) in position"
+              :key="key"
+              @click="updatePosition(value.original)"
+            >
               <v-list-item-avatar color="black" tile>
-                <v-img height="30px" width="30px" :src="data[value.original].isEmpty ? value.icon : data[value.original].main.icon" />
+                <v-img
+                  height="30px"
+                  width="30px"
+                  :src="
+                    data[value.original].isEmpty
+                      ? value.icon
+                      : data[value.original].main.icon
+                  "
+                />
               </v-list-item-avatar>
               <v-list-item-content>
                 <v-list-item-title>
                   <template v-if="data[value.original].isEmpty">
-                    {{$t(value.original)}}
+                    {{ $t(value.original) }}
                   </template>
                   <template v-else>
-                      <v-chip label>
-                        {{data[value.original].main.name}}
-                      </v-chip>
-                      <v-chip label>
-                        {{data[value.original].sub.name}}
-                      </v-chip>
+                    <v-chip
+                      small
+                      label
+                      :color="
+                        data[value.original].activeSubposition === 0
+                          ? 'primary'
+                          : 'secondary'
+                      "
+                      @click="data[value.original].toggleActivation()"
+                    >
+                      {{ data[value.original].meleeAttack }}
+                      {{ data[value.original].main.name }}
+                    </v-chip>
+                    <v-chip
+                      small
+                      label
+                      v-if="!data[value.original].sub.isEmpty"
+                      :color="
+                        data[value.original].activeSubposition === 1
+                          ? 'primary'
+                          : 'secondary'
+                      "
+                      @click="data[value.original].toggleActivation()"
+                    >
+                      {{ data[value.original].sub.name }}
+                    </v-chip>
                   </template>
                 </v-list-item-title>
                 <v-list-item-subtitle>
-                  {{data[value.original].activePassive1}}
+                  {{ data[value.original].activePassive1 }}
                 </v-list-item-subtitle>
                 <v-list-item-subtitle>
-                   {{data[value.original].activePassive2}}
+                  {{ data[value.original].activePassive2 }}
                 </v-list-item-subtitle>
               </v-list-item-content>
+              <v-sheet class="wordtags">
+                <v-chip
+                  x-small
+                  label
+                  outlined
+                  v-for="(tag, index) in data[value.original].wordTags"
+                  :key="index"
+                >
+                  {{ $t(tag) }}
+                </v-chip>
+              </v-sheet>
             </v-list-item>
           </v-list>
         </v-card>
@@ -78,12 +122,11 @@
 
 <script>
 import axios from "axios";
-import Vue from 'vue';
 import POSITION from "@/constants/position";
-import PartCombinator from '@/models/PartCombinator';
+import PartCombinator from "@/models/PartCombinator";
 
 export default {
-  name: "ReviveDatabase",
+  name: "AdvancedCalculator",
 
   data: () => ({
     search: "",
@@ -108,31 +151,52 @@ export default {
     ],
     position: POSITION,
     data: {
-      "頭": new PartCombinator("頭"),
-      "胴体": new PartCombinator('胴体'),
-      "腕": new PartCombinator('腕'),
-      "脚部": new PartCombinator('脚部'),
-      "背中": new PartCombinator('背中'),
-      "盾": new PartCombinator('盾'),
-      "格闘武器": new PartCombinator('格闘武器'),
-      "射撃武器": new PartCombinator('射撃武器'),
-      "パイロット": new PartCombinator('パイロット'),
+      頭: new PartCombinator("頭"),
+      胴体: new PartCombinator("胴体"),
+      腕: new PartCombinator("腕"),
+      脚部: new PartCombinator("脚部"),
+      背中: new PartCombinator("背中"),
+      盾: new PartCombinator("盾"),
+      格闘武器: new PartCombinator("格闘武器"),
+      射撃武器: new PartCombinator("射撃武器"),
+      パイロット: new PartCombinator("パイロット"),
     },
   }),
 
   computed: {
-    calculatedAttack() {
-      return 1;
+    calculatedMeleeAttack() {
+      return Object.values(this.data).reduce((a, b) => a + b.meleeAttack, 0);
+    },
+    calculatedRangeAttack() {
+      return Object.values(this.data).reduce((a, b) => a + b.rangeAttack, 0);
+    },
+    calculatedMeleeDefense() {
+      return Object.values(this.data).reduce((a, b) => a + b.meleeDefense, 0);
+    },
+    calculatedRangeDefense() {
+      return Object.values(this.data).reduce((a, b) => a + b.rangeDefense, 0);
+    },
+    calculatedPhysicalResistence() {
+      return Object.values(this.data).reduce(
+        (a, b) => a + b.physicalResistence,
+        0
+      );
+    },
+    calculatedBeamResistence() {
+      return Object.values(this.data).reduce((a, b) => a + b.beamResistence, 0);
+    },
+    calculatedArmor() {
+      return Object.values(this.data).reduce((a, b) => a + b.armor, 0);
     },
     tableData() {
       return {
-        meleeAttack: this.calculatedMeleeAttack,
-        rangeAttack: this.calculatedRangeAttack,
-        meleeDefense: this.calculatedMeleeDefense,
-        rangeDefense: this.calculatedRangeDefense,
-        physicalResistence: this.calculatedPhysicalResistence,
-        beamResistence: this.calculatedBeamResistence,
-        armor: this.calculatedArmor,
+        meleeAttack: Math.round(this.calculatedMeleeAttack),
+        rangeAttack: Math.round(this.calculatedRangeAttack),
+        meleeDefense: Math.round(this.calculatedMeleeDefense),
+        rangeDefense: Math.round(this.calculatedRangeDefense),
+        physicalResistence: Math.round(this.calculatedPhysicalResistence),
+        beamResistence: Math.round(this.calculatedBeamResistence),
+        armor: Math.round(this.calculatedArmor),
       };
     },
     mappedParts() {
@@ -159,7 +223,7 @@ export default {
         if (!map[part.position]) {
           map[part.position] = [];
         }
-        map[part.position].push(part);
+        map[part.position].push(Object.freeze(part));
       });
       return map;
     },
@@ -297,5 +361,14 @@ export default {
 .rainbow {
   @rainbow-colors: red, orange, yellow, green, blue;
   background: linear-gradient(to left, @rainbow-colors) !important;
+}
+.wordtags {
+  flex: none;
+  position: absolute;
+  right: 0;
+  top: 0;
+  max-width: 60px;
+  display: flex;
+  flex-direction: column;
 }
 </style>
