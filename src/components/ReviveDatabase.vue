@@ -250,7 +250,11 @@ export default {
         ),
       }));
       if (this.doubleBoost) {
-        a = a.filter((i) => i.doubleBoost && (!this.specificBoost || i.specificBoost));
+        if (this.specificBoost) {
+          a = a.filter((i) => i.specificBoost);
+        } else {
+          a = a.filter((i) => i.doubleBoost);
+        }
       }
       if (this.initialCharge) {
         a = a.filter((i) => i.initialCharge);
@@ -264,7 +268,7 @@ export default {
       }
       if (this.category && this.position[this.category]) {
         return a.filter(
-          (part) => part.position === this.position[this.category].original
+          (part) => (part.position === this.position[this.category].original),
         );
       }
       return a;
