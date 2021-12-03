@@ -13,15 +13,62 @@
         <v-img height="30px" width="30px" :src="value.icon" />
         {{ $t(value.original) }}
       </v-chip>
-      <v-text-field
-        v-model="search"
-        @change="updateQuery"
-        @compositionend="endCompose"
-        append-icon="mdi-magnify"
-        label="Search"
-        single-line
-        hide-details
-      />
+      <v-container>
+        <v-row>
+          <v-col>
+            <v-text-field
+              v-model="search"
+              @change="updateQuery"
+              @compositionend="endCompose"
+              append-icon="mdi-magnify"
+              label="Search"
+              single-line
+              hide-details
+            />
+          </v-col>
+          <v-col>
+            <v-chip-group
+              v-model="labelFilter"
+              @change="updateQuery"
+              column
+              multiple
+            >
+              <v-chip
+                filter
+                outlined
+              >
+                雙重威力提升
+              </v-chip>
+              <v-chip
+                filter
+                outlined
+                v-show="doubleBoost"
+              >
+                特定部件威力提升
+              </v-chip>
+              <v-chip
+                filter
+                outlined
+              >
+                初始充能
+              </v-chip>
+              <v-chip
+                filter
+                outlined
+              >
+                冷卻時間
+              </v-chip>
+              <v-chip
+                filter
+                outlined
+                v-show="cooldownReduction"
+              >
+                僅限1次-冷卻
+              </v-chip>
+            </v-chip-group>
+          </v-col>
+        </v-row>
+      </v-container>
     </v-sheet>
     <v-skeleton-loader
       :loading="loading"
@@ -163,11 +210,27 @@ export default {
       { text: "貫通", value: "pierce" },
     ],
     position: POSITION,
+    labelFilter: [],
   }),
 
   computed: {
+    doubleBoost() {
+      return this.labelFilter.indexOf(0) >= 0;
+    },
+    specificBoost() {
+      return this.labelFilter.indexOf(1) >= 0;
+    },
+    initialCharge() {
+      return this.labelFilter.indexOf(2) >= 0;
+    },
+    cooldownReduction() {
+      return this.labelFilter.indexOf(3) >= 0;
+    },
+    oneTimeCooldownReduction() {
+      return this.labelFilter.indexOf(4) >= 0;
+    },
     mappedParts() {
-      const a = this.parts.map((part) => ({
+      let a = this.parts.map((part) => ({
         ...part,
         addTime: new Date(part.addDate).getTime(),
         machineName: this.$t(part.machineName) || this.$t(part.aiName),
@@ -186,6 +249,19 @@ export default {
           +part.range + +part.rangeDefense * 0.4
         ),
       }));
+      if (this.doubleBoost) {
+        a = a.filter((i) => i.doubleBoost && (!this.specificBoost || i.specificBoost));
+      }
+      if (this.initialCharge) {
+        a = a.filter((i) => i.initialCharge);
+      }
+      if (this.cooldownReduction) {
+        if (this.oneTimeCooldownReduction) {
+          a = a.filter((i) => i.oneTimeCooldownReduction);
+        } else {
+          a = a.filter((i) => i.cooldownReduction && !i.oneTimeCooldownReduction);
+        }
+      }
       if (this.category && this.position[this.category]) {
         return a.filter(
           (part) => part.position === this.position[this.category].original
@@ -212,6 +288,10 @@ export default {
       return this.$route.params.category;
     },
 
+    filter() {
+      return this.$route.query.label;
+    },
+
     keyword() {
       return this.$route.query.keyword;
     },
@@ -229,6 +309,7 @@ export default {
     updateQuery() {
       this.$router.push({ query: {
         keyword: this.search,
+        label: this.labelFilter.join(','),
       }});
     },
     getWordTagIcon(wordTag) {
@@ -297,7 +378,7 @@ export default {
   },
 
   mounted() {
-    window.legapp = this;
+    window.app1 = this;
     const prefix =
       process.env.NODE_ENV === "production" ? "/vue-gbm-alive/" : "/";
     axios
@@ -309,6 +390,7 @@ export default {
         this.parts = data.data.wiki;
       });
     this.search = this.keyword;
+    this.labelFilter = this.filter ? this.filter.split(',').map(i => +i) : [];
   },
 };
 </script>
