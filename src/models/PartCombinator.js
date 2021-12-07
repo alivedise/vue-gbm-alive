@@ -15,6 +15,13 @@ export default class PartCombinator {
     return this.parts[0].isEmpty;
   }
 
+  addWordTag(tag) {
+    if (this.activeWordTags.length === 2) {
+      this.activeWordTags.shift();
+    }
+    this.activeWordTags.push(tag);
+  }
+
   toggleActivation() {
     if (this.activeSubposition === 0) {
       this.activeSubposition = 1;
@@ -30,6 +37,7 @@ export default class PartCombinator {
   insert(part) {
     if (this.parts[0].isEmpty) {
       this.main = part;
+      this.activeWordTags = [part.wordTag1, part.wordTag2];
     } else if (this.parts[1].isEmpty) {
       this.sub = part;
     }
@@ -49,6 +57,24 @@ export default class PartCombinator {
 
   set sub(partConfig) {
     this.parts[1].updatePart(partConfig);
+  }
+
+  get activePart() {
+    return this.parts[this.activeSubposition];
+  }
+
+  get boostAmount() {
+    if (this.parts[0].isEmpty) {
+      return 0;
+    }
+    return this.parts[this.activeSubposition].boostAmount;
+  }
+
+  get buffBoostAmount() {
+    if (this.parts[0].isEmpty) {
+      return 0;
+    }
+    return this.parts[this.activeSubposition].buffBoostAmount;
   }
 
   get activePassive1() {

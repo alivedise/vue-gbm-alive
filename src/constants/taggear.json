@@ -1,0 +1,1252 @@
+{
+  "モビルファイター": [
+    [
+      30,
+      {
+        "armor": 0,
+        "meleeAttack": 0,
+        "rangeAttack": 0,
+        "meleeDefense": 0,
+        "rangeDefense": 0,
+        "beamResistence": 0,
+        "physicalResistence": 0
+      }
+    ],
+    [
+      90,
+      {
+        "armor": 0,
+        "meleeAttack": 0,
+        "rangeAttack": 0,
+        "meleeDefense": 1000,
+        "rangeDefense": 1000,
+        "beamResistence": 0,
+        "physicalResistence": 0
+      }
+    ],
+    [
+      150,
+      {
+        "armor": 0,
+        "meleeAttack": 0,
+        "rangeAttack": 0,
+        "meleeDefense": 2000,
+        "rangeDefense": 2000,
+        "beamResistence": 0,
+        "physicalResistence": 0
+      }
+    ],
+    [
+      180,
+      {
+        "armor": 0,
+        "meleeAttack": 0,
+        "rangeAttack": 0,
+        "meleeDefense": 3000,
+        "rangeDefense": 3000,
+        "beamResistence": 0,
+        "physicalResistence": 0
+      }
+    ]
+  ],
+  "高火力": [
+    [
+      20,
+      {
+        "armor": 0,
+        "meleeAttack": 0,
+        "rangeAttack": 0,
+        "meleeDefense": 0,
+        "rangeDefense": 0,
+        "beamResistence": 0,
+        "physicalResistence": 0
+      }
+    ],
+    [
+      60,
+      {
+        "armor": 0,
+        "meleeAttack": 0,
+        "rangeAttack": 0,
+        "meleeDefense": 0,
+        "rangeDefense": 0,
+        "beamResistence": 1000,
+        "physicalResistence": 1000
+      }
+    ],
+    [
+      100,
+      {
+        "armor": 0,
+        "meleeAttack": 0,
+        "rangeAttack": 0,
+        "meleeDefense": 0,
+        "rangeDefense": 0,
+        "beamResistence": 2000,
+        "physicalResistence": 2000
+      }
+    ],
+    [
+      120,
+      {
+        "armor": 0,
+        "meleeAttack": 0,
+        "rangeAttack": 0,
+        "meleeDefense": 0,
+        "rangeDefense": 0,
+        "beamResistence": 3000,
+        "physicalResistence": 3000
+      }
+    ]
+  ],
+  "エース専用機": [
+    [
+      20,
+      {
+        "armor": 0,
+        "meleeAttack": 0,
+        "rangeAttack": 0,
+        "meleeDefense": 0,
+        "rangeDefense": 0,
+        "beamResistence": 0,
+        "physicalResistence": 0
+      }
+    ],
+    [
+      60,
+      {
+        "armor": 0,
+        "meleeAttack": 0,
+        "rangeAttack": 0,
+        "meleeDefense": 0,
+        "rangeDefense": 0,
+        "beamResistence": 1000,
+        "physicalResistence": 1000
+      }
+    ],
+    [
+      100,
+      {
+        "armor": 0,
+        "meleeAttack": 0,
+        "rangeAttack": 0,
+        "meleeDefense": 0,
+        "rangeDefense": 0,
+        "beamResistence": 2000,
+        "physicalResistence": 2000
+      }
+    ],
+    [
+      120,
+      {
+        "armor": 0,
+        "meleeAttack": 0,
+        "rangeAttack": 0,
+        "meleeDefense": 0,
+        "rangeDefense": 0,
+        "beamResistence": 3000,
+        "physicalResistence": 3000
+      }
+    ]
+  ],
+  "指揮官機": [
+    [
+      30,
+      {
+        "armor": 0,
+        "meleeAttack": 0,
+        "rangeAttack": 0,
+        "meleeDefense": 0,
+        "rangeDefense": 0,
+        "beamResistence": 0,
+        "physicalResistence": 0
+      }
+    ],
+    [
+      90,
+      {
+        "armor": 0,
+        "meleeAttack": 0,
+        "rangeAttack": 0,
+        "meleeDefense": 1000,
+        "rangeDefense": 1000,
+        "beamResistence": 0,
+        "physicalResistence": 0
+      }
+    ],
+    [
+      150,
+      {
+        "armor": 0,
+        "meleeAttack": 0,
+        "rangeAttack": 0,
+        "meleeDefense": 2000,
+        "rangeDefense": 2000,
+        "beamResistence": 0,
+        "physicalResistence": 0
+      }
+    ],
+    [
+      180,
+      {
+        "armor": 0,
+        "meleeAttack": 0,
+        "rangeAttack": 0,
+        "meleeDefense": 3000,
+        "rangeDefense": 3000,
+        "beamResistence": 0,
+        "physicalResistence": 0
+      }
+    ]
+  ],
+  "接近戦": [
+    [
+      20,
+      {
+        "armor": 0,
+        "meleeAttack": 0,
+        "rangeAttack": 0,
+        "meleeDefense": 0,
+        "rangeDefense": 0,
+        "beamResistence": 0,
+        "physicalResistence": 0
+      }
+    ],
+    [
+      60,
+      {
+        "armor": 0,
+        "meleeAttack": 0,
+        "rangeAttack": 0,
+        "meleeDefense": 0,
+        "rangeDefense": 0,
+        "beamResistence": 1000,
+        "physicalResistence": 1000
+      }
+    ],
+    [
+      100,
+      {
+        "armor": 0,
+        "meleeAttack": 0,
+        "rangeAttack": 0,
+        "meleeDefense": 0,
+        "rangeDefense": 0,
+        "beamResistence": 2000,
+        "physicalResistence": 2000
+      }
+    ],
+    [
+      120,
+      {
+        "armor": 0,
+        "meleeAttack": 0,
+        "rangeAttack": 0,
+        "meleeDefense": 0,
+        "rangeDefense": 0,
+        "beamResistence": 3000,
+        "physicalResistence": 3000
+      }
+    ]
+  ],
+  "連邦": [
+    [
+      30,
+      {
+        "armor": 0,
+        "meleeAttack": 0,
+        "rangeAttack": 0,
+        "meleeDefense": 0,
+        "rangeDefense": 0,
+        "beamResistence": 0,
+        "physicalResistence": 0
+      }
+    ],
+    [
+      90,
+      {
+        "armor": 0,
+        "meleeAttack": 0,
+        "rangeAttack": 0,
+        "meleeDefense": 1000,
+        "rangeDefense": 1000,
+        "beamResistence": 0,
+        "physicalResistence": 0
+      }
+    ],
+    [
+      150,
+      {
+        "armor": 0,
+        "meleeAttack": 0,
+        "rangeAttack": 0,
+        "meleeDefense": 2000,
+        "rangeDefense": 2000,
+        "beamResistence": 0,
+        "physicalResistence": 0
+      }
+    ],
+    [
+      210,
+      {
+        "armor": 0,
+        "meleeAttack": 0,
+        "rangeAttack": 0,
+        "meleeDefense": 3000,
+        "rangeDefense": 3000,
+        "beamResistence": 0,
+        "physicalResistence": 0
+      }
+    ]
+  ],
+  "主人公機": [
+    [
+      20,
+      {
+        "armor": 0,
+        "meleeAttack": 0,
+        "rangeAttack": 0,
+        "meleeDefense": 0,
+        "rangeDefense": 0,
+        "beamResistence": 0,
+        "physicalResistence": 0
+      }
+    ],
+    [
+      60,
+      {
+        "armor": 0,
+        "meleeAttack": 0,
+        "rangeAttack": 0,
+        "meleeDefense": 0,
+        "rangeDefense": 0,
+        "beamResistence": 1000,
+        "physicalResistence": 1000
+      }
+    ],
+    [
+      100,
+      {
+        "armor": 0,
+        "meleeAttack": 0,
+        "rangeAttack": 0,
+        "meleeDefense": 0,
+        "rangeDefense": 0,
+        "beamResistence": 2000,
+        "physicalResistence": 2000
+      }
+    ],
+    [
+      120,
+      {
+        "armor": 0,
+        "meleeAttack": 0,
+        "rangeAttack": 0,
+        "meleeDefense": 0,
+        "rangeDefense": 0,
+        "beamResistence": 3000,
+        "physicalResistence": 3000
+      }
+    ]
+  ],
+  "中距離戦": [
+    [
+      40,
+      {
+        "armor": 0,
+        "meleeAttack": 0,
+        "rangeAttack": 0,
+        "meleeDefense": 0,
+        "rangeDefense": 0,
+        "beamResistence": 0,
+        "physicalResistence": 0
+      }
+    ],
+    [
+      120,
+      {
+        "armor": 0,
+        "meleeAttack": 1000,
+        "rangeAttack": 1000,
+        "meleeDefense": 0,
+        "rangeDefense": 0,
+        "beamResistence": 0,
+        "physicalResistence": 0
+      }
+    ],
+    [
+      200,
+      {
+        "armor": 0,
+        "meleeAttack": 2000,
+        "rangeAttack": 2000,
+        "meleeDefense": 0,
+        "rangeDefense": 0,
+        "beamResistence": 0,
+        "physicalResistence": 0
+      }
+    ],
+    [
+      240,
+      {
+        "armor": 0,
+        "meleeAttack": 3000,
+        "rangeAttack": 3000,
+        "meleeDefense": 0,
+        "rangeDefense": 0,
+        "beamResistence": 0,
+        "physicalResistence": 0
+      }
+    ]
+  ],
+  "可変": [
+    [
+      40,
+      {
+        "armor": 0,
+        "meleeAttack": 0,
+        "rangeAttack": 0,
+        "meleeDefense": 0,
+        "rangeDefense": 0,
+        "beamResistence": 0,
+        "physicalResistence": 0
+      }
+    ],
+    [
+      120,
+      {
+        "armor": 0,
+        "meleeAttack": 1000,
+        "rangeAttack": 1000,
+        "meleeDefense": 0,
+        "rangeDefense": 0,
+        "beamResistence": 0,
+        "physicalResistence": 0
+      }
+    ],
+    [
+      200,
+      {
+        "armor": 0,
+        "meleeAttack": 2000,
+        "rangeAttack": 2000,
+        "meleeDefense": 0,
+        "rangeDefense": 0,
+        "beamResistence": 0,
+        "physicalResistence": 0
+      }
+    ],
+    [
+      240,
+      {
+        "armor": 0,
+        "meleeAttack": 3000,
+        "rangeAttack": 3000,
+        "meleeDefense": 0,
+        "rangeDefense": 0,
+        "beamResistence": 0,
+        "physicalResistence": 0
+      }
+    ]
+  ],
+  "高機動": [
+    [
+      30,
+      {
+        "armor": 0,
+        "meleeAttack": 0,
+        "rangeAttack": 0,
+        "meleeDefense": 0,
+        "rangeDefense": 0,
+        "beamResistence": 0,
+        "physicalResistence": 0
+      }
+    ],
+    [
+      90,
+      {
+        "armor": 0,
+        "meleeAttack": 0,
+        "rangeAttack": 0,
+        "meleeDefense": 1000,
+        "rangeDefense": 1000,
+        "beamResistence": 0,
+        "physicalResistence": 0
+      }
+    ],
+    [
+      150,
+      {
+        "armor": 0,
+        "meleeAttack": 0,
+        "rangeAttack": 0,
+        "meleeDefense": 2000,
+        "rangeDefense": 2000,
+        "beamResistence": 0,
+        "physicalResistence": 0
+      }
+    ],
+    [
+      180,
+      {
+        "armor": 0,
+        "meleeAttack": 0,
+        "rangeAttack": 0,
+        "meleeDefense": 3000,
+        "rangeDefense": 3000,
+        "beamResistence": 0,
+        "physicalResistence": 0
+      }
+    ]
+  ],
+  "重装甲": [
+    [
+      40,
+      {
+        "armor": 0,
+        "meleeAttack": 0,
+        "rangeAttack": 0,
+        "meleeDefense": 0,
+        "rangeDefense": 0,
+        "beamResistence": 0,
+        "physicalResistence": 0
+      }
+    ],
+    [
+      120,
+      {
+        "armor": 0,
+        "meleeAttack": 1000,
+        "rangeAttack": 1000,
+        "meleeDefense": 0,
+        "rangeDefense": 0,
+        "beamResistence": 0,
+        "physicalResistence": 0
+      }
+    ],
+    [
+      200,
+      {
+        "armor": 0,
+        "meleeAttack": 2000,
+        "rangeAttack": 2000,
+        "meleeDefense": 0,
+        "rangeDefense": 0,
+        "beamResistence": 0,
+        "physicalResistence": 0
+      }
+    ],
+    [
+      240,
+      {
+        "armor": 0,
+        "meleeAttack": 3000,
+        "rangeAttack": 3000,
+        "meleeDefense": 0,
+        "rangeDefense": 0,
+        "beamResistence": 0,
+        "physicalResistence": 0
+      }
+    ]
+  ],
+  "宇宙適正": [
+    [
+      40,
+      {
+        "armor": 0,
+        "meleeAttack": 0,
+        "rangeAttack": 0,
+        "meleeDefense": 0,
+        "rangeDefense": 0,
+        "beamResistence": 0,
+        "physicalResistence": 0
+      }
+    ],
+    [
+      120,
+      {
+        "armor": 0,
+        "meleeAttack": 0,
+        "rangeAttack": 0,
+        "meleeDefense": 1000,
+        "rangeDefense": 1000,
+        "beamResistence": 0,
+        "physicalResistence": 0
+      }
+    ],
+    [
+      200,
+      {
+        "armor": 0,
+        "meleeAttack": 0,
+        "rangeAttack": 0,
+        "meleeDefense": 2000,
+        "rangeDefense": 2000,
+        "beamResistence": 0,
+        "physicalResistence": 0
+      }
+    ],
+    [
+      240,
+      {
+        "armor": 0,
+        "meleeAttack": 0,
+        "rangeAttack": 0,
+        "meleeDefense": 3000,
+        "rangeDefense": 3000,
+        "beamResistence": 0,
+        "physicalResistence": 0
+      }
+    ]
+  ],
+  "ガンダムタイプ": [
+    [
+      30,
+      {
+        "armor": 0,
+        "meleeAttack": 0,
+        "rangeAttack": 0,
+        "meleeDefense": 0,
+        "rangeDefense": 0,
+        "beamResistence": 0,
+        "physicalResistence": 0
+      }
+    ],
+    [
+      90,
+      {
+        "armor": 0,
+        "meleeAttack": 0,
+        "rangeAttack": 0,
+        "meleeDefense": 1000,
+        "rangeDefense": 1000,
+        "beamResistence": 0,
+        "physicalResistence": 0
+      }
+    ],
+    [
+      150,
+      {
+        "armor": 0,
+        "meleeAttack": 0,
+        "rangeAttack": 0,
+        "meleeDefense": 2000,
+        "rangeDefense": 2000,
+        "beamResistence": 0,
+        "physicalResistence": 0
+      }
+    ],
+    [
+      180,
+      {
+        "armor": 0,
+        "meleeAttack": 0,
+        "rangeAttack": 0,
+        "meleeDefense": 3000,
+        "rangeDefense": 3000,
+        "beamResistence": 0,
+        "physicalResistence": 0
+      }
+    ]
+  ],
+  "量産機": [
+    [
+      30,
+      {
+        "armor": 0,
+        "meleeAttack": 0,
+        "rangeAttack": 0,
+        "meleeDefense": 0,
+        "rangeDefense": 0,
+        "beamResistence": 0,
+        "physicalResistence": 0
+      }
+    ],
+    [
+      90,
+      {
+        "armor": 0,
+        "meleeAttack": 0,
+        "rangeAttack": 0,
+        "meleeDefense": 1000,
+        "rangeDefense": 1000,
+        "beamResistence": 0,
+        "physicalResistence": 0
+      }
+    ],
+    [
+      150,
+      {
+        "armor": 0,
+        "meleeAttack": 0,
+        "rangeAttack": 0,
+        "meleeDefense": 2000,
+        "rangeDefense": 2000,
+        "beamResistence": 0,
+        "physicalResistence": 0
+      }
+    ],
+    [
+      180,
+      {
+        "armor": 0,
+        "meleeAttack": 0,
+        "rangeAttack": 0,
+        "meleeDefense": 3000,
+        "rangeDefense": 3000,
+        "beamResistence": 0,
+        "physicalResistence": 0
+      }
+    ]
+  ],
+  "遠距離戦": [
+    [
+      40,
+      {
+        "armor": 0,
+        "meleeAttack": 0,
+        "rangeAttack": 0,
+        "meleeDefense": 0,
+        "rangeDefense": 0,
+        "beamResistence": 0,
+        "physicalResistence": 0
+      }
+    ],
+    [
+      120,
+      {
+        "armor": 0,
+        "meleeAttack": 1000,
+        "rangeAttack": 1000,
+        "meleeDefense": 0,
+        "rangeDefense": 0,
+        "beamResistence": 0,
+        "physicalResistence": 0
+      }
+    ],
+    [
+      200,
+      {
+        "armor": 0,
+        "meleeAttack": 2000,
+        "rangeAttack": 2000,
+        "meleeDefense": 0,
+        "rangeDefense": 0,
+        "beamResistence": 0,
+        "physicalResistence": 0
+      }
+    ],
+    [
+      240,
+      {
+        "armor": 0,
+        "meleeAttack": 3000,
+        "rangeAttack": 3000,
+        "meleeDefense": 0,
+        "rangeDefense": 0,
+        "beamResistence": 0,
+        "physicalResistence": 0
+      }
+    ]
+  ],
+  "ジオン": [
+    [
+      40,
+      {
+        "armor": 0,
+        "meleeAttack": 0,
+        "rangeAttack": 0,
+        "meleeDefense": 0,
+        "rangeDefense": 0,
+        "beamResistence": 0,
+        "physicalResistence": 0
+      }
+    ],
+    [
+      120,
+      {
+        "armor": 0,
+        "meleeAttack": 1000,
+        "rangeAttack": 1000,
+        "meleeDefense": 0,
+        "rangeDefense": 0,
+        "beamResistence": 0,
+        "physicalResistence": 0
+      }
+    ],
+    [
+      200,
+      {
+        "armor": 0,
+        "meleeAttack": 2000,
+        "rangeAttack": 2000,
+        "meleeDefense": 0,
+        "rangeDefense": 0,
+        "beamResistence": 0,
+        "physicalResistence": 0
+      }
+    ],
+    [
+      240,
+      {
+        "armor": 0,
+        "meleeAttack": 3000,
+        "rangeAttack": 3000,
+        "meleeDefense": 0,
+        "rangeDefense": 0,
+        "beamResistence": 0,
+        "physicalResistence": 0
+      }
+    ]
+  ],
+  "水陸両用": [
+    [
+      40,
+      {
+        "armor": 0,
+        "meleeAttack": 0,
+        "rangeAttack": 0,
+        "meleeDefense": 0,
+        "rangeDefense": 0,
+        "beamResistence": 0,
+        "physicalResistence": 0
+      }
+    ],
+    [
+      120,
+      {
+        "armor": 0,
+        "meleeAttack": 1000,
+        "rangeAttack": 1000,
+        "meleeDefense": 0,
+        "rangeDefense": 0,
+        "beamResistence": 0,
+        "physicalResistence": 0
+      }
+    ],
+    [
+      200,
+      {
+        "armor": 0,
+        "meleeAttack": 2000,
+        "rangeAttack": 2000,
+        "meleeDefense": 0,
+        "rangeDefense": 0,
+        "beamResistence": 0,
+        "physicalResistence": 0
+      }
+    ],
+    [
+      240,
+      {
+        "armor": 0,
+        "meleeAttack": 3000,
+        "rangeAttack": 3000,
+        "meleeDefense": 0,
+        "rangeDefense": 0,
+        "beamResistence": 0,
+        "physicalResistence": 0
+      }
+    ]
+  ],
+  "電脳適正": [
+    [
+      40,
+      {
+        "armor": 0,
+        "meleeAttack": 0,
+        "rangeAttack": 0,
+        "meleeDefense": 0,
+        "rangeDefense": 0,
+        "beamResistence": 0,
+        "physicalResistence": 0
+      }
+    ],
+    [
+      120,
+      {
+        "armor": 0,
+        "meleeAttack": 0,
+        "rangeAttack": 0,
+        "meleeDefense": 1000,
+        "rangeDefense": 1000,
+        "beamResistence": 0,
+        "physicalResistence": 0
+      }
+    ],
+    [
+      200,
+      {
+        "armor": 0,
+        "meleeAttack": 0,
+        "rangeAttack": 0,
+        "meleeDefense": 2000,
+        "rangeDefense": 2000,
+        "beamResistence": 0,
+        "physicalResistence": 0
+      }
+    ],
+    [
+      240,
+      {
+        "armor": 0,
+        "meleeAttack": 0,
+        "rangeAttack": 0,
+        "meleeDefense": 3000,
+        "rangeDefense": 3000,
+        "beamResistence": 0,
+        "physicalResistence": 0
+      }
+    ]
+  ],
+  "ザクタイプ": [
+    [
+      40,
+      {
+        "armor": 0,
+        "meleeAttack": 0,
+        "rangeAttack": 0,
+        "meleeDefense": 0,
+        "rangeDefense": 0,
+        "beamResistence": 0,
+        "physicalResistence": 0
+      }
+    ],
+    [
+      120,
+      {
+        "armor": 0,
+        "meleeAttack": 1000,
+        "rangeAttack": 1000,
+        "meleeDefense": 0,
+        "rangeDefense": 0,
+        "beamResistence": 0,
+        "physicalResistence": 0
+      }
+    ],
+    [
+      200,
+      {
+        "armor": 0,
+        "meleeAttack": 2000,
+        "rangeAttack": 2000,
+        "meleeDefense": 0,
+        "rangeDefense": 0,
+        "beamResistence": 0,
+        "physicalResistence": 0
+      }
+    ],
+    [
+      240,
+      {
+        "armor": 0,
+        "meleeAttack": 3000,
+        "rangeAttack": 3000,
+        "meleeDefense": 0,
+        "rangeDefense": 0,
+        "beamResistence": 0,
+        "physicalResistence": 0
+      }
+    ]
+  ],
+  "市街地適正": [
+    [
+      40,
+      {
+        "armor": 0,
+        "meleeAttack": 0,
+        "rangeAttack": 0,
+        "meleeDefense": 0,
+        "rangeDefense": 0,
+        "beamResistence": 0,
+        "physicalResistence": 0
+      }
+    ],
+    [
+      120,
+      {
+        "armor": 0,
+        "meleeAttack": 1000,
+        "rangeAttack": 1000,
+        "meleeDefense": 0,
+        "rangeDefense": 0,
+        "beamResistence": 0,
+        "physicalResistence": 0
+      }
+    ],
+    [
+      200,
+      {
+        "armor": 0,
+        "meleeAttack": 2000,
+        "rangeAttack": 2000,
+        "meleeDefense": 0,
+        "rangeDefense": 0,
+        "beamResistence": 0,
+        "physicalResistence": 0
+      }
+    ],
+    [
+      240,
+      {
+        "armor": 0,
+        "meleeAttack": 3000,
+        "rangeAttack": 3000,
+        "meleeDefense": 0,
+        "rangeDefense": 0,
+        "beamResistence": 0,
+        "physicalResistence": 0
+      }
+    ]
+  ],
+  "森林適正": [
+    [
+      40,
+      {
+        "armor": 0,
+        "meleeAttack": 0,
+        "rangeAttack": 0,
+        "meleeDefense": 0,
+        "rangeDefense": 0,
+        "beamResistence": 0,
+        "physicalResistence": 0
+      }
+    ],
+    [
+      120,
+      {
+        "armor": 0,
+        "meleeAttack": 1000,
+        "rangeAttack": 1000,
+        "meleeDefense": 0,
+        "rangeDefense": 0,
+        "beamResistence": 0,
+        "physicalResistence": 0
+      }
+    ],
+    [
+      200,
+      {
+        "armor": 0,
+        "meleeAttack": 2000,
+        "rangeAttack": 2000,
+        "meleeDefense": 0,
+        "rangeDefense": 0,
+        "beamResistence": 0,
+        "physicalResistence": 0
+      }
+    ],
+    [
+      240,
+      {
+        "armor": 0,
+        "meleeAttack": 3000,
+        "rangeAttack": 3000,
+        "meleeDefense": 0,
+        "rangeDefense": 0,
+        "beamResistence": 0,
+        "physicalResistence": 0
+      }
+    ]
+  ],
+  "支援機": [
+    [
+      40,
+      {
+        "armor": 0,
+        "meleeAttack": 0,
+        "rangeAttack": 0,
+        "meleeDefense": 0,
+        "rangeDefense": 0,
+        "beamResistence": 0,
+        "physicalResistence": 0
+      }
+    ],
+    [
+      120,
+      {
+        "armor": 0,
+        "meleeAttack": 1000,
+        "rangeAttack": 1000,
+        "meleeDefense": 0,
+        "rangeDefense": 0,
+        "beamResistence": 0,
+        "physicalResistence": 0
+      }
+    ],
+    [
+      200,
+      {
+        "armor": 0,
+        "meleeAttack": 2000,
+        "rangeAttack": 2000,
+        "meleeDefense": 0,
+        "rangeDefense": 0,
+        "beamResistence": 0,
+        "physicalResistence": 0
+      }
+    ],
+    [
+      240,
+      {
+        "armor": 0,
+        "meleeAttack": 3000,
+        "rangeAttack": 3000,
+        "meleeDefense": 0,
+        "rangeDefense": 0,
+        "beamResistence": 0,
+        "physicalResistence": 0
+      }
+    ]
+  ],
+  "砂漠適正": [
+    [
+      40,
+      {
+        "armor": 0,
+        "meleeAttack": 0,
+        "rangeAttack": 0,
+        "meleeDefense": 0,
+        "rangeDefense": 0,
+        "beamResistence": 0,
+        "physicalResistence": 0
+      }
+    ],
+    [
+      120,
+      {
+        "armor": 0,
+        "meleeAttack": 1000,
+        "rangeAttack": 1000,
+        "meleeDefense": 0,
+        "rangeDefense": 0,
+        "beamResistence": 0,
+        "physicalResistence": 0
+      }
+    ],
+    [
+      200,
+      {
+        "armor": 0,
+        "meleeAttack": 2000,
+        "rangeAttack": 2000,
+        "meleeDefense": 0,
+        "rangeDefense": 0,
+        "beamResistence": 0,
+        "physicalResistence": 0
+      }
+    ],
+    [
+      240,
+      {
+        "armor": 0,
+        "meleeAttack": 3000,
+        "rangeAttack": 3000,
+        "meleeDefense": 0,
+        "rangeDefense": 0,
+        "beamResistence": 0,
+        "physicalResistence": 0
+      }
+    ]
+  ],
+  "基地適正": [
+    [
+      40,
+      {
+        "armor": 0,
+        "meleeAttack": 0,
+        "rangeAttack": 0,
+        "meleeDefense": 0,
+        "rangeDefense": 0,
+        "beamResistence": 0,
+        "physicalResistence": 0
+      }
+    ],
+    [
+      120,
+      {
+        "armor": 0,
+        "meleeAttack": 1000,
+        "rangeAttack": 1000,
+        "meleeDefense": 0,
+        "rangeDefense": 0,
+        "beamResistence": 0,
+        "physicalResistence": 0
+      }
+    ],
+    [
+      200,
+      {
+        "armor": 0,
+        "meleeAttack": 2000,
+        "rangeAttack": 2000,
+        "meleeDefense": 0,
+        "rangeDefense": 0,
+        "beamResistence": 0,
+        "physicalResistence": 0
+      }
+    ],
+    [
+      240,
+      {
+        "armor": 0,
+        "meleeAttack": 3000,
+        "rangeAttack": 3000,
+        "meleeDefense": 0,
+        "rangeDefense": 0,
+        "beamResistence": 0,
+        "physicalResistence": 0
+      }
+    ]
+  ],
+  "ジムタイプ": [
+    [
+      40,
+      {
+        "armor": 0,
+        "meleeAttack": 0,
+        "rangeAttack": 0,
+        "meleeDefense": 0,
+        "rangeDefense": 0,
+        "beamResistence": 0,
+        "physicalResistence": 0
+      }
+    ],
+    [
+      120,
+      {
+        "armor": 0,
+        "meleeAttack": 1000,
+        "rangeAttack": 1000,
+        "meleeDefense": 0,
+        "rangeDefense": 0,
+        "beamResistence": 0,
+        "physicalResistence": 0
+      }
+    ],
+    [
+      200,
+      {
+        "armor": 0,
+        "meleeAttack": 2000,
+        "rangeAttack": 2000,
+        "meleeDefense": 0,
+        "rangeDefense": 0,
+        "beamResistence": 0,
+        "physicalResistence": 0
+      }
+    ],
+    [
+      240,
+      {
+        "armor": 0,
+        "meleeAttack": 3000,
+        "rangeAttack": 3000,
+        "meleeDefense": 0,
+        "rangeDefense": 0,
+        "beamResistence": 0,
+        "physicalResistence": 0
+      }
+    ]
+  ]
+}

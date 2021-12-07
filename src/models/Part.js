@@ -1,4 +1,5 @@
 import EMPTY from '@/constants/EMPTY_PART.json';
+import PassiveSkill from '@/models/PassiveSkill.mjs';
 
 export default class Part {
   constructor(options = null) {
@@ -8,12 +9,26 @@ export default class Part {
       this.options = options;
     }
     this.level = 10;
+    if (this.options.passive1) {
+      this.passives = [new PassiveSkill(this.options.passive1, this.options.passive1Table), new PassiveSkill(this.options.passive2, this.options.passive2Table)];
+    }
   }
 
   updatePart(part) {
     Object.entries(part).forEach(([key, value]) => {
       this.options[key] = value;
+      this.passives = [new PassiveSkill(this.options.passive1, this.options.passive1Table), new PassiveSkill(this.options.passive2, this.options.passive2Table)];
     });
+  }
+
+  get boostAmount() {
+    return (this.passives[0].roughBoost ? +this.options.passive1Table[1][1] : 0)
+      + (this.passives[1].roughBoost ? +this.options.passive2Table[1][1] : 0);
+  }
+
+  get buffBoostAmount() {
+    return (this.passives[0].buffBoost ? +this.options.passive1Table[1][1] : 0)
+      + (this.passives[1].buffBoost ? +this.options.passive2Table[1][1] : 0);
   }
 
   calculateSubBonus(main) {
