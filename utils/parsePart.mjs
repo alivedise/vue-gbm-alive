@@ -9,7 +9,8 @@ import findElementWithText from './findElementWithText.mjs';
 //const URL = `https://wiki.dengekionline.com/gbm/%E3%83%A2%E3%82%B8%E3%83%A5%E3%83%BC%E3%83%AB%EF%BC%88%E6%A0%BC%E9%97%98%EF%BC%89%E4%B8%80%E8%A6%A7/%E3%82%AF%E3%83%AD%E3%83%BC%E3%83%A2%E3%82%B8%E3%83%A5%E3%83%BC%E3%83%AB%EF%BC%88%E6%A0%BC%E9%97%98%EF%BC%89`;
 // const URL = `https://wiki.dengekionline.com/gbm/%E3%83%A2%E3%82%B8%E3%83%A5%E3%83%BC%E3%83%AB%EF%BC%88%E6%A0%BC%E9%97%98%EF%BC%89%E4%B8%80%E8%A6%A7/%E3%82%AF%E3%83%AD%E3%83%BC%E3%83%A2%E3%82%B8%E3%83%A5%E3%83%BC%E3%83%AB%EF%BC%88%E6%A0%BC%E9%97%98%EF%BC%89`;
 // const URL = `https://wiki.dengekionline.com/gbm/AI%EF%BC%88%E3%83%91%E3%82%A4%E3%83%AD%E3%83%83%E3%83%88%EF%BC%89%E4%B8%80%E8%A6%A7/%E3%82%B7%E3%83%A3%E3%82%A2%E3%83%BB%E3%82%A2%E3%82%BA%E3%83%8A%E3%83%96%E3%83%AB%EF%BC%88%E3%83%91%E3%82%A4%E3%83%AD%E3%83%83%E3%83%88%EF%BC%89`;
-const URL = `https://wiki.dengekionline.com/gbm/AI%EF%BC%88%E3%83%91%E3%82%A4%E3%83%AD%E3%83%83%E3%83%88%EF%BC%89%E4%B8%80%E8%A6%A7/%E3%80%90%E6%94%B9%E9%80%A0%E3%80%91%E5%88%B9%E9%82%A3%E3%83%BBF%E3%83%BB%E3%82%BB%E3%82%A4%E3%82%A8%E3%82%A4%EF%BC%BB%E3%82%A4%E3%83%8E%E3%83%99%E3%82%A4%E3%82%BF%E3%83%BC%EF%BC%BD%EF%BC%88%E3%83%91%E3%82%A4%E3%83%AD%E3%83%83%E3%83%88%EF%BC%89`;
+//const URL = `https://wiki.dengekionline.com/gbm/AI%EF%BC%88%E3%83%91%E3%82%A4%E3%83%AD%E3%83%83%E3%83%88%EF%BC%89%E4%B8%80%E8%A6%A7/%E3%80%90%E6%94%B9%E9%80%A0%E3%80%91%E5%88%B9%E9%82%A3%E3%83%BBF%E3%83%BB%E3%82%BB%E3%82%A4%E3%82%A8%E3%82%A4%EF%BC%BB%E3%82%A4%E3%83%8E%E3%83%99%E3%82%A4%E3%82%BF%E3%83%BC%EF%BC%BD%EF%BC%88%E3%83%91%E3%82%A4%E3%83%AD%E3%83%83%E3%83%88%EF%BC%89`;
+const URL = `https://wiki.dengekionline.com/gbm/Arms%EF%BC%88%E8%85%95%EF%BC%89%E4%B8%80%E8%A6%A7/%E3%80%90%E6%94%B9%E9%80%A0%E3%80%91%E3%83%87%E3%82%B9%E3%83%86%E3%82%A3%E3%83%8B%E3%83%BC%E3%82%AC%E3%83%B3%E3%83%80%E3%83%A0%EF%BC%88S%EF%BC%89%EF%BC%88%E8%85%95%EF%BC%89`;
 
 async function getHtmlDocumentFromUrl(url = URL, addDate = '', isAltered = true) {
   return await fetch(url).then((response) =>
@@ -19,6 +20,14 @@ async function getHtmlDocumentFromUrl(url = URL, addDate = '', isAltered = true)
       let position = Array.from(document.querySelectorAll('th')).find(el => el.textContent === '部位').nextElementSibling.textContent;
       let model = Array.from(document.querySelectorAll('th')).find(el => el.textContent === '型番')?.nextElementSibling.textContent || '';
       let icon = document.querySelector('td img').getAttribute('data-original').split('?')[0];
+      let icon0 = icon;
+      let id = document.querySelector('td img').getAttribute('data-original').split('?')[1];
+      let id0 = id;
+      let icon2 = document.querySelectorAll('td img')[1];
+      if (icon2) {
+        icon = icon2.getAttribute('data-original').split('?')[0];
+        id = icon2.getAttribute('data-original').split('?')[1];
+      }
       let machineName = Array.from(document.querySelectorAll('th')).find(el => el.textContent === '機体')?.nextElementSibling.textContent || '';
       let property = Array.from(document.querySelectorAll('th')).find(el => el.textContent === '属性').nextElementSibling.textContent;
       let sourceHeader = findElementWithText(document, 'h3', '入手方法');
@@ -30,6 +39,13 @@ async function getHtmlDocumentFromUrl(url = URL, addDate = '', isAltered = true)
       }
       console.log(source);
       let paramHeader = findElementWithText(document, 'td', '99＋証');
+      let parameterTableHeader = findElementWithText(document, 'h3', 'パラメータ');
+      let paramTable = [];
+      if (parameterTableHeader) {
+        paramTable = Array.from(parameterTableHeader.nextElementSibling.querySelectorAll('tr')).map((row) => {
+          return Array.from(row.querySelectorAll('th,td')).map(d => d.textContent);
+        });
+      }
       let skill = findElementWithText(document, 'h3', 'EXskill');
       let skillName = findElementWithText(skill?.nextElementSibling, 'th', '名称')?.nextElementSibling.textContent || '';
       let skillType = findElementWithText(skill?.nextElementSibling, 'th', 'カテゴリ')?.nextElementSibling.textContent || '';
@@ -80,6 +96,7 @@ async function getHtmlDocumentFromUrl(url = URL, addDate = '', isAltered = true)
         position,
         model,
         icon,
+        icon0,
         machineName,
         property,
         source,
@@ -104,6 +121,7 @@ async function getHtmlDocumentFromUrl(url = URL, addDate = '', isAltered = true)
         aiTalent,
         passive1Table,
         passive2Table,
+        paramTable,
         skillTable,
         skillName,
         skillType,

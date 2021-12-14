@@ -68,6 +68,9 @@ export default class PassiveSkill {
       this.$conditionType = 'team';
       return;
     }
+    this.$condition = '';
+    this.$conditionType = 'misc';
+    return;
   }
 
   parse() {

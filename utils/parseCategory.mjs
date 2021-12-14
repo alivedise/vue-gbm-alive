@@ -14,7 +14,7 @@ original.wiki.forEach((part) => {
   part.isNew = false;
 });
 
-const NEW_ONLY_MODE = true;
+const NEW_ONLY_MODE = false;
 const NO_UPDATE = false;
 
 const CATEGORY_URL = {
@@ -100,7 +100,10 @@ async function test(url, category) {
             const existed = original.wiki.findIndex(r => r.wikiUrl === url);
             if (existed >= 0) {
               if (!NO_UPDATE) {
-                original.wiki[existed] = data; // update
+                original.wiki[existed] = {
+                  id: original.wiki[existed].id,
+                  ...data
+                }; // update
               }
             } else {
               original.wiki.push(data);

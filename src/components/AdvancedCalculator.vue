@@ -2,17 +2,24 @@
   <v-container>
     <v-row>
       <v-col>
-        <v-card color="primary"class="white--text">
+        <v-card color="primary" class="white--text">
           <v-container>
-            <v-chip label>
-              無屬 All-Rounder LV 0
-            </v-chip>
+            <v-chip label> {{activeAttribute}}屬 All-Rounder LV 0 </v-chip>
             <h3 class="white--text">總加乘射攻EX威力</h3>
-            <h1>{{accumulatedEX}}</h1>
+            <h1>{{ accumulatedRangeEX }}
+              <v-chip outlined label>{{bestAmount.exBoost}}%EX加成</v-chip>
+              <v-chip outlined label>{{bestAmount.rangeBoost}}%射攻加成</v-chip>
+            </h1>
+            <h2 v-if="bestCondition">
+              <v-chip v-for="c in bestCondition.split(',')" :key="c">
+                {{$t(c.split(':')[1])}}
+              </v-chip>
+            </h2>
+            <v-divider class="white" />
             <h4 class="white--text darken-2">單強化(0.3)時射攻EX威力</h4>
-            <h2>{{singleBuffEX}}</h2>
+            <h2>{{ singleBuffRangeEX }}</h2>
             <h4 class="white--text darken-2">雙強化(0.3/0.3)時射攻EX威力</h4>
-            <h2>{{doubleBuffEX}}</h2>
+            <h2>{{ doubleBuffRangeEX }}</h2>
           </v-container>
         </v-card>
         <v-divider />
@@ -128,6 +135,13 @@
           v-show="!!currentPosition"
           v-on-clickaway="away"
         >
+            <v-text-field
+              v-model="searchName"
+              append-icon="mdi-magnify"
+              label="Search name"
+              single-line
+              hide-details
+            />
           <v-list :key="position">
             <v-list-item
               three-line
@@ -161,11 +175,21 @@
 
 <script>
 import axios from "axios";
+import lzbase62 from 'lzbase62';
 import { directive as onClickaway } from "vue-clickaway";
 import POSITION from "@/constants/position";
 import PartCombinator from "@/models/PartCombinator";
 import TAG from "@/constants/tag.json";
 import TAGGEAR from "@/constants/taggear.json";
+
+function add(a, b) {
+  return {
+    rangeBoost: +a.rangeBoost + +b.rangeBoost || 0,
+    meleeBoost: +a.rangeBoost + +b.rangeBoost || 0,
+    exBoost: +a.exBoost + +b.exBoost || 0,
+    effectBoost: +a.effectBoost + +b.effectBoost || 0,
+  };
+}
 
 export default {
   name: "AdvancedCalculator",
@@ -206,12 +230,90 @@ export default {
     },
     TAG,
     TAGGEAR,
+    searchName: '',
   }),
 
   computed: {
-    activatedConditions() {
-      const conditionMap = {
+    urldata() {
+      const rows = Object.values(this.data).map((p) => {
+        return [
+          [p.main.id, p.main.level],
+          [p.sub.id, p.sub.level],
+          p.activeSubposition,
+        ];
+      });
+      const data = {
+        version: 1,
+        job: '',
+        data: rows,
       };
+      return lzbase62.compress(JSON.stringify(data));
+    },
+    $dp() {
+      const a = Object.entries(this.activatedConditions);
+      const r = {};
+      a.forEach(([c, amount]) => {
+        const [conditionType, condition] = c.split(":");
+        if (!r[conditionType]) {
+          r[conditionType] = [];
+        }
+        r[conditionType].push({
+          condition,
+          amount,
+        });
+      });
+      return r;
+    },
+    flattenMap() {
+      const map = [];
+      this.gg(map, [], Object.entries(this.$dp));
+      return map;
+    },
+    bestAmount() {
+      return this.$bestAmount[1];
+    },
+    bestCondition() {
+      return this.$bestAmount[0];
+    },
+    $bestAmount() {
+      if (!Object.entries(this.activatedConditions).length) {
+        return ['', {
+          exBoost: 0,
+          rangeBoost: 0,
+          meleeBoost: 0,
+          effectBoost: 0,
+        }];
+      }
+      const map = {};
+      this.flattenMap.forEach((list) => {
+        const key = list.join(',');
+        let result = {
+          exBoost: 0,
+          rangeBoost: 0,
+          meleeBoost: 0,
+          effectBoost: 0,
+        };
+        Object.entries(this.activatedConditions).forEach(([k, v]) => {
+          if (this.checkCondition(k, list)) {
+            result = add(result, v);
+          }
+        });
+        map[key] = result;
+      });
+      return Object.entries(map).sort((a, b) => {
+        if (a[1] > b[1]) {
+          return 1;
+        }
+        if (a[1] === b[1]) {
+          return 0;
+        }
+        if (a[1] < b[1]) {
+          return 1;
+        }
+      })[0];
+    },
+    activatedConditions() {
+      const conditionMap = {};
       Object.values(this.data).forEach((part) => {
         if (part.isEmpty) {
           return;
@@ -220,26 +322,55 @@ export default {
           if (!passive.$conditionType) {
             return;
           }
-          if (!conditionMap[`${passive.$conditionType}:${passive.$condition}`]) {
-            conditionMap[`${passive.$conditionType}:${passive.$condition}`] = 0;
+          if (
+            !conditionMap[`${passive.$conditionType}:${passive.$condition}`]
+          ) {
+            conditionMap[`${passive.$conditionType}:${passive.$condition}`] = {
+              rangeBoost: 0,
+              meleeBoost: 0,
+              exBoost: 0,
+              effectBoost: 0,
+            };
           }
           console.log(passive.table);
           if (!passive.table || !passive.table.length) {
             return;
           }
-          conditionMap[`${passive.$conditionType}:${passive.$condition}`] += +passive.table[part.activePart.level][1];
+          const target = {};
+          target[passive.boostKey] = +passive.table[part.activePart.level][1];
+          conditionMap[`${passive.$conditionType}:${passive.$condition}`] = add(
+            conditionMap[`${passive.$conditionType}:${passive.$condition}`],
+            target
+          );
         });
       });
       return conditionMap;
     },
-    accumulatedEX() {
-      return Math.round((1 + this.calculatedBoostAmount / 100) * this.calculatedRangeAttack);
+    accumulatedRangeEX() {
+      return Math.round((1 + (this.bestAmount.rangeBoost + this.bestAmount.exBoost) / 100) * this.calculatedRangeAttack);
     },
-    singleBuffEX() {
-      return Math.round((1.3 * (1 + this.calculatedBuffBoostAmount / 100)) * this.accumulatedEX);
+    accumulatedMeleeEX() {
+      return Math.round((1 + (this.bestAmount.meleeBoost + this.bestAmount.exBoost) / 100) * this.calculatedMeleeAttack);
     },
-    doubleBuffEX() {
-      return Math.round((2 * 1.3 * (1 + this.calculatedBuffBoostAmount / 100)) * this.accumulatedEX);
+    singleBuffRangeEX() {
+      return Math.round(
+        1.3 * (1 + this.bestAmount.effectBoost / 100) * this.accumulatedRangeEX,
+      );
+    },
+    doubleBuffRangeEX() {
+      return Math.round(
+        2 * 1.3 * (1 + this.bestAmount.effectBoost / 100) * this.accumulatedRangeEX,
+      );
+    },
+    singleBuffMeleeEX() {
+      return Math.round(
+        1.3 * (1 + this.bestAmount.effectBoost / 100) * this.accumulatedMeleeEX,
+      );
+    },
+    doubleBuffMeleeEX() {
+      return Math.round(
+        2 * 1.3 * (1 + this.bestAmount.effectBoost / 100) * this.accumulatedMeleeEX,
+      );
     },
     calculatedMeleeAttack() {
       return (
@@ -260,7 +391,10 @@ export default {
       return Object.values(this.data).reduce((a, b) => a + b.boostAmount, 0);
     },
     calculatedBuffBoostAmount() {
-      return Object.values(this.data).reduce((a, b) => a + b.buffBoostAmount, 0);
+      return Object.values(this.data).reduce(
+        (a, b) => a + b.buffBoostAmount,
+        0
+      );
     },
     calculatedPhysicalResistence() {
       return Object.values(this.data).reduce(
@@ -273,6 +407,23 @@ export default {
     },
     calculatedArmor() {
       return Object.values(this.data).reduce((a, b) => a + b.armor, 0);
+    },
+    activeAttribute() {
+      const properties = {};
+      Object.values(this.data).forEach((p) => {
+        const t = p.main.attribute;
+        if (!properties[t]) {
+          properties[t] = 0;
+        }
+        properties[t] += 1;
+      });
+      let r = Object.entries(properties)
+        .filter(([, value]) => value >= 5);
+      if (r.length) {
+        return r[0][0];
+      } else {
+        return '無';
+      }
     },
     activeWordTags() {
       const tags = {};
@@ -310,7 +461,7 @@ export default {
           rangeDefense: 0,
           beamResistence: 0,
           physicalResistence: 0,
-        },
+        }
       );
     },
     tableData() {
@@ -347,7 +498,9 @@ export default {
         if (!map[part.position]) {
           map[part.position] = [];
         }
-        map[part.position].push(Object.freeze(part));
+        if (!this.searchName || part.machineName.indexOf(this.searchName) >= 0) {
+          map[part.position].push(Object.freeze(part));
+        }
       });
       return map;
     },
@@ -382,9 +535,61 @@ export default {
   },
 
   methods: {
+    checkCondition(conditionString, conditions) {
+      const [type, condition] = conditionString.split(':');
+      switch (type) {
+        case 'tag':
+          if (this.activeWordTags.indexOf(condition) >= 0) {
+            return true;
+          }
+          break;
+        case 'attribute':
+          if (this.activeAttribute === condition) {
+            return true;
+          }
+          break;
+        case 'category':
+        case 'environment':
+        case 'team':
+        case 'job':
+        case 'type':
+          if (conditions.indexOf(conditionString) >= 0) {
+            return true;
+          }
+          break;
+        default:
+          return true;
+      }
+    },
+    gg(final = [], condition = [], current = []) {
+      if (current.length === 0) {
+        final.push(condition);
+        return;
+      }
+      const copy = current.slice(0);
+      const [conditionType, conditionList] = copy.shift();
+      switch (conditionType) {
+        case 'category':
+        case 'environment':
+        case 'team':
+        case 'job':
+        case 'type':
+          conditionList.forEach(($condition) => {
+            const conditionCopy = condition.slice(0);
+            conditionCopy.push(`${conditionType}:${$condition.condition}`);
+            this.gg(final, conditionCopy, copy);
+          });
+          break;
+        case 'attribute':
+        case 'tag':
+        default:
+          this.gg(final, condition, copy);
+          break;
+      }
+    },
     selectPart(part) {
       this.data[this.currentPosition].insert(part);
-      this.currentPosition = '';
+      this.currentPosition = "";
     },
     endCompose() {},
     updateQuery() {
@@ -399,6 +604,7 @@ export default {
     },
     away() {
       this.currentPosition = "";
+      this.searchName = '';
     },
     getWordTagIcon(wordTag) {
       const table = {
@@ -463,10 +669,17 @@ export default {
         this.$router.push(link);
       }
     },
+    compress(obj) {
+      return lzbase62.compress(JSON.stringify(obj));
+    },
+    decompress(str) {
+      return JSON.parse(lzbase62.decompress(str));
+    }
   },
 
   mounted() {
     window.app4 = this;
+    window.lzbase62 = lzbase62;
     const prefix =
       process.env.NODE_ENV === "production" ? "/vue-gbm-alive/" : "/";
     axios

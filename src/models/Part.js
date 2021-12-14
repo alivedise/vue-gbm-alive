@@ -14,11 +14,19 @@ export default class Part {
     }
   }
 
+  get id() {
+    return +this.options.id;
+  }
+
   updatePart(part) {
     Object.entries(part).forEach(([key, value]) => {
       this.options[key] = value;
       this.passives = [new PassiveSkill(this.options.passive1, this.options.passive1Table), new PassiveSkill(this.options.passive2, this.options.passive2Table)];
     });
+  }
+
+  get attribute() {
+    return this.options.property;
   }
 
   get boostAmount() {
