@@ -1,0 +1,127 @@
+{
+  "0": {
+    "text": "可変",
+    "icon": "mdi-car",
+    "id": "0"
+  },
+  "1": {
+    "text": "主人公機",
+    "icon": "mdi-account-star",
+    "id": "1"
+  },
+  "2": {
+    "text": "ガンダムタイプ",
+    "icon": "mdi-robot",
+    "id": "2"
+  },
+  "3": {
+    "text": "接近戦",
+    "icon": "mdi-fencing",
+    "id": "3"
+  },
+  "4": {
+    "text": "高機動",
+    "icon": "mdi-snowmobile",
+    "id": "4"
+  },
+  "5": {
+    "text": "中距離戦",
+    "icon": "mdi-middleware",
+    "id": "5"
+  },
+  "6": {
+    "text": "遠距離戦",
+    "icon": "mdi-share-all-outline",
+    "id": "6"
+  },
+  "7": {
+    "text": "宇宙適正",
+    "icon": "mdi-space-invaders",
+    "id": "7"
+  },
+  "8": {
+    "text": "エース専用機",
+    "icon": "mdi-account-tie-hat",
+    "id": "8"
+  },
+  "9": {
+    "text": "高火力",
+    "icon": "mdi-fire",
+    "id": "9"
+  },
+  "10": {
+    "text": "指揮官機",
+    "icon": "mdi-account-alert",
+    "id": "10"
+  },
+  "11": {
+    "text": "モビルファイター",
+    "icon": "mdi-hand-back-right-outline",
+    "id": "11"
+  },
+  "12": {
+    "text": "重装甲",
+    "icon": "mdi-shield",
+    "id": "12"
+  },
+  "13": {
+    "text": "市街地適正",
+    "icon": "mdi-city",
+    "id": "13"
+  },
+  "14": {
+    "text": "森林適正",
+    "icon": "mdi-forest",
+    "id": "14"
+  },
+  "15": {
+    "text": "連邦",
+    "icon": "mdi-library",
+    "id": "15"
+  },
+  "16": {
+    "text": "ジムタイプ",
+    "icon": "mdi-robot-dead-outline",
+    "id": "16"
+  },
+  "17": {
+    "text": "基地適正",
+    "icon": "mdi-airport",
+    "id": "17"
+  },
+  "18": {
+    "text": "電脳適正",
+    "icon": "mdi-desktop-classic",
+    "id": "18"
+  },
+  "19": {
+    "text": "ジオン",
+    "icon": "mdi-foot-print",
+    "id": "19"
+  },
+  "20": {
+    "text": "砂漠適正",
+    "icon": "mdi-timer-sand",
+    "id": "20"
+  },
+  "21": {
+    "text": "支援機",
+    "icon": "mdi-handshake",
+    "id": "21"
+  },
+  "22": {
+    "text": "寒冷地適正",
+    "icon": "mdi-snowflake-alert",
+    "id": "22"
+  },
+  "23": {
+    "text": "量産機",
+    "icon": "mdi-account-group",
+    "id": "23"
+  },
+  "24": {
+    "text": "水陸両用",
+    "icon": "mdi-pool",
+    "id": "24"
+  }
+}

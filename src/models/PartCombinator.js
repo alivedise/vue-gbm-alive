@@ -40,6 +40,10 @@ export default class PartCombinator {
       this.activeWordTags = [part.wordTag1, part.wordTag2];
     } else if (this.parts[1].isEmpty) {
       this.sub = part;
+    } else if (this.activeSubposition === 0) {
+      this.main = part;
+    } else {
+      this.sub = part;
     }
   }
 

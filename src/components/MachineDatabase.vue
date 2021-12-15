@@ -173,6 +173,7 @@ export default {
 
   mounted() {
     window.app2 = this;
+    this.$vuetify.theme.dark = false;
     const prefix =
       process.env.NODE_ENV === 'production' ? '/vue-gbm-alive/' : '/';
     axios
