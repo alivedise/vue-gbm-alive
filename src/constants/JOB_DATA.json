@@ -3,7 +3,7 @@
     "text": "All-Rounder",
     "icon": "",
     "id": "0",
-    "values": []
+    "values": [{}, {}, {}, {}]
   },
   "1": {
     "text": "Defender",

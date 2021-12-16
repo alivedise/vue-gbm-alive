@@ -264,9 +264,20 @@
                     color="orange"
                     dense
                   >
-                    <span small v-for="c in bestCondition.split(',')" :key="c">
-                      {{$t(c.split(':')[1])}}
-                    </span>
+                    <v-container>
+                      <v-row align="center">
+                        <v-btn-toggle dense v-model="conditionMap.category" @change="updateUrl" key="category">
+                          <v-btn v-for="category in currentWeaponCategoryList" :key="category" :value="category">
+                            {{$t(category)}}
+                          </v-btn>
+                        </v-btn-toggle>
+                        <v-btn-toggle dense v-model="conditionMap.type" @change="updateUrl" :key="type">
+                          <v-btn v-for="type in currentAttackTypeList" :key="type" :value="type">
+                            {{$t(type)}}
+                          </v-btn>
+                        </v-btn-toggle>
+                      </v-row>
+                    </v-container>
                   </v-alert>
                 </v-theme-provider>
                 </h1>
@@ -452,7 +463,7 @@
                   </v-col>
                   <v-col cols="4">
                     <v-select
-                      :items="getGearLevelList(5)"
+                      :items="getGearLevelList(4)"
                       v-model="transformGear.level"
                       @change="updateUrl"
                       dense
@@ -652,7 +663,8 @@ import TAG_DATA from "@/constants/TAG_DATA.json";
 import JOB_DATA from "@/constants/JOB_DATA.json";
 import TRANSFORM_GEAR_DATA from "@/constants/TRANSFORM_GEAR_DATA.json";
 import PARAMETER_GEAR_DATA from "@/constants/PARAMETER_GEAR_DATA.json";
-import EMPTY from '@/constants/EMPTY_PART.json';
+import CONDITION_CATEGORY_DATA from '@/constants/CONDITION_CATEGORY_DATA.json';
+import CONDITION_ATTACK_TYPE_DATA from '@/constants/CONDITION_ATTACK_TYPE_DATA.json';
 
 function add(a, b) {
   return {
@@ -746,6 +758,14 @@ export default {
   }),
 
   computed: {
+    currentAttackTypeList() {
+      return Object.values(CONDITION_ATTACK_TYPE_DATA).map((c) => c.text);
+    },
+    currentWeaponCategoryList() {
+      return Object.values(this.data).map((pc) => {
+        return pc.activePart.passives;
+      }).flat().filter((passive) => passive.$conditionType === 'category').map((passive) => (passive.$condition));
+    },
     mappedConditionMap() {
       return {
         ...this.conditionMap,
@@ -775,6 +795,12 @@ export default {
     transformGearList() {
       return Object.values(TRANSFORM_GEAR_DATA).map((g) => g.text);
     },
+    conditionMapByText() {
+      return {
+        type: convertArrayToObject(Object.values(CONDITION_ATTACK_TYPE_DATA), 'text'),
+        category: convertArrayToObject(Object.values(CONDITION_CATEGORY_DATA), 'text'),
+      };
+    },
     debugData() {
       return Object.values(this.data).map((p) => {
         return [
@@ -802,7 +828,10 @@ export default {
         [+this.transformMapByText[this.transformGear.type]?.id, this.transformGear.level], // transform
         [+this.parameterMapByText[this.parameterGear.type]?.id, this.parameterGear.level], // parameter
         [0, 0], // last gear,
-        [], // extra condition setting
+        [
+          this.conditionMap.type ? +this.conditionMapByText.type[this.conditionMap.type].id : '',
+          this.conditionMap.category ? +this.conditionMapByText.category[this.conditionMap.category].id : '',
+        ], // extra condition setting
       ];
       return lzbase62.compress(JSON.stringify(data));
     },
@@ -956,7 +985,19 @@ export default {
       );
     },
     calculatedRangeAttack() {
-      return Object.values(this.data).reduce((a, b) => a + b.rangeAttack, 0);
+      return Object.values(this.data).reduce((a, b) => a + b.rangeAttack, 0) + this.jobAffectedRangeAttack + this.transformAffectedRangeAttack + this.parameterAffectedRangeAttack;
+    },
+    transformAffectedRangeAttack() {
+      return this.transformGear.type && this.transformGear.type !== '格鬥轉換' && this.transformGear.level
+        ? (this.transformMapByText[this.transformGear.type].values[this.transformGear.level - 1] || 0) * (
+          this.transformGear.type === 'armor' ? this.calculatedArmor : this.calculatedRangeDefense
+        ) : 0;
+    },
+    parameterAffectedRangeAttack() {
+      return this.parameterGear.type && this.parameterGear.level ? (this.parameterMapByText[this.parameterGear.type].values[this.parameterGear.level - 1]?.rangeAttack || 0) : 0;
+    },
+    jobAffectedRangeAttack() {
+      return this.jobGear.job && this.jobGear.level ? (this.jobMapByText[this.jobGear.job].values[this.jobGear.level - 1]?.rangeAttack || 0) : 0;
     },
     calculatedMeleeDefense() {
       return Object.values(this.data).reduce((a, b) => a + b.meleeDefense, 0);
@@ -1191,7 +1232,7 @@ export default {
       this.updateUrl();
     },
     getGearLevelList(max) {
-      return new Array(max).fill('x').map((_, i) => ({
+      return new Array(max + 1).fill('x').map((_, i) => ({
         label: `LV.${i}`,
         text: `LV.${i}`,
         value: i,
@@ -1244,10 +1285,10 @@ export default {
           }
         }
         pc.activeSubposition = +active;
-        if (tag1 !== "") {
+        if (tag1 !== "" && TAG_DATA[tag1]?.text) {
           pc.addWordTag(TAG_DATA[tag1].text);
         }
-        if (tag2 !== "") {
+        if (tag2 !== "" && TAG_DATA[tag2]?.text) {
           pc.addWordTag(TAG_DATA[tag2].text);
         }
       });
@@ -1259,6 +1300,8 @@ export default {
       this.transformGear.level = data[4][1];
       this.parameterGear.type = PARAMETER_GEAR_DATA[data[5][0]].text;
       this.parameterGear.level = data[5][1];
+      this.conditionMap.type = data[7][0] !== '' ? CONDITION_ATTACK_TYPE_DATA[+data[7][0]].text : '';
+      this.conditionMap.category = data[7][1] !== '' ? CONDITION_CATEGORY_DATA[+data[7][1]].text : '';
     },
     checkCondition(conditionString, conditions) {
       const [type, condition] = conditionString.split(":");
@@ -1314,11 +1357,11 @@ export default {
     },
     selectPart(part) {
       this.data[this.currentPosition].insert(part);
-      this.bestFitCondition();
+      this.bestFitCondition(part);
       this.closeTable();
       this.updateUrl();
     },
-    bestFitCondition() {
+    bestFitCondition(part) {
       if (this.jobList.indexOf(this.jobGear.job) < 0) {
         this.jobGear.job = 'All-Rounder';
       }
@@ -1328,6 +1371,9 @@ export default {
         if (this.activeWordTags.length) {
           this.wordTagGear.tag = this.activeWordTags[0];
         }
+      }
+      if (part && part.$condition && part.$conditionType === 'category' && this.conditionMap.category === '') {
+        this.conditionMap.category = part.$conditionType;
       }
     },
     endCompose() {},

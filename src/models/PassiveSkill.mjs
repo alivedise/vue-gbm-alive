@@ -14,6 +14,7 @@ export default class PassiveSkill {
   }
 
   verifyCondition(env) {
+    console.log(env);
     switch (this.$conditionType) {
       case 'attribute':
         return this.$condition === env.attribute;
