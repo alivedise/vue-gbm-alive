@@ -14,7 +14,7 @@ original.wiki.forEach((part) => {
   part.isNew = false;
 });
 
-const NEW_ONLY_MODE = false;
+const NEW_ONLY_MODE = true;
 const NO_UPDATE = false;
 
 const CATEGORY_URL = {
@@ -101,7 +101,9 @@ async function test(url, category) {
             if (existed >= 0) {
               if (!NO_UPDATE) {
                 original.wiki[existed] = {
-                  id: original.wiki[existed].id,
+                  id: original.wiki[existed].id || "",
+                  integrated: original.wiki[existed].integrated || "",
+                  integratedName: original.wiki[existed].integratedName || "",
                   ...data
                 }; // update
               }
