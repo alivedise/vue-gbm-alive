@@ -210,9 +210,9 @@
                     </v-select>
                   </v-col>
                 </v-row>
-                <h1>
-                  {{ accumulatedRangeEX }}
-                </h1>
+                <v-badge inline color="silver" :content="`=${calculatedRangeAttack}*(1+${getSimplifiedSkillAmount().exBoost}%+${getSimplifiedSkillAmount().rangeBoost}%)`">
+                  <h1>{{ accumulatedRangeEX }}</h1>
+                </v-badge>
                 <v-theme-provider
                   light
                   v-if="bestCondition"
