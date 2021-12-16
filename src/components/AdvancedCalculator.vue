@@ -1,5 +1,5 @@
 <template>
-  <v-container @click="loadDataFromURL">
+  <v-container>
     <v-dialog
       v-model="dialog"
       fullscreen
@@ -210,7 +210,7 @@
                     </v-select>
                   </v-col>
                 </v-row>
-                <v-badge inline color="silver" :content="`=${calculatedRangeAttack}*(1+${getSimplifiedSkillAmount().exBoost}%+${getSimplifiedSkillAmount().rangeBoost}%)`">
+                <v-badge inline color="silver" :content="`=${Math.ceil(calculatedRangeAttack)}*(1+${getSimplifiedSkillAmount().exBoost}%+${getSimplifiedSkillAmount().rangeBoost}%)`">
                   <h1>{{ accumulatedRangeEX }}</h1>
                 </v-badge>
                 <v-theme-provider
@@ -1158,7 +1158,7 @@ export default {
           pc.addWordTag(TAG_DATA[tag2].text);
         }
       });
-      this.jobGear.job = JOB_DATA[data[2][0]].text;
+      this.jobGear.job = JOB_DATA[data[2][0] || 0].text;
       this.jobGear.level = data[2][1];
       this.wordTagGear.tag = TAG_DATA[data[3][0]].text;
       this.wordTagGear.level = data[3][1];
@@ -1221,8 +1221,14 @@ export default {
     },
     selectPart(part) {
       this.data[this.currentPosition].insert(part);
+      this.bestFitCondition();
       this.closeTable();
       this.updateUrl();
+    },
+    bestFitCondition() {
+      if (this.jobList.indexOf(this.jobGear.job) < 0) {
+        this.jobGear.job = 'All-Rounder';
+      }
     },
     endCompose() {},
     updateQuery() {
