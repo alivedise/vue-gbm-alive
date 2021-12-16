@@ -1071,7 +1071,7 @@ export default {
     },
 
     jobList() {
-      return ['All-Rounder'].concat(Object.values(JOB_DATA).filter((job) => (this.data['パイロット'].activePart.options.aiJob || '').indexOf(job.text) >= 0).map((job) => job.text));
+      return ['All-Rounder'].concat(Object.values(JOB_DATA).filter((job) => (this.data['パイロット'].main.options.aiJob || '').indexOf(job.text) >= 0).map((job) => job.text));
     },
   },
 
