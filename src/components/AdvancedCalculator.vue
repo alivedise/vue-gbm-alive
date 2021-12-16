@@ -985,13 +985,41 @@ export default {
       );
     },
     calculatedRangeAttack() {
-      return Object.values(this.data).reduce((a, b) => a + b.rangeAttack, 0) + this.jobAffectedRangeAttack + this.transformAffectedRangeAttack + this.parameterAffectedRangeAttack;
+      return Object.values(this.data).reduce((a, b) => a + b.rangeAttack, 0) * this.wordTagGearAffectedRangeAttackRatio
+        + this.jobAffectedRangeAttack
+        + this.transformAffectedRangeAttack
+        + this.parameterAffectedRangeAttack
+        + this.wordTagGearAffectedRangeAttack;
     },
     transformAffectedRangeAttack() {
       return this.transformGear.type && this.transformGear.type !== '格鬥轉換' && this.transformGear.level
         ? (this.transformMapByText[this.transformGear.type].values[this.transformGear.level - 1] || 0) * (
           this.transformGear.type === 'armor' ? this.calculatedArmor : this.calculatedRangeDefense
         ) : 0;
+    },
+    wordTagGearAffectedRangeAttackRatio() {
+      if (!this.activeWordTags.length) {
+        return 1;
+      }
+      if (!this.wordTagGear.tag) {
+        return 1;
+      }
+      if (!this.wordTagGear.level) {
+        return 1;
+      }
+      return 1 + ((1 + this.TAGGEAR[this.wordTagGear.tag][this.wordTagGear.level - 1][0] / 100) * this.TAG[this.wordTagGear.tag].rangeAttack) / 100;
+    },
+    wordTagGearAffectedRangeAttack() {
+      if (!this.activeWordTags.length) {
+        return 0;
+      }
+      if (!this.wordTagGear.tag) {
+        return 0;
+      }
+      if (!this.wordTagGear.level) {
+        return 0;
+      }
+      return this.TAGGEAR[this.wordTagGear.tag][this.wordTagGear.level - 1][1].rangeAttack;
     },
     parameterAffectedRangeAttack() {
       return this.parameterGear.type && this.parameterGear.level ? (this.parameterMapByText[this.parameterGear.type].values[this.parameterGear.level - 1]?.rangeAttack || 0) : 0;
@@ -1300,8 +1328,8 @@ export default {
       this.transformGear.level = data[4][1];
       this.parameterGear.type = PARAMETER_GEAR_DATA[data[5][0]].text;
       this.parameterGear.level = data[5][1];
-      this.conditionMap.type = data[7][0] !== '' ? CONDITION_ATTACK_TYPE_DATA[+data[7][0]].text : '';
-      this.conditionMap.category = data[7][1] !== '' ? CONDITION_CATEGORY_DATA[+data[7][1]].text : '';
+      this.conditionMap.type = data[7][0] !== '' ? CONDITION_ATTACK_TYPE_DATA[+data[7][0]]?.text || '' : '';
+      this.conditionMap.category = data[7][1] !== '' ? CONDITION_CATEGORY_DATA[+data[7][1]]?.text || '' : '';
     },
     checkCondition(conditionString, conditions) {
       const [type, condition] = conditionString.split(":");
