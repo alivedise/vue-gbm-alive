@@ -526,7 +526,7 @@
                   </template>
                 </v-list-item-title>
                 <v-list-item-subtitle
-                  v-if="data[value.original].activePassive1"
+                  v-if="data[value.original].activePassive1($t)"
                   :class="{
                     'overflow-x-hidden': true,
                     'white--text': data[value.original].passive1Passed
@@ -538,13 +538,13 @@
                   <v-icon v-else>
                     mdi-alert-circle-outline
                   </v-icon>
-                  {{ $t(data[value.original].activePassive1) }}
+                  {{ $t(data[value.original].activePassive1($t)) }}
                 </v-list-item-subtitle>
                 <v-list-item-subtitle v-else>
                   -
                 </v-list-item-subtitle>
                 <v-list-item-subtitle
-                  v-if="data[value.original].activePassive2"
+                  v-if="data[value.original].activePassive2($t)"
                   :class="{
                     'overflow-x-hidden': true,
                     'white--text': data[value.original].passive2Passed
@@ -556,7 +556,7 @@
                   <v-icon v-else>
                     mdi-alert-circle-outline
                   </v-icon>
-                  {{ $t(data[value.original].activePassive2)}}
+                  {{ $t(data[value.original].activePassive2($t))}}
                 </v-list-item-subtitle>
                 <v-list-item-subtitle v-else>
                   -
@@ -1134,8 +1134,14 @@ export default {
       console.log(data);
       data[1].forEach(([main, sub, active, tag1, tag2], index) => {
         console.log(main, sub, active, tag1, tag2);
-        const mainPart = this.partsById[+main[0]];
-        const subPart = this.partsById[+sub[0]];
+        const mainPart = {
+          ...this.partsById[+main[0]],
+          machineName: this.$t(this.partsById[+main[0]].machineName || this.partsById[+main[0]].aiName),
+        };
+        const subPart = {
+          ...this.partsById[+sub[0]],
+          machineName: this.$t(this.partsById[+sub[0]].machineName || this.partsById[+sub[0]].aiName),
+        };
         console.log(mainPart, subPart);
         const pc = Object.values(this.data)[index];
         if (mainPart) {

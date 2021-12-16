@@ -119,16 +119,20 @@ export default class PartCombinator {
 
   get activePassive1() {
     if (!this.activePart.passives || !this.activePart.passives[0]?.table) {
-      return '';
+      return () => '';
     }
-    return this.parts[this.activeSubposition].passive1.replace(/(\d+)([^0-9]+)$/, (_, __, c) => `${this.activePart.passives[0].table[this.activePart.level][1]}${c}`);
+    return ($t) => {
+      return $t(this.parts[this.activeSubposition].passive1).replace(/(\d+)([^0-9]+)$/, (_, __, c) => `${this.activePart.passives[0].table[this.activePart.level][1]}${c}`);
+    }
   }
 
   get activePassive2() {
     if (!this.activePart.passives || !this.activePart.passives[1]?.table) {
-      return '';
+      return () => '';
     }
-    return this.parts[this.activeSubposition].passive2.replace(/(\d+)([^0-9]+)$/, (_, __, c) => `${this.activePart.passives[1].table[this.activePart.level][1]}${c}`);
+    return ($t) => {
+      return $t(this.parts[this.activeSubposition].passive2).replace(/(\d+)([^0-9]+)$/, (_, __, c) => `${this.activePart.passives[1].table[this.activePart.level][1]}${c}`);
+    };
   }
 
   get meleeAttack() {
