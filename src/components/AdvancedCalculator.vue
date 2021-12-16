@@ -266,12 +266,12 @@
                   >
                     <v-container>
                       <v-row align="center">
-                        <v-btn-toggle dense v-model="conditionMap.category" @change="updateUrl" key="category">
+                        <v-btn-toggle dense v-model="conditionMap.category" @change="updateUrl">
                           <v-btn v-for="category in currentWeaponCategoryList" :key="category" :value="category">
                             {{$t(category)}}
                           </v-btn>
                         </v-btn-toggle>
-                        <v-btn-toggle dense v-model="conditionMap.type" @change="updateUrl" :key="type">
+                        <v-btn-toggle dense v-model="conditionMap.type" @change="updateUrl">
                           <v-btn v-for="type in currentAttackTypeList" :key="type" :value="type">
                             {{$t(type)}}
                           </v-btn>
@@ -421,7 +421,7 @@
                   </v-col>
                   <v-col cols="6">
                     <v-select
-                      :items="getGearLevelList(5)"
+                      :items="getGearLevelList(4)"
                       :disabled="wordTagGear.tag !== tag"
                       v-model="wordTagGear.level"
                       @change="updateUrl"
@@ -1004,10 +1004,12 @@ export default {
       if (!this.wordTagGear.tag) {
         return 1;
       }
-      if (!this.wordTagGear.level) {
-        return 1;
-      }
-      return 1 + ((1 + this.TAGGEAR[this.wordTagGear.tag][this.wordTagGear.level - 1][0] / 100) * this.TAG[this.wordTagGear.tag].rangeAttack) / 100;
+      return this.activeWordTags.reduce((a, current) => {
+        if (current === this.wordTagGear.tag && this.wordTagGear.level) {
+          return a + ((this.TAGGEAR[this.wordTagGear.tag][this.wordTagGear.level - 1][0] / 100) * this.TAG[this.wordTagGear.tag].rangeAttack) / 100;
+        }
+        return a + this.TAG[this.wordTagGear.tag].rangeAttack / 100;
+      }, 1);
     },
     wordTagGearAffectedRangeAttack() {
       if (!this.activeWordTags.length) {
