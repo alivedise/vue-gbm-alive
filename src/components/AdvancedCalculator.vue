@@ -578,7 +578,7 @@
                         ? 'primary'
                         : 'secondary'
                     "
-                    @click.stop="data[value.original].addWordTag(tag)"
+                    @click.stop="data[value.original].addWordTag(tag);bestFitCondition();updateUrl();"
                   >
                     {{ getTagIcon(tag) }}
                   </v-icon>
@@ -747,7 +747,7 @@ export default {
         1, // data version
         rows, // parts data
         [+this.jobMapByText[this.jobGear.job]?.id, this.jobGear.level], // job
-        [+this.tagMapByText[this.wordTagGear.tag]?.id, this.wordTagGear.level], // tag
+        [this.wordTagGear.tag !== '' ? this.tagMapByText[this.wordTagGear.tag]?.id : '', this.wordTagGear.level], // tag
         [+this.transformMapByText[this.transformGear.type]?.id, this.transformGear.level], // transform
         [+this.parameterMapByText[this.parameterGear.type]?.id, this.parameterGear.level], // parameter
         [0, 0], // last gear,
@@ -1160,7 +1160,7 @@ export default {
       });
       this.jobGear.job = JOB_DATA[data[2][0] || 0].text;
       this.jobGear.level = data[2][1];
-      this.wordTagGear.tag = TAG_DATA[data[3][0]].text;
+      this.wordTagGear.tag = data[3][0] !== '' ? TAG_DATA[data[3][0]].text : '';
       this.wordTagGear.level = data[3][1];
       this.transformGear.type = TRANSFORM_GEAR_DATA[data[4][0]].text;
       this.transformGear.level = data[4][1];
@@ -1228,6 +1228,13 @@ export default {
     bestFitCondition() {
       if (this.jobList.indexOf(this.jobGear.job) < 0) {
         this.jobGear.job = 'All-Rounder';
+      }
+      if (this.activeWordTags.indexOf(this.wordTagGear.tag) < 0) {
+        this.wordTagGear.tag = '';
+        // pick one if cleared
+        if (this.activeWordTags.length) {
+          this.wordTagGear.tag = this.activeWordTags[0];
+        }
       }
     },
     endCompose() {},
