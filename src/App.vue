@@ -29,6 +29,15 @@
     <v-main>
       <router-view />
     </v-main>
+    <v-footer>
+      <v-col
+        class="text-center"
+        cols="12"
+      >
+        <h5>The copyright of the data used on this site is owned by the following companies</h5>
+        </h5>©BANDAI NAMCO Entertainment Inc.</h5>
+      </v-col>
+    </v-footer>
   </v-app>
 </template>
 

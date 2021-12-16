@@ -59,6 +59,9 @@ export default class PartCombinator {
   }
 
   toggleActivation() {
+    if (this.parts[0].isEmpty || this.parts[1].isEmpty) {
+      return;
+    }
     if (this.activeSubposition === 0) {
       this.activeSubposition = 1;
     } else {

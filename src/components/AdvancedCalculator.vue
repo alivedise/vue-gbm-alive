@@ -226,6 +226,7 @@
                       v-model="jobGear.job"
                       @change="updateUrl"
                       dense
+                      :disabled="shouldDisableJobSelector"
                       solo
                     >
                       <template v-slot:selection="{ item }">
@@ -240,6 +241,7 @@
                       :items="getGearLevelList(4)"
                       v-model="jobGear.level"
                       @change="updateUrl"
+                      :disabled="shouldDisableJobLevelSelector"
                       dense
                       solo
                     >
@@ -252,7 +254,7 @@
                   </v-col>
                 </v-row>
                 <v-badge inline color="silver" :content="`=${Math.ceil(calculatedRangeAttack)}*(1+${getSimplifiedSkillAmount().exBoost}%+${getSimplifiedSkillAmount().rangeBoost}%)`">
-                  <h1>{{ accumulatedRangeEX }}</h1>
+                  <h1><v-chip outlined color="red" label small>射擊EX威力</v-chip>{{ accumulatedRangeEX }}</h1>
                 </v-badge>
                 <v-theme-provider
                   light
@@ -737,15 +739,15 @@ export default {
     },
     wordTagGear: {
       tag: '',
-      level: 1,
+      level: 0,
     },
     parameterGear: {
       type: '射擊攻擊力',
-      level: 5,
+      level: 0,
     },
     transformGear: {
       type: '射擊轉換',
-      level: 5,
+      level: 0,
     },
     conditionMap: {
       team: '',
@@ -755,16 +757,23 @@ export default {
       armor: '',
     },
     partsById: {},
+    achievementAffectedGearEffectRatio: 1.15,
   }),
 
   computed: {
+    shouldDisableJobSelector() {
+      return this.data['パイロット'].main.isEmpty;
+    },
+    shouldDisableJobLevelSelector() {
+      return this.jobGear.job === 'All-Rounder';
+    },
     currentAttackTypeList() {
       return Object.values(CONDITION_ATTACK_TYPE_DATA).map((c) => c.text);
     },
     currentWeaponCategoryList() {
       return Object.values(this.data).map((pc) => {
         return pc.activePart.passives;
-      }).flat().filter((passive) => passive.$conditionType === 'category').map((passive) => (passive.$condition));
+      }).flat().filter((passive) => passive?.$conditionType === 'category').map((passive) => (passive.$condition));
     },
     mappedConditionMap() {
       return {
@@ -985,17 +994,27 @@ export default {
       );
     },
     calculatedRangeAttack() {
-      return Object.values(this.data).reduce((a, b) => a + b.rangeAttack, 0) * this.wordTagGearAffectedRangeAttackRatio
+      return (Object.values(this.data).reduce((a, b) => a + b.rangeAttack, 0)
         + this.jobAffectedRangeAttack
         + this.transformAffectedRangeAttack
         + this.parameterAffectedRangeAttack
-        + this.wordTagGearAffectedRangeAttack;
+        + this.wordTagGearAffectedRangeAttack)
+        * this.wordTagGearAffectedRangeAttackRatio * this.jobAffectedRangeAttackIncrementedRatio;
     },
     transformAffectedRangeAttack() {
       return this.transformGear.type && this.transformGear.type !== '格鬥轉換' && this.transformGear.level
         ? (this.transformMapByText[this.transformGear.type].values[this.transformGear.level - 1] || 0) * (
           this.transformGear.type === 'armor' ? this.calculatedArmor : this.calculatedRangeDefense
-        ) : 0;
+        ) * this.achievementAffectedGearEffectRatio : 0;
+    },
+    jobAffectedRangeAttackIncrementedRatio() {
+      switch (this.jobGear.job) {
+        case 'Long-Shooter':
+        case 'Middle-Shooter':
+          return 1.1;
+        default:
+          return 1;
+      }
     },
     wordTagGearAffectedRangeAttackRatio() {
       if (!this.activeWordTags.length) {
@@ -1027,7 +1046,7 @@ export default {
       return this.parameterGear.type && this.parameterGear.level ? (this.parameterMapByText[this.parameterGear.type].values[this.parameterGear.level - 1]?.rangeAttack || 0) : 0;
     },
     jobAffectedRangeAttack() {
-      return this.jobGear.job && this.jobGear.level ? (this.jobMapByText[this.jobGear.job].values[this.jobGear.level - 1]?.rangeAttack || 0) : 0;
+      return this.jobGear.job && this.jobGear.level ? (this.jobMapByText[this.jobGear.job].values[this.jobGear.level - 1]?.rangeAttack || 0) * this.achievementAffectedGearEffectRatio : 0;
     },
     calculatedMeleeDefense() {
       return Object.values(this.data).reduce((a, b) => a + b.meleeDefense, 0);
@@ -1129,14 +1148,13 @@ export default {
     },
     tableData() {
       return {
-        meleeAttack: Math.round(this.calculatedMeleeAttack),
-        rangeAttack: Math.round(this.calculatedRangeAttack),
-        meleeDefense: Math.round(this.calculatedMeleeDefense),
-        rangeDefense: Math.round(this.calculatedRangeDefense),
-        physicalResistence: Math.round(this.calculatedPhysicalResistence),
-        beamResistence: Math.round(this.calculatedBeamResistence),
-        armor: Math.round(this.calculatedArmor),
-        boost: Math.round(this.calculatedBoostAmount),
+        '耐久力': Math.round(this.calculatedArmor),
+        '格鬥攻擊力': Math.round(this.calculatedMeleeAttack),
+        '射擊攻擊力': Math.round(this.calculatedRangeAttack),
+        '格鬥防禦力': Math.round(this.calculatedMeleeDefense),
+        '射擊防禦力': Math.round(this.calculatedRangeDefense),
+        '物理耐性': Math.round(this.calculatedPhysicalResistence),
+        '光束耐性': Math.round(this.calculatedBeamResistence),
       };
     },
     doubleBoost() {
