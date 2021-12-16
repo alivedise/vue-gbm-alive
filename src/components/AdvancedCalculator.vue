@@ -268,14 +268,29 @@
                   >
                     <v-container>
                       <v-row align="center">
-                        <v-btn-toggle dense v-model="conditionMap.category" @change="updateUrl">
-                          <v-btn v-for="category in currentWeaponCategoryList" :key="category" :value="category">
+                        <v-btn-toggle class="mr-1"  dense v-model="conditionMap.category" @change="updateUrl" v-if="currentWeaponCategoryConditionList.length">
+                          <v-btn v-for="category in currentWeaponCategoryConditionList" :key="category" :value="category">
                             {{$t(category)}}
                           </v-btn>
                         </v-btn-toggle>
-                        <v-btn-toggle dense v-model="conditionMap.type" @change="updateUrl">
+                        <v-btn-toggle class="mr-1" dense v-model="conditionMap.type" @change="updateUrl">
                           <v-btn v-for="type in currentAttackTypeList" :key="type" :value="type">
                             {{$t(type)}}
+                          </v-btn>
+                        </v-btn-toggle>
+                        <v-btn-toggle class="mr-1"  dense v-model="conditionMap.team" @change="updateUrl" v-if="currentTeamList.length" >
+                          <v-btn v-for="team in currentTeamList" :key="team" :value="team">
+                            {{$t(team)}}
+                          </v-btn>
+                        </v-btn-toggle>
+                        <v-btn-toggle class="mr-1"  dense v-model="conditionMap.environment" @change="updateUrl" v-if="currentEnvironmentConditionList.length" >
+                          <v-btn v-for="environment in currentEnvironmentConditionList" :key="environment" :value="environment">
+                            {{$t(environment)}}
+                          </v-btn>
+                        </v-btn-toggle>
+                        <v-btn-toggle class="mr-1"  dense v-if="currentBuffCondition.length" v-model="conditionMap.buff">
+                          <v-btn disabled value="強化状態">
+                            強化時
                           </v-btn>
                         </v-btn-toggle>
                       </v-row>
@@ -667,6 +682,8 @@ import TRANSFORM_GEAR_DATA from "@/constants/TRANSFORM_GEAR_DATA.json";
 import PARAMETER_GEAR_DATA from "@/constants/PARAMETER_GEAR_DATA.json";
 import CONDITION_CATEGORY_DATA from '@/constants/CONDITION_CATEGORY_DATA.json';
 import CONDITION_ATTACK_TYPE_DATA from '@/constants/CONDITION_ATTACK_TYPE_DATA.json';
+import CONDITION_ENVIRONMENT_DATA from '@/constants/CONDITION_ENVIRONMENT_DATA.json';
+import CONDITION_TEAM_DATA from '@/constants/CONDITION_TEAM_DATA.json';
 
 function add(a, b) {
   return {
@@ -753,7 +770,7 @@ export default {
       team: '',
       type: 'ビーム',
       category: '',
-      buff: 'buff',
+      buff: '強化状態',
       armor: '',
     },
     partsById: {},
@@ -770,10 +787,25 @@ export default {
     currentAttackTypeList() {
       return Object.values(CONDITION_ATTACK_TYPE_DATA).map((c) => c.text);
     },
-    currentWeaponCategoryList() {
+    currentWeaponCategoryConditionList() {
+      return [...new Set(Object.values(this.data).map((pc) => {
+        return pc.activePart.passives;
+      }).flat().filter((passive) => passive?.$conditionType === 'category').map((passive) => (passive.$condition)))];
+    },
+    currentTeamList() {
+      return [...new Set(Object.values(this.data).map((pc) => {
+        return pc.activePart.passives;
+      }).flat().filter((passive) => passive?.$conditionType === 'team').map((passive) => (passive.$condition)))];
+    },
+    currentEnvironmentConditionList() {
+      return [...new Set(Object.values(this.data).map((pc) => {
+        return pc.activePart.passives;
+      }).flat().filter((passive) => passive?.$conditionType === 'environment').map((passive) => (passive.$condition)))];
+    },
+    currentBuffCondition() {
       return Object.values(this.data).map((pc) => {
         return pc.activePart.passives;
-      }).flat().filter((passive) => passive?.$conditionType === 'category').map((passive) => (passive.$condition));
+      }).flat().filter((passive) => passive?.$conditionType === 'buff').map((passive) => (passive.$condition));
     },
     mappedConditionMap() {
       return {
@@ -808,6 +840,8 @@ export default {
       return {
         type: convertArrayToObject(Object.values(CONDITION_ATTACK_TYPE_DATA), 'text'),
         category: convertArrayToObject(Object.values(CONDITION_CATEGORY_DATA), 'text'),
+        team: convertArrayToObject(Object.values(CONDITION_TEAM_DATA), 'text'),
+        environment: convertArrayToObject(Object.values(CONDITION_ENVIRONMENT_DATA), 'text'),
       };
     },
     debugData() {
@@ -840,6 +874,8 @@ export default {
         [
           this.conditionMap.type ? +this.conditionMapByText.type[this.conditionMap.type].id : '',
           this.conditionMap.category ? +this.conditionMapByText.category[this.conditionMap.category].id : '',
+          this.conditionMap.environment ? +this.conditionMapByText.environment[this.conditionMap.environment].id : '',
+          this.conditionMap.team ? +this.conditionMapByText.team[this.conditionMap.team].id : '',
         ], // extra condition setting
       ];
       return lzbase62.compress(JSON.stringify(data));
@@ -1350,6 +1386,8 @@ export default {
       this.parameterGear.level = data[5][1];
       this.conditionMap.type = data[7][0] !== '' ? CONDITION_ATTACK_TYPE_DATA[+data[7][0]]?.text || '' : '';
       this.conditionMap.category = data[7][1] !== '' ? CONDITION_CATEGORY_DATA[+data[7][1]]?.text || '' : '';
+      this.conditionMap.environment = data[7][2] !== '' ? CONDITION_ENVIRONMENT_DATA[+data[7][2]]?.text || '' : '';
+      this.conditionMap.team = data[7][3] !== '' ? CONDITION_TEAM_DATA[+data[7][3]]?.text || '' : '';
     },
     checkCondition(conditionString, conditions) {
       const [type, condition] = conditionString.split(":");

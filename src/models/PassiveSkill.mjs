@@ -8,9 +8,8 @@ export default class PassiveSkill {
     this.$effectBoost = 0;
     this.$condition = 0;
     this.$conditionType = '';
-    if (this.parse()) {
-      this.parseCondition();
-    }
+    this.parse();
+    this.parseCondition();
   }
 
   verifyCondition(env) {
@@ -28,6 +27,8 @@ export default class PassiveSkill {
         return env.category === this.$condition;
       case 'buff':
         return env.buff === this.$condition;
+      case 'team':
+        return env.team === this.$condition;
       case 'misc':
         return true;
       default:
@@ -50,7 +51,7 @@ export default class PassiveSkill {
     }
     const buff = /強化状態の時/ig.exec(this.description);
     if (buff) {
-      this.$condition = 'buff';
+      this.$condition = '強化状態';
       this.$conditionType = 'buff';
       return;
     }
