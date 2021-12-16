@@ -604,6 +604,7 @@ import TAG_DATA from "@/constants/TAG_DATA.json";
 import JOB_DATA from "@/constants/JOB_DATA.json";
 import TRANSFORM_GEAR_DATA from "@/constants/TRANSFORM_GEAR_DATA.json";
 import PARAMETER_GEAR_DATA from "@/constants/PARAMETER_GEAR_DATA.json";
+import EMPTY from '@/constants/EMPTY_PART.json';
 
 function add(a, b) {
   return {
@@ -640,6 +641,7 @@ export default {
     partTypeMap: [],
     loading: true,
     currentPosition: "",
+    currentWeaponCategory: "",
     headers: [
       { text: "部位", value: "position", sort: false },
       { text: "圖示", value: "image", sortable: false },
@@ -1039,6 +1041,11 @@ export default {
         if (!map[part.position]) {
           map[part.position] = [];
         }
+        if (this.currentWeaponCategory) {
+          if (part.weaponType && part.weaponType !== this.currentWeaponCategory) {
+            return;
+          }
+        }
         map[part.position].push(part);
       });
       return map;
@@ -1111,10 +1118,11 @@ export default {
     closeTable() {
       this.dialog = false;
       this.currentPosition = "";
+      this.currentWeaponCategory = '';
       this.search = "";
     },
     getTagIcon(text) {
-      return Object.values(TAG_DATA).find((data) => data.text === text).icon;
+      return Object.values(TAG_DATA).find((data) => data.text === text)?.icon;
     },
     getTagID(text) {
       return Object.values(TAG_DATA).find((data) => data.text === text).id;
@@ -1134,21 +1142,24 @@ export default {
       console.log(data);
       data[1].forEach(([main, sub, active, tag1, tag2], index) => {
         console.log(main, sub, active, tag1, tag2);
-        const mainPart = {
-          ...this.partsById[+main[0]],
-          machineName: this.$t(this.partsById[+main[0]].machineName || this.partsById[+main[0]].aiName),
-        };
-        const subPart = {
-          ...this.partsById[+sub[0]],
-          machineName: this.$t(this.partsById[+sub[0]].machineName || this.partsById[+sub[0]].aiName),
-        };
-        console.log(mainPart, subPart);
         const pc = Object.values(this.data)[index];
-        if (mainPart) {
-          pc.insert(mainPart);
+        if (main[0]) {
+          const mainPart = {
+            ...this.partsById[+main[0]],
+            machineName: this.$t(this.partsById[+main[0]].machineName || this.partsById[+main[0]].aiName),
+          };
+          if (mainPart) {
+            pc.insert(mainPart);
+          }
         }
-        if (subPart) {
-          pc.insert(subPart);
+        if (sub[0]) {
+          const subPart = {
+            ...this.partsById[+sub[0]],
+            machineName: this.$t(this.partsById[+sub[0]].machineName || this.partsById[+sub[0]].aiName),
+          };
+          if (subPart) {
+            pc.insert(subPart);
+          }
         }
         pc.activeSubposition = +active;
         if (tag1 !== "") {
@@ -1247,6 +1258,11 @@ export default {
     },
     updatePosition(position) {
       this.currentPosition = position;
+      if (['格闘武器', '射撃武器'].indexOf(position) >= 0) {
+        if (this.data[position].nextInsertingSubposition === 1) {
+          this.currentWeaponCategory = this.data[position].main.options.weaponType;
+        }
+      }
       this.dialog = true;
     },
     away() {

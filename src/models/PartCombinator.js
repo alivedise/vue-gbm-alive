@@ -70,14 +70,30 @@ export default class PartCombinator {
     return [this.main.wordTag1, this.main.wordTag2, this.sub.wordTag1, this.sub.wordTag2].filter((d) => d !== '');
   }
 
-  insert(part) {
+  get nextInsertingSubposition() {
     if (this.parts[0].isEmpty) {
+      return 0;
+    }
+    if (this.parts[1].isEmpty) {
+      return 1;
+    }
+    return this.activeSubposition;
+  }
+ 
+  insert(part, pos) {
+    let inserting = -1;
+    if (typeof(pos) !== 'undefined') {
+      inserting = pos;
+    } else {
+      inserting = this.nextInsertingSubposition;
+    }
+    if (inserting === 0) {
       this.main = part;
-      this.activeWordTags = [part.wordTag1, part.wordTag2];
-    } else if (this.parts[1].isEmpty) {
-      this.sub = part;
-    } else if (this.activeSubposition === 0) {
-      this.main = part;
+      if (this.sub.options.weaponType && this.main.options.weaponType) {
+        if (this.sub.options.weaponType !== this.main.options.weaponType) {
+          this.sub.reset();
+        }
+      }
     } else {
       this.sub = part;
     }

@@ -14,6 +14,13 @@ export default class Part {
     }
   }
 
+  reset() {
+    Object.entries(JSON.parse(JSON.stringify(EMPTY))).forEach(([key, value]) => {
+      this.options[key] = value;
+      this.passives = [new PassiveSkill(this.options.passive1, this.options.passive1Table), new PassiveSkill(this.options.passive2, this.options.passive2Table)];
+    });
+  }
+
   get id() {
     return +this.options.id;
   }
