@@ -10,6 +10,9 @@ let object = JSON.parse(original) || {};
 
 wiki.wiki.forEach((data) => {
   if (data.id) {
+    if (!object[data.id]) {
+      object[data.id] = data;
+    }
     return;
   }
   const k = String(+decimalTranslator.generate().substr(0, 10));

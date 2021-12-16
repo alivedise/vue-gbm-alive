@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container @click="loadDataFromURL">
     <v-dialog
       v-model="dialog"
       fullscreen
@@ -691,6 +691,7 @@ export default {
       buff: 'buff',
       armor: '',
     },
+    partsById: {},
   }),
 
   computed: {
@@ -1016,25 +1017,6 @@ export default {
         boost: Math.round(this.calculatedBoostAmount),
       };
     },
-    partById() {
-      const a = this.parts.map((part) => ({
-        ...part,
-        machineName: this.$t(part.machineName) || this.$t(part.aiName),
-        power: part.skillTable.length
-          ? part.skillTable[part.skillTable.length - 1][2]
-          : "",
-        pierce: part.skillTable.length
-          ? part.skillTable[part.skillTable.length - 1][1]
-          : "",
-        accumluatedMeleeAttack: Math.floor(
-          +part.melee + +part.meleeDefense * 0.4
-        ),
-        accumluatedRangeAttack: Math.floor(
-          +part.range + +part.rangeDefense * 0.4
-        ),
-      }));
-      return convertArrayToObject(a, "id");
-    },
     mappedParts() {
       const a = this.parts.map((part) => ({
         ...part,
@@ -1152,8 +1134,8 @@ export default {
       console.log(data);
       data[1].forEach(([main, sub, active, tag1, tag2], index) => {
         console.log(main, sub, active, tag1, tag2);
-        const mainPart = this.partById[+main[0]];
-        const subPart = this.partById[+sub[0]];
+        const mainPart = this.partsById[+main[0]];
+        const subPart = this.partsById[+sub[0]];
         console.log(mainPart, subPart);
         const pc = Object.values(this.data)[index];
         if (mainPart) {
@@ -1302,13 +1284,18 @@ export default {
       pc.installCondition(this);
     });
     axios
-      .get(`${prefix}wiki.json`, {
+      .get(`${prefix}part_data_with_id.json`, {
         responseType: "json",
       })
-      .then((data) => {
-        this.loading = false;
-        this.parts = data.data.wiki;
+      .then((d1) => {
+        this.partsById = d1.data;
         this.loadDataFromURL();
+        return axios.get(`${prefix}wiki.json`, {
+          responseType: "json",
+        });
+      }).then((d2) => {
+        this.parts = d2.data.wiki;
+        this.loading = false;
       });
     this.search = this.keyword;
   },
