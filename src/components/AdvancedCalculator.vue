@@ -41,14 +41,45 @@
               sm="6"
               md="3"
             >
-              <v-btn
-                :color="onlyShowAltered ? 'indigo' : ''"
-                :outlined="!onlyShowAltered"
-                :text-color="onlyShowAltered ? 'white' : ''"
-                @click="onlyShowAltered = !onlyShowAltered"
+              <v-chip-group
+                v-model="labelFilter"
+                @change="updateQuery"
+                column
+                multiple
               >
-                忽略未改造
-              </v-btn>
+                <v-chip
+                  filter
+                  outlined
+                >
+                  雙重威力提升
+                </v-chip>
+                <v-chip
+                  filter
+                  outlined
+                  v-show="doubleBoost"
+                >
+                  特定部件威力提升
+                </v-chip>
+                <v-chip
+                  filter
+                  outlined
+                >
+                  初始充能
+                </v-chip>
+                <v-chip
+                  filter
+                  outlined
+                >
+                  冷卻時間
+                </v-chip>
+                <v-chip
+                  filter
+                  outlined
+                  v-show="cooldownReduction"
+                >
+                  僅限1次-冷卻
+                </v-chip>
+              </v-chip-group>
             </v-col>
           </v-row>
         </v-container>
@@ -71,6 +102,16 @@
                 height="30px"
                 width="30px"
               ></v-img>
+            </div>
+          </template>
+          <template v-slot:item.passive1="{ item }">
+            <div class="p-2">
+              {{ $t(item.passive1 || item.skillName) }}
+            </div>
+          </template>
+          <template v-slot:item.passive2="{ item }">
+            <div class="p-2">
+              {{ $t(item.passive2 || item.skillDescription) }}
             </div>
           </template>
           <template v-slot:item.position="{ item }">
@@ -355,17 +396,19 @@
             <v-expansion-panel-content>
               <v-container v-if="activeWordTags.length">
                 <v-row v-for="tag in activeWordTags" :key="tag">
-                  <v-btn
-                    tile
-                    width="50%"
-                    @click="updateActiveTagGear(tag)"
-                    :class="{
-                      primary: wordTagGear.tag === tag,
-                    }"
-                  >
-                    {{ $t(tag) }}
-                  </v-btn>
-                  <v-btn tile outlined width="50%">
+                  <v-col cols="6">
+                    <v-btn
+                      tile
+                      width="100%"
+                      @click="updateActiveTagGear(tag)"
+                      :class="{
+                        primary: wordTagGear.tag === tag,
+                      }"
+                    >
+                      {{ $t(tag) }}
+                    </v-btn>
+                  </v-col>
+                  <v-col cols="6">
                     <v-select
                       :items="getGearLevelList(5)"
                       :disabled="wordTagGear.tag !== tag"
@@ -380,13 +423,15 @@
                         </span>
                       </template>
                     </v-select>
-                  </v-btn>
+                  </v-col>
                 </v-row>
               </v-container>
               <v-container>
                 <v-row align="center">
                   <v-col cols="4">
-                    <v-btn>
+                    <v-btn
+                      width="100%"
+                    >
                       轉換齒輪
                     </v-btn>
                   </v-col>
@@ -423,7 +468,10 @@
                 </v-row>
                 <v-row align="center">
                   <v-col cols="4">
-                    <v-btn tile>
+                    <v-btn
+                      tile
+                      width="100%"
+                    >
                       能力齒輪
                     </v-btn>
                   </v-col>
@@ -632,6 +680,7 @@ export default {
     onClickaway,
   },
   data: () => ({
+    labelFilter: [],
     dialog: false,
     linearMode: false,
     panel: [0, 2],
@@ -1019,8 +1068,23 @@ export default {
         boost: Math.round(this.calculatedBoostAmount),
       };
     },
+    doubleBoost() {
+      return this.labelFilter.indexOf(0) >= 0;
+    },
+    specificBoost() {
+      return this.labelFilter.indexOf(1) >= 0;
+    },
+    initialCharge() {
+      return this.labelFilter.indexOf(2) >= 0;
+    },
+    cooldownReduction() {
+      return this.labelFilter.indexOf(3) >= 0;
+    },
+    oneTimeCooldownReduction() {
+      return this.labelFilter.indexOf(4) >= 0;
+    },
     mappedParts() {
-      const a = this.parts.map((part) => ({
+      let a = this.parts.map((part) => ({
         ...part,
         machineName: this.$t(part.machineName) || this.$t(part.aiName),
         power: part.skillTable.length
@@ -1036,6 +1100,23 @@ export default {
           +part.range + +part.rangeDefense * 0.4
         ),
       }));
+      if (this.doubleBoost) {
+        if (this.specificBoost) {
+          a = a.filter((i) => i.specificBoost);
+        } else {
+          a = a.filter((i) => i.doubleBoost);
+        }
+      }
+      if (this.initialCharge) {
+        a = a.filter((i) => i.initialCharge);
+      }
+      if (this.cooldownReduction) {
+        if (this.oneTimeCooldownReduction) {
+          a = a.filter((i) => i.oneTimeCooldownReduction);
+        } else {
+          a = a.filter((i) => i.cooldownReduction && !i.oneTimeCooldownReduction);
+        }
+      }
       const map = {};
       a.forEach((part) => {
         if (!map[part.position]) {
@@ -1046,6 +1127,7 @@ export default {
             return;
           }
         }
+
         map[part.position].push(part);
       });
       return map;
