@@ -27,7 +27,6 @@ export default class PartCombinator {
       return {};
     }
     const o = {};
-    console.log(this.activePart.passives[0].table[this.activePart.level][0], this.activePart.level);
     o[this.activePart.passives[0].boostKey] = +this.activePart.passives[0].table[this.activePart.level][1];
     return o;
   }

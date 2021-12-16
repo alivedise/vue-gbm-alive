@@ -504,7 +504,7 @@
                             ? 'primary'
                             : 'secondary'
                         "
-                        @click.stop="data[value.original].toggleActivation()"
+                        @click.stop="data[value.original].toggleActivation(); updateUrl();"
                       >
                         {{ data[value.original].main.name }}
                       </v-btn>
@@ -518,7 +518,7 @@
                             ? 'primary'
                             : 'secondary'
                         "
-                        @click.stop="data[value.original].toggleActivation()"
+                        @click.stop="data[value.original].toggleActivation(); updateUrl();"
                       >
                         {{ data[value.original].sub.name }}
                       </v-btn>
@@ -723,6 +723,16 @@ export default {
     transformGearList() {
       return Object.values(TRANSFORM_GEAR_DATA).map((g) => g.text);
     },
+    debugData() {
+      return Object.values(this.data).map((p) => {
+        return [
+          [p.main.id, p.main.level],
+          [p.sub.id, p.sub.level],
+          p.activeSubposition,
+          ...p.activeWordTags.map((t) => +this.getTagID(t) || ""),
+        ];
+      });
+    },
     urldata() {
       const rows = Object.values(this.data).map((p) => {
         return [
@@ -836,7 +846,6 @@ export default {
               cooldownReduction: 0,
             };
           }
-          console.log(passive.table);
           if (!passive.table || !passive.table.length) {
             return;
           }
@@ -1092,7 +1101,6 @@ export default {
 
   methods: {
     getSimplifiedSkillAmount() {
-      console.log(1);
       let result = {
         exBoost: 0,
         rangeBoost: 0,
@@ -1102,7 +1110,6 @@ export default {
         cooldownReduction: 0,
       };
       Object.values(this.data).forEach((pc) => {
-        console.log(result, pc.passive1SkillEffect);
         result = add(result, pc.passive1SkillEffect);
         result = add(result, pc.passive2SkillEffect);
       });
@@ -1144,6 +1151,7 @@ export default {
       data = JSON.parse(lzbase62.decompress(data));
       console.log(data);
       data[1].forEach(([main, sub, active, tag1, tag2], index) => {
+        console.log(main, sub, active, tag1, tag2);
         const mainPart = this.partById[+main[0]];
         const subPart = this.partById[+sub[0]];
         console.log(mainPart, subPart);
