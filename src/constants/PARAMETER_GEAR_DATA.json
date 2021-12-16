@@ -1,0 +1,183 @@
+{
+  "0": {
+    "text": "耐久力",
+    "icon": "",
+    "id": "0",
+    "values": [
+      {
+        "armor": 500
+      },
+      {
+        "armor": 1000
+      },
+      {
+        "armor": 1500
+      },
+      {
+        "armor": 2000
+      },
+      {
+        "armor": 2500
+      }
+    ]
+  },
+  "1": {
+    "text": "格鬥攻擊力",
+    "icon": "",
+    "id": "1",
+    "values": [
+      {
+        "meleeAttack": 500
+      },
+      {
+        "meleeAttack": 1000
+      },
+      {
+        "meleeAttack": 1500
+      },
+      {
+        "meleeAttack": 2000
+      },
+      {
+        "meleeAttack": 2500
+      }
+    ]
+  },
+  "2": {
+    "text": "射擊攻擊力",
+    "icon": "",
+    "id": "2",
+    "values": [
+      {
+        "rangeAttack": 500
+      },
+      {
+        "rangeAttack": 1000
+      },
+      {
+        "rangeAttack": 1500
+      },
+      {
+        "rangeAttack": 2000
+      },
+      {
+        "rangeAttack": 2500
+      }
+    ]
+  },
+  "3": {
+    "text": "格鬥防禦力",
+    "icon": "",
+    "id": "3",
+    "values": [
+      {
+        "meleeDefense": 500
+      },
+      {
+        "meleeDefense": 1000
+      },
+      {
+        "meleeDefense": 1500
+      },
+      {
+        "meleeDefense": 2000
+      },
+      {
+        "meleeDefense": 2500
+      }
+    ]
+  },
+  "4": {
+    "text": "射擊防禦力",
+    "icon": "",
+    "id": "4",
+    "values": [
+      {
+        "rangeDefense": 500
+      },
+      {
+        "rangeDefense": 1000
+      },
+      {
+        "rangeDefense": 1500
+      },
+      {
+        "rangeDefense": 2000
+      },
+      {
+        "rangeDefense": 2500
+      }
+    ]
+  },
+  "5": {
+    "text": "光束耐性",
+    "icon": "",
+    "id": "5",
+    "values": [
+      {
+        "beamResistence": 500
+      },
+      {
+        "beamResistence": 1000
+      },
+      {
+        "beamResistence": 1500
+      },
+      {
+        "beamResistence": 2000
+      },
+      {
+        "beamResistence": 2500
+      }
+    ]
+  },
+  "6": {
+    "text": "物理耐性",
+    "icon": "",
+    "id": "6",
+    "values": [
+      {
+        "physicalResistence": 500
+      },
+      {
+        "physicalResistence": 1000
+      },
+      {
+        "physicalResistence": 1500
+      },
+      {
+        "physicalResistence": 2000
+      },
+      {
+        "physicalResistence": 2500
+      }
+    ]
+  },
+  "7": {
+    "text": "雙重攻擊",
+    "icon": "",
+    "id": "7",
+    "values": [
+      {
+        "meleeAttack": 300,
+        "rangeAttack": 300
+      },
+      {
+        "meleeAttack": 650,
+        "rangeAttack": 650
+      },
+      {
+        "meleeAttack": 1000,
+        "rangeAttack": 1000
+      },
+      {
+        "meleeAttack": 1500,
+        "rangeAttack": 1500
+      },
+      {
+        "meleeAttack": 2000,
+        "rangeAttack": 2000
+      }
+    ]
+  }
+}

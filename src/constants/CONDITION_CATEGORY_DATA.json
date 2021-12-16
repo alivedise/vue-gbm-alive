@@ -1,0 +1,72 @@
+{
+  "0": {
+    "text": "サーベル",
+    "id": "0",
+    "value": "saber"
+  },
+  "1": {
+    "text": "ダブルサーベル",
+    "id": "1",
+    "value": "doublesaber"
+  },
+  "2": {
+    "text": "アックス",
+    "id": "2",
+    "value": "axe"
+  },
+  "3": {
+    "text": "大剣",
+    "id": "3",
+    "value": "bigsword"
+  },
+  "4": {
+    "text": "ランス",
+    "id": "4",
+    "value": "lance"
+  },
+  "5": {
+    "text": "モジュール",
+    "id": "5",
+    "value": "module"
+  },
+  "6": {
+    "text": "ムチ",
+    "id": "6",
+    "value": "whip"
+  },
+  "7": {
+    "text": "ツインブレード",
+    "id": "7",
+    "value": "twinblade"
+  },
+  "8": {
+    "text": "ライフル",
+    "id": "8",
+    "value": "rifle"
+  },
+  "9": {
+    "text": "ロングライフル",
+    "id": "9",
+    "value": "longrifle"
+  },
+  "10": {
+    "text": "ダブルライフル",
+    "id": "10",
+    "value": "doublerifle"
+  },
+  "11": {
+    "text": "マシンガン",
+    "id": "11",
+    "value": "machinegun"
+  },
+  "12": {
+    "text": "バズーカ",
+    "id": "12",
+    "value": "bazooka"
+  },
+  "13": {
+    "text": "ガトリングガン",
+    "id": "13",
+    "value": "gatlinggun"
+  }
+}

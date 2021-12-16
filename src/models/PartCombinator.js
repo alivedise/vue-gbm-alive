@@ -11,6 +11,43 @@ export default class PartCombinator {
     this.activeWordTags = [];
   }
 
+  installCondition(ref) {
+    this.ref = ref;
+  }
+
+  get passive1Passed() {
+    return this.activePart.passives[0].verifyCondition(this.ref.mappedConditionMap);
+  }
+
+  get passive1SkillEffect() {
+    if (!this.activePart.passives || !this.activePart.passives[0].boostKey) {
+      return {};
+    }
+    if (!this.passive1Passed) {
+      return {};
+    }
+    const o = {};
+    console.log(this.activePart.passives[0].table[this.activePart.level][0], this.activePart.level);
+    o[this.activePart.passives[0].boostKey] = +this.activePart.passives[0].table[this.activePart.level][1];
+    return o;
+  }
+
+  get passive2Passed() {
+    return this.activePart.passives[1].verifyCondition(this.ref.mappedConditionMap);
+  }
+
+  get passive2SkillEffect() {
+    if (!this.activePart.passives || !this.activePart.passives[1].boostKey) {
+      return {};
+    }
+    if (!this.passive2Passed) {
+      return {};
+    }
+    const o = {};
+    o[this.activePart.passives[1].boostKey] = +this.activePart.passives[1].table[this.activePart.level][1];
+    return o;
+  }
+
   get isEmpty() {
     return this.parts[0].isEmpty;
   }

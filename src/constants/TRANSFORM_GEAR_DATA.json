@@ -1,0 +1,23 @@
+{
+  "0": {
+    "text": "格鬥轉換",
+    "icon": "",
+    "id": "0",
+    "target": "meleeDefense",
+    "values": [0.1, 0.2, 0.3, 0.4]
+  },
+  "1": {
+    "text": "射擊轉換",
+    "icon": "",
+    "id": "1",
+    "target": "rangeDefense",
+    "values": [0.1, 0.2, 0.3, 0.4]
+  },
+  "2": {
+    "text": "耐性轉換",
+    "icon": "",
+    "id": "2",
+    "target": "armor",
+    "values": [0.05, 0.15, 0.25, 0.35]
+  }
+}

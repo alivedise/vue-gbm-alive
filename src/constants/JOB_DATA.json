@@ -1,0 +1,122 @@
+{
+  "0": {
+    "text": "ALL-ROUNDER",
+    "icon": "",
+    "id": "0",
+    "values": []
+  },
+  "1": {
+    "text": "Defender",
+    "icon": "",
+    "id": "1",
+    "values": [
+      {
+        "meleeAttack": 500
+      },
+      {
+        "meleeAttack": 1000
+      },
+      {
+        "meleeAttack": 1500
+      },
+      {
+        "meleeAttack": 2000
+      }
+    ]
+  },
+  "2": {
+    "text": "In-Fighter",
+    "icon": "",
+    "id": "2",
+    "values": [
+      {
+        "meleeAttack": 500
+      },
+      {
+        "meleeAttack": 1000
+      },
+      {
+        "meleeAttack": 1500
+      },
+      {
+        "meleeAttack": 2000
+      }
+    ]
+  },
+  "3": {
+    "text": "Out-Fighter",
+    "icon": "",
+    "id": "3",
+    "values": [
+      {
+        "meleeAttack": 500
+      },
+      {
+        "meleeAttack": 1000
+      },
+      {
+        "meleeAttack": 1500
+      },
+      {
+        "meleeAttack": 2000
+      }
+    ]
+  },
+  "4": {
+    "text": "Middle-Shooter",
+    "icon": "",
+    "id": "4",
+    "values": [
+      {
+        "rangeAttack": 500
+      },
+      {
+        "rangeAttack": 1000
+      },
+      {
+        "rangeAttack": 1500
+      },
+      {
+        "rangeAttack": 2000
+      }
+    ]
+  },
+  "5": {
+    "text": "Long-Shooter",
+    "icon": "",
+    "id": "5",
+    "values": [
+      {
+        "rangeAttack": 500
+      },
+      {
+        "rangeAttack": 1000
+      },
+      {
+        "rangeAttack": 1500
+      },
+      {
+        "rangeAttack": 2000
+      }
+    ]
+  },
+  "6": {
+    "text": "Supporter",
+    "icon": "",
+    "id": "6",
+    "values": [
+      {
+        "rangeAttack": 500
+      },
+      {
+        "rangeAttack": 1000
+      },
+      {
+        "rangeAttack": 1500
+      },
+      {
+        "rangeAttack": 2000
+      }
+    ]
+  }
+}

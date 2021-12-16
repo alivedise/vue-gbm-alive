@@ -13,6 +13,27 @@ export default class PassiveSkill {
     }
   }
 
+  verifyCondition(env) {
+    switch (this.$conditionType) {
+      case 'attribute':
+        return this.$condition === env.attribute;
+      case 'tag':
+        return env.wordTags.indexOf(this.$condition) >= 0;
+      case 'type':
+        return this.$condition === env.type;
+      case 'job':
+        return env.job === this.$condition;
+      case 'category':
+        return env.category === this.$condition;
+      case 'buff':
+        return env.buff === this.$condition;
+      case 'misc':
+        return true;
+      default:
+        return false;
+    }
+  }
+
   parseCondition() {
     const attr = /属性が(Speed|Technique|Power)/ig.exec(this.description);
     if (attr) {
@@ -74,6 +95,20 @@ export default class PassiveSkill {
   }
 
   parse() {
+    const icd = /EXskill初期チャージ量(\d+)?％上昇/ig.exec(this.description);
+    if (icd) {
+      this.$initialCharge = true;
+      return true;
+    }
+    const cdr = /クールタイムが?(\d+)?％減/ig.exec(this.description);
+    if (cdr) {
+      if (/一度だけ/ig.exec(this.description)) {
+        // do not count for one time here
+        return false;
+      }
+      this.$cooldownReduction = true;
+      return true;
+    }
     const skill = /EXskillの威力(\d+)?％上昇/ig.exec(this.description);
     if (skill) {
       if (/(腕|背中|頭|脚部|盾|近接武器|射撃武器|格闘武器|胴体)パーツのEXskillの威力/.exec(this.description)) {
@@ -124,29 +159,12 @@ export default class PassiveSkill {
     if (this.$effectBoost) {
       return 'effectBoost';
     }
+    if (this.$initialCharge) {
+      return 'initialCharge';
+    }
+    if (this.$cooldownReduction) {
+      return 'cooldownReduction';
+    }
     return '';
   }
 }
-
-/*
-  const reg1 = ig;
-  const reg2 = 
-  const rega = /強化EXskillの効果(\d+)％上昇/ig;
-  const regb = /強化EXskillの効果(\d+)％上昇/ig;
-  if ((reg1.exec(data.passive1) || rega.exec(data.passive1)) && (reg2.exec(data.passive2) || regb.exec(data.passive2))) {
-    if ([data.passive1, data.passive2].every((p) => {
-      const spart = /(腕|背中|頭|脚部|盾|近接武器|射撃武器|格闘武器|胴体)パーツのEXskillの威力/.exec(p);
-      if (spart) {
-        data.specificBoost = spart[1];
-      }
-      return (['EXskillの威力', '射撃攻撃の威力', '格闘攻撃の威力', '強化EXskillの効果'].some((f) => p.indexOf(f) >= 0))
-        && !(/距離射撃攻撃の威力(\d+)?％上昇/ig.exec(p));
-    })) {
-      data.doubleBoost = true;
-    } else {
-      data.doubleBoost = false;
-    }
-  } else {
-    data.doubleBoost = false;
-  }
-*/

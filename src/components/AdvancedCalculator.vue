@@ -121,7 +121,7 @@
             <div class="p-2">
               <v-chip label class="ma-2">
                 <v-icon left>
-                  {{ getWordTagIcon(item.wordTag1) }}
+                  {{ getTagIcon(item.wordTag1) }}
                 </v-icon>
                 {{ $t(item.wordTag1) }}
               </v-chip>
@@ -146,7 +146,7 @@
             <div class="p-2">
               <v-chip label class="ma-2">
                 <v-icon left>
-                  {{ getWordTagIcon(item.wordTag2) }}
+                  {{ getTagIcon(item.wordTag2) }}
                 </v-icon>
                 {{ $t(item.wordTag2) }}
               </v-chip>
@@ -159,7 +159,6 @@
       <v-col>
         <v-expansion-panels
           v-model="panel"
-          :disabled="disabled"
           multiple
         >
           <v-expansion-panel>
@@ -168,15 +167,49 @@
             </v-expansion-panel-header>
             <v-expansion-panel-content>
               <v-container>
-                <v-btn tile outlined width="25%">
-                  {{(activeAttribute ? activeAttribute[0] : '') || '無'}}屬
-                </v-btn>
-                <v-btn tile width="50%">
-                  All-Rounder
-                </v-btn>
-                <v-btn tile outlined width="25%">
-                  LV.{{jobGear.level}}
-                </v-btn>
+                <v-row align="center">
+                  <v-col cols="3">
+                    <v-badge
+                      :content="attributeMapString"
+                      bottom
+                      inline
+                      tile
+                      class="d-flex justify-center" style="width: 100%;"
+                    >
+                      {{(activeAttribute ? activeAttribute[0] : '') || '無'}}
+                    </v-badge>
+                  </v-col>
+                  <v-col cols="6">
+                    <v-select
+                      :items="jobList"
+                      v-model="jobGear.job"
+                      @change="updateUrl"
+                      dense
+                      solo
+                    >
+                      <template v-slot:selection="{ item }">
+                        <span class="d-flex justify-center" style="width: 100%;">
+                          {{ item }}
+                        </span>
+                      </template>
+                    </v-select>
+                  </v-col>
+                  <v-col cols="2">
+                    <v-select
+                      :items="getGearLevelList(4)"
+                      v-model="jobGear.level"
+                      @change="updateUrl"
+                      dense
+                      solo
+                    >
+                      <template v-slot:selection="{ item }">
+                        <span class="d-flex justify-center" style="width: 100%;">
+                          {{ item.label }}
+                        </span>
+                      </template>
+                    </v-select>
+                  </v-col>
+                </v-row>
                 <h1>
                   {{ accumulatedRangeEX }}
                 </h1>
@@ -198,109 +231,83 @@
                 </h1>
                 <v-divider />
                 <br/>
-                <template v-if="linearMode">
-                  <v-progress-linear
-                    v-model="bestAmount.exBoost"
-                    color="teal"
-                    height="15"
-                  >
-                    <template v-slot:default="{ value }">
-                      <strong>{{ Math.ceil(value) }}% EX加成</strong>
-                    </template>
-                  </v-progress-linear>
-                  <v-progress-linear
-                    v-model="bestAmount.rangeBoost"
-                    color="primary"
-                    height="15"
-                  >
-                    <template v-slot:default="{ value }">
-                      <strong>{{ Math.ceil(value) }}% EX加成</strong>
-                    </template>
-                  </v-progress-linear>
-                  <v-progress-linear
-                    v-model="bestAmount.initialCharge"
-                    color="red"
-                    height="15"
-                  >
-                    <template v-slot:default="{ value }">
-                      <strong>{{ Math.ceil(value) }}% 初始充能</strong>
-                    </template>
-                  </v-progress-linear>
-                  <v-progress-linear
-                    v-model="bestAmount.cooldownReduction"
-                    color="blue-grey"
-                    height="15"
-                  >
-                    <template v-slot:default="{ value }">
-                      <strong>{{ Math.ceil(value) }}% 冷卻</strong>
-                    </template>
-                  </v-progress-linear>
-                </template>
-                <template v-else>
-                  <v-badge
-                    color="teal"
-                    :content="'EX加成'"
-                    :offset-x="35"
-                  >
-                    <v-progress-circular
-                      :indeterminate="shouldDisplayBoostLoading"
-                      :rotate="90"
-                      :size="70"
-                      :width="12"
-                      :value="bestAmount.exBoost"
-                      color="teal"
-                    >
-                      {{ bestAmount.exBoost || 0 }}%
-                    </v-progress-circular>
-                  </v-badge>
-                  <v-badge
-                    color="primary"
-                    :content="'射攻加成'"
-                    :offset-x="35"
-                  >
-                    <v-progress-circular
-                      :indeterminate="shouldDisplayBoostLoading"
-                      :rotate="360"
-                      :size="70"
-                      :width="12"
-                      :value="bestAmount.rangeBoost"
-                      color="primary"
-                    >
-                      {{ bestAmount.rangeBoost || 0 }}%
-                    </v-progress-circular>
-                  </v-badge>
-                  <v-badge
-                    color="green"
-                    :content="'初始充能'"
-                    :offset-x="35"
-                  >
-                    <v-progress-circular
-                      :indeterminate="shouldDisplayBoostLoading"
-                      :rotate="180"
-                      :size="70"
-                      :width="12"
-                      :value="bestAmount.initialCharge || 0"
-                      color="green"
-                    >
-                      {{ bestAmount.initialCharge || 0}}%
-                    </v-progress-circular>
-                  </v-badge>
-                  <v-badge
-                    color="purple"
-                    :content="'減冷卻'"
-                    :offset-x="35"
-                  >
-                    <v-progress-circular
-                      :indeterminate="shouldDisplayBoostLoading"
-                      :rotate="270"
-                      :size="70"
-                      :width="12"
-                      :value="bestAmount.cooldownReduction"
-                      color="purple"
-                    >
-                      {{ bestAmount.cooldownReduction || 0 }}%
-                    </v-progress-circular>
-                  </v-badge>
+                <template>
+                  <v-container>
+                    <v-row>
+                      <v-col cols="3">
+                        <v-badge
+                          color="teal"
+                          :content="'EX加成'"
+                          :offset-x="35"
+                        >
+                          <v-progress-circular
+                            :indeterminate="shouldDisplayBoostLoading"
+                            :rotate="90"
+                            :size="70"
+                            :width="12"
+                            :value="getSimplifiedSkillAmount().exBoost"
+                            color="teal"
+                          >
+                            {{ getSimplifiedSkillAmount().exBoost || 0 }}%
+                          </v-progress-circular>
+                        </v-badge>
+                      </v-col>
+                      <v-col cols="3">
+                        <v-badge
+                          color="primary"
+                          :content="'射攻加成'"
+                          :offset-x="35"
+                        >
+                          <v-progress-circular
+                            :indeterminate="shouldDisplayBoostLoading"
+                            :rotate="360"
+                            :size="70"
+                            :width="12"
+                            :value="getSimplifiedSkillAmount().rangeBoost"
+                            color="primary"
+                          >
+                            {{ getSimplifiedSkillAmount().rangeBoost || 0 }}%
+                          </v-progress-circular>
+                        </v-badge>
+                      </v-col>
+                      <v-col cols="3">
+                        <v-badge
+                          color="green"
+                          :content="'初始充能'"
+                          :offset-x="35"
+                        >
+                          <v-progress-circular
+                            :indeterminate="shouldDisplayBoostLoading"
+                            :rotate="180"
+                            :size="70"
+                            :width="12"
+                            :value="getSimplifiedSkillAmount().initialCharge || 0"
+                            color="green"
+                          >
+                            {{ getSimplifiedSkillAmount().initialCharge || 0}}%
+                          </v-progress-circular>
+                        </v-badge>
+                      </v-col>
+                      <v-col cols="3">
+                        <v-badge
+                          color="purple"
+                          :content="'減冷卻'"
+                          :offset-x="35"
+                        >
+                          <v-progress-circular
+                            :indeterminate="shouldDisplayBoostLoading"
+                            :rotate="270"
+                            :size="70"
+                            :width="12"
+                            :value="getSimplifiedSkillAmount().cooldownReduction"
+                            color="purple"
+                          >
+                            {{ getSimplifiedSkillAmount().cooldownReduction || 0 }}%
+                          </v-progress-circular>
+                        </v-badge>
+                      </v-col>
+                    </v-row>
+                  </v-container>
                 </template>
                 <v-divider />
                 <v-container>
@@ -348,32 +355,108 @@
             <v-expansion-panel-content>
               <v-container v-if="activeWordTags.length">
                 <v-row v-for="tag in activeWordTags" :key="tag">
-                  <v-btn tile width="50%">
+                  <v-btn
+                    tile
+                    width="50%"
+                    @click="updateActiveTagGear(tag)"
+                    :class="{
+                      primary: wordTagGear.tag === tag,
+                    }"
+                  >
                     {{ $t(tag) }}
                   </v-btn>
                   <v-btn tile outlined width="50%">
-                    LV.4
+                    <v-select
+                      :items="getGearLevelList(5)"
+                      :disabled="wordTagGear.tag !== tag"
+                      v-model="wordTagGear.level"
+                      @change="updateUrl"
+                      solo
+                      dense
+                    >
+                      <template v-slot:selection="{ item }">
+                        <span class="d-flex justify-center" style="width: 100%;">
+                          {{ item.label }}
+                        </span>
+                      </template>
+                    </v-select>
                   </v-btn>
                 </v-row>
               </v-container>
               <v-container>
-                <v-row>
-                  <v-btn tile width="50%">
-                    射擊轉換
-                  </v-btn>
-                  <v-btn tile outlined width="50%">
-                    LV.4
-                  </v-btn>
+                <v-row align="center">
+                  <v-col cols="4">
+                    <v-btn>
+                      轉換齒輪
+                    </v-btn>
+                  </v-col>
+                  <v-col cols="4">
+                    <v-select
+                      :items="transformGearList"
+                      v-model="transformGear.type"
+                      @change="updateUrl"
+                      dense
+                      solo
+                    >
+                      <template v-slot:selection="{ item }">
+                        <span class="d-flex justify-center" style="width: 100%;">
+                          {{ item }}
+                        </span>
+                      </template>
+                    </v-select>
+                  </v-col>
+                  <v-col cols="4">
+                    <v-select
+                      :items="getGearLevelList(5)"
+                      v-model="transformGear.level"
+                      @change="updateUrl"
+                      dense
+                      solo
+                    >
+                      <template v-slot:selection="{ item }">
+                        <span class="d-flex justify-center" style="width: 100%;">
+                          {{ item.label }}
+                        </span>
+                      </template>
+                    </v-select>
+                  </v-col>
                 </v-row>
-              </v-container>
-              <v-container>
-                <v-row>
-                  <v-btn tile width="50%">
-                    射擊攻擊
-                  </v-btn>
-                  <v-btn tile outlined width="50%">
-                    LV.5
-                  </v-btn>
+                <v-row align="center">
+                  <v-col cols="4">
+                    <v-btn tile>
+                      能力齒輪
+                    </v-btn>
+                  </v-col>
+                  <v-col cols="4">
+                    <v-select
+                      :items="parasmeterGearList"
+                      v-model="parameterGear.type"
+                      @change="updateUrl"
+                      dense
+                      solo
+                    >
+                      <template v-slot:selection="{ item }">
+                        <span class="d-flex justify-center" style="width: 100%;">
+                          {{ item }}
+                        </span>
+                      </template>
+                    </v-select>
+                  </v-col>
+                  <v-col cols="4">
+                    <v-select
+                      :items="getGearLevelList(5)"
+                      v-model="parameterGear.level"
+                      @change="updateUrl"
+                      dense
+                      solo
+                    >
+                      <template v-slot:selection="{ item }">
+                        <span class="d-flex justify-center" style="width: 100%;">
+                          {{ item.label }}
+                        </span>
+                      </template>
+                    </v-select>
+                  </v-col>
                 </v-row>
               </v-container>
             </v-expansion-panel-content>
@@ -442,11 +525,41 @@
                     </div>
                   </template>
                 </v-list-item-title>
-                <v-list-item-subtitle>
+                <v-list-item-subtitle
+                  v-if="data[value.original].activePassive1"
+                  :class="{
+                    'overflow-x-hidden': true,
+                    'white--text': data[value.original].passive1Passed
+                  }"
+                >
+                  <v-icon small v-if="data[value.original].passive1Passed">
+                    mdi-check-bold
+                  </v-icon>
+                  <v-icon v-else>
+                    mdi-alert-circle-outline
+                  </v-icon>
                   {{ $t(data[value.original].activePassive1) }}
                 </v-list-item-subtitle>
-                <v-list-item-subtitle>
-                  {{ $t(data[value.original].activePassive2) || 'NONE' }}
+                <v-list-item-subtitle v-else>
+                  -
+                </v-list-item-subtitle>
+                <v-list-item-subtitle
+                  v-if="data[value.original].activePassive2"
+                  :class="{
+                    'overflow-x-hidden': true,
+                    'white--text': data[value.original].passive2Passed
+                  }"
+                >
+                  <v-icon small v-if="data[value.original].passive2Passed">
+                    mdi-check-bold
+                  </v-icon>
+                  <v-icon v-else>
+                    mdi-alert-circle-outline
+                  </v-icon>
+                  {{ $t(data[value.original].activePassive2)}}
+                </v-list-item-subtitle>
+                <v-list-item-subtitle v-else>
+                  -
                 </v-list-item-subtitle>
               </v-list-item-content>
               <v-list-item-action width="80px">
@@ -488,13 +601,18 @@ import PartCombinator from "@/models/PartCombinator";
 import TAG from "@/constants/tag.json";
 import TAGGEAR from "@/constants/taggear.json";
 import TAG_DATA from "@/constants/TAG_DATA.json";
+import JOB_DATA from "@/constants/JOB_DATA.json";
+import TRANSFORM_GEAR_DATA from "@/constants/TRANSFORM_GEAR_DATA.json";
+import PARAMETER_GEAR_DATA from "@/constants/PARAMETER_GEAR_DATA.json";
 
 function add(a, b) {
   return {
-    rangeBoost: +a.rangeBoost + +b.rangeBoost || 0,
-    meleeBoost: +a.rangeBoost + +b.rangeBoost || 0,
-    exBoost: +a.exBoost + +b.exBoost || 0,
-    effectBoost: +a.effectBoost + +b.effectBoost || 0,
+    rangeBoost: +a.rangeBoost + (b.rangeBoost || 0),
+    meleeBoost: +a.meleeBoost + (b.meleeBoost || 0),
+    exBoost: +a.exBoost + (b.exBoost || 0),
+    effectBoost: +a.effectBoost + (b.effectBoost || 0),
+    initialCharge: +a.initialCharge + (b.initialCharge || 0),
+    cooldownReduction: +a.cooldownReduction + (b.cooldownReduction || 0),
   };
 }
 const convertArrayToObject = (array, key) => {
@@ -514,6 +632,7 @@ export default {
   },
   data: () => ({
     dialog: false,
+    linearMode: false,
     panel: [0, 2],
     onlyShowAltered: true,
     search: "",
@@ -550,18 +669,59 @@ export default {
     TAG,
     TAGGEAR,
     jobGear: {
-      job: '',
+      job: 'All-Rounder',
       level: 0,
     },
     wordTagGear: {
       tag: '',
       level: 1,
     },
+    parameterGear: {
+      type: '射擊攻擊力',
+      level: 5,
+    },
+    transformGear: {
+      type: '射擊轉換',
+      level: 5,
+    },
+    conditionMap: {
+      team: '',
+      type: 'ビーム',
+      category: '',
+      buff: 'buff',
+      armor: '',
+    },
   }),
 
   computed: {
+    mappedConditionMap() {
+      return {
+        ...this.conditionMap,
+        attribute: this.activeAttribute,
+        wordTags: this.activeWordTags,
+        job: this.jobGear.job,
+      };
+    },
     shouldDisplayBoostLoading() {
       return this.loading && this.$route.params.data !== '';
+    },
+    jobMapByText() {
+      return convertArrayToObject(Object.values(JOB_DATA), 'text');
+    },
+    tagMapByText() {
+      return convertArrayToObject(Object.values(TAG_DATA), 'text');
+    },
+    transformMapByText() {
+      return convertArrayToObject(Object.values(TRANSFORM_GEAR_DATA), 'text');
+    },
+    parameterMapByText() {
+      return convertArrayToObject(Object.values(PARAMETER_GEAR_DATA), 'text');
+    },
+    parasmeterGearList() {
+      return Object.values(PARAMETER_GEAR_DATA).map((g) => g.text);
+    },
+    transformGearList() {
+      return Object.values(TRANSFORM_GEAR_DATA).map((g) => g.text);
     },
     urldata() {
       const rows = Object.values(this.data).map((p) => {
@@ -569,14 +729,19 @@ export default {
           [p.main.id, p.main.level],
           [p.sub.id, p.sub.level],
           p.activeSubposition,
-          ...p.activeWordTags.map((t) => this.getTagID(t) || ""),
+          ...p.activeWordTags.map((t) => +this.getTagID(t) || ""),
         ];
       });
-      const data = {
-        version: 1,
-        job: "",
-        data: rows,
-      };
+      const data = [
+        1, // data version
+        rows, // parts data
+        [+this.jobMapByText[this.jobGear.job]?.id, this.jobGear.level], // job
+        [+this.tagMapByText[this.wordTagGear.tag]?.id, this.wordTagGear.level], // tag
+        [+this.transformMapByText[this.transformGear.type]?.id, this.transformGear.level], // transform
+        [+this.parameterMapByText[this.parameterGear.type]?.id, this.parameterGear.level], // parameter
+        [0, 0], // last gear,
+        [], // extra condition setting
+      ];
       return lzbase62.compress(JSON.stringify(data));
     },
     $dp() {
@@ -614,6 +779,8 @@ export default {
             rangeBoost: 0,
             meleeBoost: 0,
             effectBoost: 0,
+            initialCharge: 0,
+            cooldownReduction: 0,
           },
         ];
       }
@@ -625,6 +792,8 @@ export default {
           rangeBoost: 0,
           meleeBoost: 0,
           effectBoost: 0,
+          initialCharge: 0,
+          cooldownReduction: 0,
         };
         Object.entries(this.activatedConditions).forEach(([k, v]) => {
           if (this.checkCondition(k, list)) {
@@ -663,6 +832,8 @@ export default {
               meleeBoost: 0,
               exBoost: 0,
               effectBoost: 0,
+              initialCharge: 0,
+              cooldownReduction: 0,
             };
           }
           console.log(passive.table);
@@ -681,26 +852,26 @@ export default {
     },
     accumulatedRangeEX() {
       return Math.round(
-        (1 + (this.bestAmount.rangeBoost + this.bestAmount.exBoost) / 100) *
+        (1 + (this.getSimplifiedSkillAmount().rangeBoost + this.getSimplifiedSkillAmount().exBoost) / 100) *
           this.calculatedRangeAttack
       );
     },
     accumulatedMeleeEX() {
       return Math.round(
-        (1 + (this.bestAmount.meleeBoost + this.bestAmount.exBoost) / 100) *
+        (1 + (this.getSimplifiedSkillAmount().meleeBoost + this.getSimplifiedSkillAmount().exBoost) / 100) *
           this.calculatedMeleeAttack
       );
     },
     singleBuffRangeEX() {
       return Math.round(
-        1.3 * (1 + this.bestAmount.effectBoost / 100) * this.accumulatedRangeEX
+        1.3 * (1 + this.getSimplifiedSkillAmount().effectBoost / 100) * this.accumulatedRangeEX
       );
     },
     doubleBuffRangeEX() {
       return Math.round(
         2 *
           1.3 *
-          (1 + this.bestAmount.effectBoost / 100) *
+          (1 + this.getSimplifiedSkillAmount().effectBoost / 100) *
           this.accumulatedRangeEX
       );
     },
@@ -753,16 +924,29 @@ export default {
     calculatedArmor() {
       return Object.values(this.data).reduce((a, b) => a + b.armor, 0);
     },
-    activeAttribute() {
-      const properties = {};
+    attributeMap() {
+      const properties = {
+        "Power": 0,
+        "Technique": 0,
+        "Speed": 0,
+      };
       Object.values(this.data).forEach((p) => {
         const t = p.main.attribute;
+        if (!t) {
+          return;
+        }
         if (!properties[t]) {
           properties[t] = 0;
         }
         properties[t] += 1;
       });
-      let r = Object.entries(properties).filter(([, value]) => value >= 5);
+      return properties;
+    },
+    attributeMapString() {
+      return Object.entries(this.attributeMap).map(([k, v]) => (`${k[0]}:${v}`)).join(' ');
+    },
+    activeAttribute() {
+      const r = Object.entries(this.attributeMap).filter(([, value]) => value >= 5);
       if (r.length) {
         return r[0][0];
       } else {
@@ -890,6 +1074,14 @@ export default {
     keyword() {
       return this.$route.query.keyword;
     },
+
+    allJobList() {
+      return Object.values(JOB_DATA).map(j => j.text);
+    },
+
+    jobList() {
+      return ['All-Rounder'].concat(Object.values(JOB_DATA).filter((job) => (this.data['パイロット'].activePart.options.aiJob || '').indexOf(job.text) >= 0).map((job) => job.text));
+    },
   },
 
   watch: {
@@ -899,6 +1091,34 @@ export default {
   },
 
   methods: {
+    getSimplifiedSkillAmount() {
+      console.log(1);
+      let result = {
+        exBoost: 0,
+        rangeBoost: 0,
+        meleeBoost: 0,
+        effectBoost: 0,
+        initialCharge: 0,
+        cooldownReduction: 0,
+      };
+      Object.values(this.data).forEach((pc) => {
+        console.log(result, pc.passive1SkillEffect);
+        result = add(result, pc.passive1SkillEffect);
+        result = add(result, pc.passive2SkillEffect);
+      });
+      return result;
+    },
+    updateActiveTagGear(tag) {
+      this.wordTagGear.tag = tag;
+      this.updateUrl();
+    },
+    getGearLevelList(max) {
+      return new Array(max).fill('x').map((_, i) => ({
+        label: `LV.${i}`,
+        text: `LV.${i}`,
+        value: i,
+      }));
+    },
     closeTable() {
       this.dialog = false;
       this.currentPosition = "";
@@ -918,9 +1138,12 @@ export default {
     },
     loadDataFromURL() {
       let { data } = this.$route.params;
+      if (!data) {
+        return;
+      }
       data = JSON.parse(lzbase62.decompress(data));
       console.log(data);
-      data.data.forEach(([main, sub, active, tag1, tag2], index) => {
+      data[1].forEach(([main, sub, active, tag1, tag2], index) => {
         const mainPart = this.partById[+main[0]];
         const subPart = this.partById[+sub[0]];
         console.log(mainPart, subPart);
@@ -939,6 +1162,14 @@ export default {
           pc.addWordTag(TAG_DATA[tag2].text);
         }
       });
+      this.jobGear.job = JOB_DATA[data[2][0]].text;
+      this.jobGear.level = data[2][1];
+      this.wordTagGear.tag = TAG_DATA[data[3][0]].text;
+      this.wordTagGear.level = data[3][1];
+      this.transformGear.type = TRANSFORM_GEAR_DATA[data[4][0]].text;
+      this.transformGear.level = data[4][1];
+      this.parameterGear.type = PARAMETER_GEAR_DATA[data[5][0]].text;
+      this.parameterGear.level = data[5][1];
     },
     checkCondition(conditionString, conditions) {
       const [type, condition] = conditionString.split(":");
@@ -1013,37 +1244,6 @@ export default {
       this.currentPosition = "";
       this.searchName = "";
     },
-    getWordTagIcon() {
-      const table = {
-        可変: "mdi-car",
-        主人公機: "mdi-account-star",
-        ガンダムタイプ: "mdi-robot",
-        接近戦: "mdi-fencing",
-        高機動: "mdi-snowmobile",
-        中距離戦: "mdi-middleware",
-        遠距離戦: "mdi-share-all-outline",
-        宇宙適正: "",
-        エース専用機: "mdi-account-tie-hat",
-        高火力: "mdi-fire",
-        指揮官機: "mdi-account-alert",
-        モビルファイター: "mdi-hand-back-right-outline",
-        重装甲: "mdi-shield",
-        市街地適正: "mdi-city",
-        森林適正: "mdi-forest",
-        連邦: "mdi-library",
-        ジムタイプ: "mdi-robot-dead-outline",
-        基地適正: "mdi-airport",
-        宇宙適正: "mdi-space-invaders",
-        電脳適正: "mdi-desktop-classic",
-        ジオン: "mdi-foot-print",
-        砂漠適正: "mdi-timer-sand",
-        支援機: "mdi-handshake",
-        寒冷地適正: "mdi-snowflake-alert",
-        量産機: "mdi-account-group",
-        水陸両用: "mdi-pool",
-      };
-      return table;
-    },
     getPowerColor(level) {
       if (level) {
         console.log(level);
@@ -1090,6 +1290,9 @@ export default {
     window.lzbase62 = lzbase62;
     const prefix =
       process.env.NODE_ENV === "production" ? "/vue-gbm-alive/" : "/";
+    Object.values(this.data).forEach((pc) => {
+      pc.installCondition(this);
+    });
     axios
       .get(`${prefix}wiki.json`, {
         responseType: "json",
@@ -1120,5 +1323,9 @@ export default {
   max-width: 60px;
   display: flex;
   flex-direction: column;
+}
+/deep/ .v-text-field.v-text-field--solo.v-input--dense > .v-input__control {
+  max-height: 10px;
+  height: 36px;
 }
 </style>
