@@ -188,6 +188,7 @@ Object.entries(object).forEach(([k, v]) => {
     .replace(/［ゲルググ/ig, '［傑爾古格')
     .replace(/ビーム・?ランス/ig, '光束長槍')
     .replace(/GNソード/ig, 'GN劍')
+    .replace(/イノベイター/ig, '變革者')
     .replace(/敵敵/ig, '敵');
 });
 
