@@ -37,6 +37,7 @@ Object.entries(object).forEach(([k, v]) => {
     .replace(/強化EXskillの?効果/ig, '強化EX效果')
     .replace(/弱体化EXskillの?効果/ig, '弱化EX效果')
     .replace(/敵全機のクールタイムを/ig, '敵全體冷卻')
+    .replace(/EXskillの貫通力/ig, 'EX貫通')
     .replace(/の与ダメージ/ig, '予傷')
     .replace(/%遅延/ig, '%增加')
     .replace(/距離射撃攻撃の威力/ig, '距離射擊威力')
@@ -46,6 +47,7 @@ Object.entries(object).forEach(([k, v]) => {
     .replace(/ビームタイプ射撃武器の/ig, '光束射擊武器')
     .replace(/ビームタイプの攻撃/ig, '光束攻擊')
     .replace(/格闘攻撃の威力(が)?/ig, '格鬥攻擊')
+    .replace(/の被ダメージ/ig, '受傷')
     .replace(/^射擊威力(が)?/ig, '射擊攻擊')
     .replace(/^格闘威力(が)?/ig, '格鬥攻擊')
     .replace(/射擊攻撃の威力(が)?/ig, '射擊攻擊')
@@ -57,6 +59,14 @@ Object.entries(object).forEach(([k, v]) => {
     .replace(/小隊3機全てがSpeedの?時/ig, '小隊皆S屬')
     .replace(/小隊3機全てがTechniqueの?時/ig, '小隊皆T屬')
     .replace(/小隊3機全てがPowerの?時/ig, '小隊皆P屬')
+    .replace(/リカバリ・ツール/ig, '回復工具')
+    .replace(/オフェンスハック/ig, '攻擊駭入')
+    .replace(/コンバットハック/ig, '格鬥駭入')
+    .replace(/ビームハック/ig, '光束駭入')
+    .replace(/拡散ビーム砲/ig, '擴散光束炮')
+    .replace(/目標の敵機の/ig, '鎖定中敵機')
+    .replace(/格攻が/, '格攻')
+    .replace(/コンビネーション/ig, '組合攻擊')
     .replace(/^ダブルサーベル/ig, '雙刀')
     .replace(/^サーベル/ig, '軍刀')
     .replace(/^アックス/ig, '斧')
@@ -129,7 +139,10 @@ Object.entries(object).forEach(([k, v]) => {
     .replace(/敵機との属性相性が有利の?時/ig, '剋屬時')
     .replace(/敵機との属性相性が普通の?時/ig, '敵同屬時')
     .replace(/敵機との属性相性が不利の?時/ig, '被剋時')
+    .replace(/一定時間の間、自機がひるまなくなる/ig, '一定時間內自機不會退縮')
+    .replace(/の確率でひるまない/ig, '機率不會退縮')
     .replace(/ビーム・?サーベル/ig, '光束軍刀')
+    .replace(/ビーム・?セイバー/ig, '光束軍刀')
     .replace(/ビーム・?ライフル/ig, '光束步槍')
     .replace(/シールド［/ig, '盾牌［')
     .replace(/メイス［/ig, '鎚矛［')
@@ -154,9 +167,9 @@ Object.entries(object).forEach(([k, v]) => {
     .replace(/［(.+)］/ig, (x, b, c) => {
       if (object[b] && object[b] !== b) {
         return `［${object[b]}］`
-      } else if (object[`${b}ガンダム`]) {
+      } else if (object[`${b}ガンダム`] && object[`${b}ガンダム`] !== `${b}ガンダム`) {
         return `［${object[`${b}ガンダム`].replace('鋼彈', '')}］`
-      } else if (object[`ガンダム${b}`]) {
+      } else if (object[`ガンダム${b}`] && object[`ガンダム${b}`] !== `ガンダム${b}`) {
         return `［${object[`ガンダム${b}`].replace('鋼彈', '')}］`
       }
       return `［${b}］`;
@@ -164,9 +177,9 @@ Object.entries(object).forEach(([k, v]) => {
     .replace(/［(.+)／/ig, (x, b, c) => {
       if (object[b] && object[b] !== b) {
         return `［${object[b]}／`
-      } else if (object[`${b}ガンダム`]) {
+      } else if (object[`${b}ガンダム`] && object[`${b}ガンダム`] !== `${b}ガンダム`) {
         return `［${object[`${b}ガンダム`].replace('鋼彈', '')}／`
-      } else if (object[`ガンダム${b}`]) {
+      } else if (object[`ガンダム${b}`] && object[`ガンダム${b}`] !== `ガンダム${b}`) {
         return `［${object[`ガンダム${b}`].replace('鋼彈', '')}／`
       }
       return `［${b}／`;
@@ -174,9 +187,9 @@ Object.entries(object).forEach(([k, v]) => {
     .replace(/［(.+)（/ig, (x, b, c) => {
       if (object[b] && object[b] !== b) {
         return `［${object[b]}（`
-      } else if (object[`${b}ガンダム`]) {
+      } else if (object[`${b}ガンダム`] && object[`${b}ガンダム`] !== `${b}ガンダム`) {
         return `［${object[`${b}ガンダム`].replace('鋼彈', '')}（`
-      } else if (object[`ガンダム${b}`]) {
+      } else if (object[`ガンダム${b}`] && object[`ガンダム${b}`] !== `ガンダム${b}`) {
         return `［${object[`ガンダム${b}`].replace('鋼彈', '')}（`
       }
       return `［${b}（`;
@@ -189,6 +202,10 @@ Object.entries(object).forEach(([k, v]) => {
     .replace(/ビーム・?ランス/ig, '光束長槍')
     .replace(/GNソード/ig, 'GN劍')
     .replace(/イノベイター/ig, '變革者')
+    .replace(/ビーム・?マグナム/ig, '光束麥格農步槍')
+    .replace(/ファンネル等の稼働時間/ig, '感應炮類武器啟動時間')
+    .replace(/ラケルタ/ig, '蜥式')
+    .replace(/ファンネル/ig, '感應砲')
     .replace(/敵敵/ig, '敵');
 });
 
