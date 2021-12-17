@@ -97,6 +97,7 @@ Object.entries(object).forEach(([k, v]) => {
     .replace(/^耐久力が/ig, '耐久')
     .replace(/射撃防御力が(\d+)以/ig, (x, b, c) => `射防${b}以`)
     .replace(/格闘防御力が(\d+)以/ig, (x, b, c) => `格防${b}以`)
+    .replace(/耐久力が徐々に(\d+)ずつ/ig, (x, b, c) => `耐久慢慢以${b}`)
     .replace(/以上の時/ig, '以上時')
     .replace(/以下の時/ig, '以下時')
     .replace(/減少し/ig, '減少')
@@ -155,9 +156,38 @@ Object.entries(object).forEach(([k, v]) => {
         return `［${object[b]}］`
       } else if (object[`${b}ガンダム`]) {
         return `［${object[`${b}ガンダム`].replace('鋼彈', '')}］`
+      } else if (object[`ガンダム${b}`]) {
+        return `［${object[`ガンダム${b}`].replace('鋼彈', '')}］`
       }
       return `［${b}］`;
     })
+    .replace(/［(.+)／/ig, (x, b, c) => {
+      if (object[b] && object[b] !== b) {
+        return `［${object[b]}／`
+      } else if (object[`${b}ガンダム`]) {
+        return `［${object[`${b}ガンダム`].replace('鋼彈', '')}／`
+      } else if (object[`ガンダム${b}`]) {
+        return `［${object[`ガンダム${b}`].replace('鋼彈', '')}／`
+      }
+      return `［${b}／`;
+    })
+    .replace(/［(.+)（/ig, (x, b, c) => {
+      if (object[b] && object[b] !== b) {
+        return `［${object[b]}（`
+      } else if (object[`${b}ガンダム`]) {
+        return `［${object[`${b}ガンダム`].replace('鋼彈', '')}（`
+      } else if (object[`ガンダム${b}`]) {
+        return `［${object[`ガンダム${b}`].replace('鋼彈', '')}（`
+      }
+      return `［${b}（`;
+    })
+    .replace(/［ターンレッド］/ig, '［逆紅］')
+    .replace(/［エピオン/ig, '［次代')
+    .replace(/ラミネートアンチビーム/ig, '積層反光束')
+    .replace(/［ナラティブ/ig, '［敘事')
+    .replace(/［ゲルググ/ig, '［傑爾古格')
+    .replace(/ビーム・?ランス/ig, '光束長槍')
+    .replace(/GNソード/ig, 'GN劍')
     .replace(/敵敵/ig, '敵');
 });
 
