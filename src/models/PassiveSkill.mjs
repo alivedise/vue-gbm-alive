@@ -29,6 +29,8 @@ export default class PassiveSkill {
         return env.buff === this.$condition;
       case 'team':
         return env.team === this.$condition;
+      case 'counter':
+        return env.counter === this.$condition;
       case 'misc':
         return true;
       default:
@@ -90,6 +92,11 @@ export default class PassiveSkill {
       this.$condition = team[1];
       this.$conditionType = 'team';
       return;
+    }
+    const counter = /敵機との属性相性が(.*)の時/ig.exec(this.description);
+    if (counter) {
+      this.$condition = counter[1];
+      this.$conditionType = 'counter';
     }
     this.$condition = '';
     this.$conditionType = 'misc';
