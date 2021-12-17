@@ -197,7 +197,7 @@
         >
           <v-expansion-panel>
             <v-expansion-panel-header>
-              總加乘射攻EX威力面板
+              特性總加乘EX威力
             </v-expansion-panel-header>
             <v-expansion-panel-content>
               <v-container>
@@ -246,57 +246,81 @@
                     </v-select>
                   </v-col>
                 </v-row>
-                <v-badge inline color="silver" :content="`=${Math.ceil(calculatedRangeAttack)}*(1+${getSimplifiedSkillAmount().exBoost}%+${getSimplifiedSkillAmount().rangeBoost}%)`">
-                  <h1><v-chip outlined color="red" label small>射擊EX威力</v-chip>{{ accumulatedRangeEX }}</h1>
-                </v-badge>
-                <v-theme-provider
-                  light
-                  v-if="bestCondition"
-                >
-                  <v-alert
-                    border="left"
-                    colored-border
-                    color="orange"
-                    dense
-                  >
-                    <v-container>
-                      <v-row align="center">
-                        <v-btn-toggle class="mr-1"  dense v-model="conditionMap.category" @change="updateUrl" v-if="currentWeaponCategoryConditionList.length">
-                          <v-btn v-for="category in currentWeaponCategoryConditionList" :key="category" :value="category">
-                            {{$t(category)}}
-                          </v-btn>
-                        </v-btn-toggle>
-                        <v-btn-toggle class="mr-1" dense v-model="conditionMap.type" @change="updateUrl">
-                          <v-btn v-for="type in currentAttackTypeList" :key="type" :value="type">
-                            {{$t(type)}}
-                          </v-btn>
-                        </v-btn-toggle>
-                        <v-btn-toggle class="mr-1"  dense v-model="conditionMap.team" @change="updateUrl" v-if="currentTeamList.length" >
-                          <v-btn v-for="team in currentTeamList" :key="team" :value="team">
-                            {{$t(team)}}
-                          </v-btn>
-                        </v-btn-toggle>
-                        <v-btn-toggle class="mr-1"  dense v-model="conditionMap.environment" @change="updateUrl" v-if="currentEnvironmentConditionList.length" >
-                          <v-btn v-for="environment in currentEnvironmentConditionList" :key="environment" :value="environment">
-                            {{$t(environment)}}
-                          </v-btn>
-                        </v-btn-toggle>
-                        <v-btn-toggle class="mr-1"  dense v-if="currentBuffCondition.length" v-model="conditionMap.buff">
-                          <v-btn disabled value="強化状態">
-                            強化時
-                          </v-btn>
-                        </v-btn-toggle>
-                      </v-row>
-                    </v-container>
-                  </v-alert>
-                </v-theme-provider>
-                </h1>
+                <v-row>
+                  <v-badge :class="rangeValueOrder" inline color="silver" :content="`=${Math.ceil(calculatedRangeAttack)}*(1+${getSimplifiedSkillAmount().exBoost}%+${getSimplifiedSkillAmount().rangeBoost}%)`">
+                    <h1>
+                      <v-chip outlined color="red" label small>射EX</v-chip>
+                      {{ accumulatedRangeEX }}
+                    </h1>
+                  </v-badge>
+                  <v-badge :class="meleeValueOrder" inline color="silver" :content="`=${Math.ceil(calculatedMeleeAttack)}*(1+${getSimplifiedSkillAmount().exBoost}%+${getSimplifiedSkillAmount().meleeBoost}%)`">
+                    <h1>
+                      <v-chip outlined color="red" label small>格EX</v-chip>
+                      {{ accumulatedMeleeEX }}
+                    </h1>
+                  </v-badge>
+                </v-row>
+                <v-row>
+                  <v-col cols="12">
+                    <v-theme-provider
+                      light
+                      v-if="bestCondition"
+                    >
+                      <v-alert
+                        border="left"
+                        colored-border
+                        color="orange"
+                        dense
+                      >
+                        <v-container>
+                          <v-row align="center">
+                            <v-btn-toggle class="mr-1"  dense v-model="conditionMap.category" @change="updateUrl" v-if="currentWeaponCategoryConditionList.length">
+                              <v-btn v-for="category in currentWeaponCategoryConditionList" :key="category" :value="category">
+                                {{$t(category)}}
+                              </v-btn>
+                            </v-btn-toggle>
+                            <v-btn-toggle class="mr-1" dense v-model="conditionMap.type" @change="updateUrl">
+                              <v-btn v-for="type in currentAttackTypeList" :key="type" :value="type">
+                                {{$t(type)}}
+                              </v-btn>
+                            </v-btn-toggle>
+                            <v-btn-toggle class="mr-1"  dense v-model="conditionMap.team" @change="updateUrl" v-if="currentTeamList.length" >
+                              <v-btn v-for="team in currentTeamList" :key="team" :value="team">
+                                {{$t(team)}}
+                              </v-btn>
+                            </v-btn-toggle>
+                            <v-btn-toggle class="mr-1"  dense v-model="conditionMap.environment" @change="updateUrl" v-if="currentEnvironmentConditionList.length" >
+                              <v-btn v-for="environment in currentEnvironmentConditionList" :key="environment" :value="environment">
+                                {{$t(environment)}}
+                              </v-btn>
+                            </v-btn-toggle>
+                            <v-btn-toggle class="mr-1"  dense v-if="currentBuffCondition.length" v-model="conditionMap.buff">
+                              <v-btn disabled value="強化状態">
+                                強化時
+                              </v-btn>
+                            </v-btn-toggle>
+                            <v-btn-toggle class="mr-1"  dense v-model="conditionMap.counter" @change="updateUrl" v-if="currentCounterConditionList.length" >
+                              <v-btn v-for="counter in currentCounterConditionList" :key="counter" :value="counter">
+                                {{$t(counter)}}
+                              </v-btn>
+                            </v-btn-toggle>
+                            <v-btn-toggle class="mr-1"  dense v-model="conditionMap.operate" @change="updateUrl" v-if="currentOperateConditionList.length" >
+                              <v-btn v-for="operate in currentOperateConditionList" :key="operate" :value="operate">
+                                {{$t(operate)}}
+                              </v-btn>
+                            </v-btn-toggle>
+                          </v-row>
+                        </v-container>
+                      </v-alert>
+                    </v-theme-provider>
+                  </v-col>
+                </v-row>
                 <v-divider />
                 <br/>
                 <template>
                   <v-container>
                     <v-row>
-                      <v-col cols="3">
+                      <v-col cols="2">
                         <v-badge
                           color="teal"
                           :content="'EX加成'"
@@ -314,7 +338,7 @@
                           </v-progress-circular>
                         </v-badge>
                       </v-col>
-                      <v-col cols="3">
+                      <v-col cols="2">
                         <v-badge
                           color="primary"
                           :content="'射攻加成'"
@@ -332,7 +356,25 @@
                           </v-progress-circular>
                         </v-badge>
                       </v-col>
-                      <v-col cols="3">
+                      <v-col cols="2">
+                      <v-badge
+                          color="secondary"
+                          :content="'格攻加成'"
+                          :offset-x="35"
+                        >
+                          <v-progress-circular
+                            :indeterminate="shouldDisplayBoostLoading"
+                            :rotate="100"
+                            :size="70"
+                            :width="12"
+                            :value="getSimplifiedSkillAmount().meleeBoost"
+                            color="secondary"
+                          >
+                            {{ getSimplifiedSkillAmount().meleeBoost || 0 }}%
+                          </v-progress-circular>
+                        </v-badge>
+                      </v-col>
+                      <v-col cols="2">
                         <v-badge
                           color="green"
                           :content="'初始充能'"
@@ -350,7 +392,7 @@
                           </v-progress-circular>
                         </v-badge>
                       </v-col>
-                      <v-col cols="3">
+                      <v-col cols="2">
                         <v-badge
                           color="purple"
                           :content="'減冷卻'"
@@ -373,25 +415,37 @@
                 </template>
                 <v-divider />
                 <v-container>
+                  <v-progress-linear
+                    v-model="getSimplifiedSkillAmount().effectBoost"
+                    color="amber darken"
+                    height="15"
+                  >
+                    強化效果上升<strong>{{ getSimplifiedSkillAmount().effectBoost }}%</strong>
+                  </v-progress-linear>
                   <v-row>
                     <v-col>
                       <h2>
-                        <v-badge color="secondary" :content="1">
-                          <v-img src="@/assets/i_04.svg" width="20" class="d-inline-flex" />
-                          <v-icon>mdi-arrow-up</v-icon>
-                        </v-badge>
-                        {{ singleBuffRangeEX }}
+                        <v-icon>mdi-arrow-up</v-icon>
+                        <h5>單攻擊強化</h5>
+                        <h4 :class="rangeValueOrder">
+                          <v-img src="@/assets/i_04.svg" width="20" class="d-inline-flex" />{{ singleBuffRangeEX }}
+                        </h4>
+                        <h4 :class="meleeValueOrder">
+                          <v-img src="@/assets/i_03.svg" width="20" class="d-inline-flex" />{{ singleBuffMeleeEX }}
+                        </h4>
                       </h2>
                     </v-col>
                     <v-col>
                       <h2>
-                        <v-badge color="secondary" :content="2">
-                          <v-img src="@/assets/i_04.svg" width="10" class="d-inline-flex" />
-                          <v-img src="@/assets/i_03.svg" width="10" class="d-inline-flex" />
-                          <v-icon>mdi-arrow-up</v-icon>
-                          <v-icon>mdi-arrow-up</v-icon>
-                        </v-badge>
-                        {{ doubleBuffRangeEX }}
+                        <v-icon>mdi-arrow-up</v-icon>
+                        <v-icon>mdi-arrow-up</v-icon>
+                        <h5>雙攻擊強化</h5>
+                        <h4 :class="rangeValueOrder">
+                          <v-img src="@/assets/i_04.svg" width="20" class="d-inline-flex" />{{ doubleBuffRangeEX }}
+                        </h4>
+                        <h4 :class="meleeValueOrder">
+                          <v-img src="@/assets/i_03.svg" width="20" class="d-inline-flex" />{{ doubleBuffMeleeEX }}
+                        </h4>
                       </h2>
                     </v-col>
                   </v-row>
@@ -631,7 +685,7 @@
                   -
                 </v-list-item-subtitle>
               </v-list-item-content>
-              <v-list-item-action width="80px">
+              <v-list-item-action width="80px" @click.stop>
                 <v-badge
                   v-for="(tag, index) in data[value.original].wordTags"
                   :key="index"
@@ -677,6 +731,8 @@ import CONDITION_CATEGORY_DATA from '@/constants/CONDITION_CATEGORY_DATA.json';
 import CONDITION_ATTACK_TYPE_DATA from '@/constants/CONDITION_ATTACK_TYPE_DATA.json';
 import CONDITION_ENVIRONMENT_DATA from '@/constants/CONDITION_ENVIRONMENT_DATA.json';
 import CONDITION_TEAM_DATA from '@/constants/CONDITION_TEAM_DATA.json';
+import CONDITION_COUNTER_DATA from '@/constants/CONDITION_COUNTER_DATA.json';
+import CONDITION_OPERATE_DATA from '@/constants/CONDITION_OPERATE_DATA.json';
 
 function add(a, b) {
   return {
@@ -765,12 +821,23 @@ export default {
       category: '',
       buff: '強化状態',
       armor: '',
+      counter: '',
+      operate: '',
     },
     partsById: {},
     achievementAffectedGearEffectRatio: 1.15,
   }),
 
   computed: {
+    shouldOrderRangeValueFirst() {
+      return this.accumulatedRangeEX >= this.accumulatedMeleeEX;
+    },
+    meleeValueOrder() {
+      return this.shouldOrderRangeValueFirst ? 'order-2' : 'order-1';
+    },
+    rangeValueOrder() {
+      return this.shouldOrderRangeValueFirst ? 'order-1' : 'order-2';
+    },
     shouldDisableJobSelector() {
       return this.data['パイロット'].main.isEmpty;
     },
@@ -778,7 +845,7 @@ export default {
       return this.jobGear.job === 'All-Rounder';
     },
     currentAttackTypeList() {
-      return Object.values(CONDITION_ATTACK_TYPE_DATA).map((c) => c.text);
+      return [...new Set(Object.values(CONDITION_ATTACK_TYPE_DATA).map((c) => c.text))];
     },
     currentWeaponCategoryConditionList() {
       return [...new Set(Object.values(this.data).map((pc) => {
@@ -799,6 +866,16 @@ export default {
       return Object.values(this.data).map((pc) => {
         return pc.activePart.passives;
       }).flat().filter((passive) => passive?.$conditionType === 'buff').map((passive) => (passive.$condition));
+    },
+    currentCounterConditionList() {
+      return [...new Set(Object.values(this.data).map((pc) => {
+        return pc.activePart.passives;
+      }).flat().filter((passive) => passive?.$conditionType === 'counter').map((passive) => (passive.$condition)))];
+    },
+    currentOperateConditionList() {
+      return [...new Set(Object.values(this.data).map((pc) => {
+        return pc.activePart.passives;
+      }).flat().filter((passive) => passive?.$conditionType === 'operate').map((passive) => (passive.$condition)))];
     },
     mappedConditionMap() {
       return {
@@ -835,6 +912,8 @@ export default {
         category: convertArrayToObject(Object.values(CONDITION_CATEGORY_DATA), 'text'),
         team: convertArrayToObject(Object.values(CONDITION_TEAM_DATA), 'text'),
         environment: convertArrayToObject(Object.values(CONDITION_ENVIRONMENT_DATA), 'text'),
+        counter: convertArrayToObject(Object.values(CONDITION_COUNTER_DATA), 'text'),
+        operate: convertArrayToObject(Object.values(CONDITION_OPERATE_DATA), 'text'),
       };
     },
     debugData() {
@@ -869,6 +948,8 @@ export default {
           this.conditionMap.category ? +this.conditionMapByText.category[this.conditionMap.category].id : '',
           this.conditionMap.environment ? +this.conditionMapByText.environment[this.conditionMap.environment].id : '',
           this.conditionMap.team ? +this.conditionMapByText.team[this.conditionMap.team].id : '',
+          this.conditionMap.counter ? +this.conditionMapByText.counter[this.conditionMap.counter].id : '',
+          this.conditionMap.operate ? +this.conditionMapByText.operate[this.conditionMap.operate].id : '',
         ], // extra condition setting
       ];
       return lzbase62.compress(JSON.stringify(data));
@@ -992,15 +1073,24 @@ export default {
     },
     singleBuffRangeEX() {
       return Math.round(
-        1.3 * (1 + this.getSimplifiedSkillAmount().effectBoost / 100) * this.accumulatedRangeEX
+        (1 + 0.3) * (1 + this.getSimplifiedSkillAmount().effectBoost / 100) * this.accumulatedRangeEX,
       );
     },
     doubleBuffRangeEX() {
       return Math.round(
-        2 *
-          1.3 *
-          (1 + this.getSimplifiedSkillAmount().effectBoost / 100) *
-          this.accumulatedRangeEX
+        2 * (1 + 0.3) * (1 + (this.getSimplifiedSkillAmount().effectBoost / 100))
+          * this.accumulatedRangeEX,
+      );
+    },
+    singleBuffMeleeEX() {
+      return Math.round(
+        (1 + 0.3) * (1 + this.getSimplifiedSkillAmount().effectBoost / 100) * this.accumulatedMeleeEX,
+      );
+    },
+    doubleBuffMeleeEX() {
+      return Math.round(
+        2 * (1 + 0.3) * (1 + (this.getSimplifiedSkillAmount().effectBoost / 100))
+          * this.accumulatedMeleeEX,
       );
     },
     singleBuffMeleeEX() {
@@ -1017,10 +1107,12 @@ export default {
       );
     },
     calculatedMeleeAttack() {
-      return (
-        (1 + this.activeWordTagsEffect.meleeAttack / 100) *
-        Object.values(this.data).reduce((a, b) => a + b.meleeAttack, 0)
-      );
+      return (Object.values(this.data).reduce((a, b) => a + b.meleeAttack, 0)
+        + this.jobAffectedMeleeAttack
+        + (this.transformAffectedMeleeAttack || 0)
+        + (this.parameterAffectedMeleeAttack || 0)
+        + this.wordTagGearAffectedMeleeAttack)
+        * this.wordTagGearAffectedMeleeAttackRatio * this.jobAffectedMeleeAttackIncrementedRatio;
     },
     calculatedRangeAttack() {
       return (Object.values(this.data).reduce((a, b) => a + b.rangeAttack, 0)
@@ -1076,6 +1168,50 @@ export default {
     },
     jobAffectedRangeAttack() {
       return this.jobGear.job && this.jobGear.level ? (this.jobMapByText[this.jobGear.job].values[this.jobGear.level - 1]?.rangeAttack || 0) * this.achievementAffectedGearEffectRatio : 0;
+    },
+    // melee
+    jobAffectedMeleeAttackIncrementedRatio() {
+      switch (this.jobGear.job) {
+        case 'In-Fighter':
+        case 'Out-Fighter':
+          return 1.1;
+        default:
+          return 1;
+      }
+    },
+    wordTagGearAffectedMeleeAttackRatio() {
+      if (!this.activeWordTags.length) {
+        return 1;
+      }
+      if (!this.wordTagGear.tag) {
+        return 1;
+      }
+      return this.activeWordTags.reduce((a, current) => {
+        if (current === this.wordTagGear.tag && this.wordTagGear.level) {
+          return a + ((this.TAGGEAR[this.wordTagGear.tag][this.wordTagGear.level - 1][0] / 100) * this.TAG[this.wordTagGear.tag].meleeAttack) / 100;
+        }
+        return a + this.TAG[this.wordTagGear.tag].meleeAttack / 100;
+      }, 1);
+    },
+    wordTagGearAffectedMeleeAttack() {
+      if (!this.activeWordTags.length) {
+        return 0;
+      }
+      if (!this.wordTagGear.tag) {
+        return 0;
+      }
+      if (!this.wordTagGear.level) {
+        return 0;
+      }
+      return this.TAGGEAR[this.wordTagGear.tag][this.wordTagGear.level - 1][1].meleeAttack;
+    },
+    parameterAffectedMeleeAttack() {
+      return this.parameterGear.type && this.parameterGear.level
+          ? (this.parameterMapByText[this.parameterGear.type].values[this.parameterGear.level - 1].meleeAttack || 0)
+          : 0;
+    },
+    jobAffectedMeleeAttack() {
+      return this.jobGear.job && this.jobGear.level ? (this.jobMapByText[this.jobGear.job].values[this.jobGear.level - 1]?.meleeAttack || 0) * this.achievementAffectedGearEffectRatio : 0;
     },
     calculatedMeleeDefense() {
       return Object.values(this.data).reduce((a, b) => a + b.meleeDefense, 0);
@@ -1381,6 +1517,8 @@ export default {
       this.conditionMap.category = data[7][1] !== '' ? CONDITION_CATEGORY_DATA[+data[7][1]]?.text || '' : '';
       this.conditionMap.environment = data[7][2] !== '' ? CONDITION_ENVIRONMENT_DATA[+data[7][2]]?.text || '' : '';
       this.conditionMap.team = data[7][3] !== '' ? CONDITION_TEAM_DATA[+data[7][3]]?.text || '' : '';
+      this.conditionMap.counter = data[7][4] !== '' ? CONDITION_COUNTER_DATA[+data[7][4]]?.text || '' : '';
+      this.conditionMap.operate = data[7][5] !== '' ? CONDITION_OPERATE_DATA[+data[7][5]]?.text || '' : '';
     },
     checkCondition(conditionString, conditions) {
       const [type, condition] = conditionString.split(":");
@@ -1443,6 +1581,11 @@ export default {
     bestFitCondition(part) {
       if (this.jobList.indexOf(this.jobGear.job) < 0) {
         this.jobGear.job = 'All-Rounder';
+      }
+      // auto choose tags
+      if (part && this.data[this.currentPosition].activeWordTags.length === 0) {
+        this.data[this.currentPosition].addWordTag(part.wordTag1);
+        this.data[this.currentPosition].addWordTag(part.wordTag2);
       }
       if (this.activeWordTags.indexOf(this.wordTagGear.tag) < 0) {
         this.wordTagGear.tag = '';

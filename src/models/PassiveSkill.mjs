@@ -13,7 +13,6 @@ export default class PassiveSkill {
   }
 
   verifyCondition(env) {
-    console.log(env);
     switch (this.$conditionType) {
       case 'attribute':
         return this.$condition === env.attribute;
@@ -97,6 +96,13 @@ export default class PassiveSkill {
     if (counter) {
       this.$condition = counter[1];
       this.$conditionType = 'counter';
+      return;
+    }
+    const operate = /自動で操作されている時/ig.exec(this.description);
+    if (operate) {
+      this.$condition = '自動操作時';
+      this.$conditionType = 'operate';
+      return;
     }
     this.$condition = '';
     this.$conditionType = 'misc';
