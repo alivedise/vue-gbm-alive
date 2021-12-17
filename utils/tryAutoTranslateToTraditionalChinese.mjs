@@ -73,6 +73,8 @@ Object.entries(object).forEach(([k, v]) => {
     .replace(/^ガトリングガン/ig, '格林機槍')
     .replace(/味方機が1体撃墜された時/ig, '僚機被擊墜1體時')
     .replace(/の確率で致死攻撃を耐える/ig, '機率免死')
+    .replace(/攻撃がスーパーアーマーを貫通/ig, '攻擊貫通超級裝甲')
+    .replace(/機率で/ig, '機率')
     .replace(/アリーナ出撃時/ig, '競技場時')
     .replace(/^ジョブが/ig, '')
     .replace(/自機が強化状態の時/ig, '強化時')
@@ -113,9 +115,7 @@ Object.entries(object).forEach(([k, v]) => {
     .replace(/^胴体/ig, '胸部')
     .replace(/盾パーツの?/ig, '盾牌零件')
     .replace(/腕パーツの?/ig, '手部零件')
-    .replace(/^腕/ig, '手部')
     .replace(/頭パーツの?/ig, '頭部零件')
-    .replace(/^頭/ig, '頭部')
     .replace(/脚部パーツの?/ig, '腳部零件')
     .replace(/^脚部/ig, '腳部')
     .replace(/パーツの/ig, '零件')
@@ -124,6 +124,40 @@ Object.entries(object).forEach(([k, v]) => {
     .replace(/自動で操作されている時/ig, '自動操作時')
     .replace(/射撃攻撃力が/ig, '射攻')
     .replace(/格闘攻撃力が/ig, '格攻')
+    .replace(/射撃攻撃の威力が?/ig, '射擊攻擊')
+    .replace(/敵機との属性相性が有利の?時/ig, '剋屬時')
+    .replace(/敵機との属性相性が普通の?時/ig, '敵同屬時')
+    .replace(/敵機との属性相性が不利の?時/ig, '被剋時')
+    .replace(/ビーム・?サーベル/ig, '光束軍刀')
+    .replace(/ビーム・?ライフル/ig, '光束步槍')
+    .replace(/シールド［/ig, '盾牌［')
+    .replace(/メイス［/ig, '鎚矛［')
+    .replace(/ザク・?マシンガン/ig, '薩克機關槍')
+    .replace(/ハイパー・?バズーカ/ig, '超絕火箭砲')
+    .replace(/GNバズーカ/ig, 'GN火箭炮')
+    .replace(/対ビーム/ig, '對光束')
+    .replace(/部部/ig, '部')
+    .replace(/EXskill攻撃を受けた後/ig, '受EX攻擊後')
+    .replace(/［リボーンズ］/ig, '［再生］')
+    .replace(/［再生鋼彈］/ig, '［再生］')
+    .replace(/［ヘリオス］/ig, '［太陽神］')
+    .replace(/［太陽神鋼彈］/ig, '［太陽神］')
+    .replace(/［ユニコーン/ig, '［獨角獸')
+    .replace(/［アリオス］/ig, '［墮天使］')
+    .replace(/［アストレア/ig, '［正義女神')
+    .replace(/［フルアーマー/ig, '［全裝甲')
+    .replace(/［デスティニー/ig, '［命運')
+    .replace(/高エネルギー/ig, '高能')
+    .replace(/アームド・アーマー/ig, '武裝戰甲')
+    .replace(/ハイパー・/ig, '超絕')
+    .replace(/［(.+)］/ig, (x, b, c) => {
+      if (object[b] && object[b] !== b) {
+        return `［${object[b]}］`
+      } else if (object[`${b}ガンダム`]) {
+        return `［${object[`${b}ガンダム`].replace('鋼彈', '')}］`
+      }
+      return `［${b}］`;
+    })
     .replace(/敵敵/ig, '敵');
 });
 
