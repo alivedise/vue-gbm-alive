@@ -5,13 +5,14 @@
       color="primary"
       dark
     >
-      <h2 class="d-flex align-center">
-        GBMDB :Revive by @alivedise
-      </h2>
+      <h3 class="d-flex align-center">
+        GBMDB :Revive
+      </h3>
       <v-tabs>
-        <v-tab to="/revive">Parts/零件資料庫</v-tab>
-        <v-tab to="/machines">Machines/機體資料庫</v-tab>
-        <v-tab to="/pilots">Pilots/駕駛資料庫</v-tab>
+        <v-tab to="/revive">零件</v-tab>
+        <v-tab to="/calculator">計算機</v-tab>
+        <v-tab to="/machines">機體</v-tab>
+        <v-tab to="/pilots">駕駛</v-tab>
         <!--v-tab to="/calculator">Calculator/計算機</v-tab-->
       </v-tabs>
 
