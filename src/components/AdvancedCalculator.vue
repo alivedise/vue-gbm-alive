@@ -104,16 +104,6 @@
               ></v-img>
             </div>
           </template>
-          <template v-slot:item.passive1="{ item }">
-            <div class="p-2">
-              {{ $t(item.passive1 || item.skillName) }}
-            </div>
-          </template>
-          <template v-slot:item.passive2="{ item }">
-            <div class="p-2">
-              {{ $t(item.passive2 || item.skillDescription) }}
-            </div>
-          </template>
           <template v-slot:item.position="{ item }">
             <div class="p-2">
               {{$t(item.position) + (item.integrated ? ` ${item.integrated}` : '')}}
@@ -168,6 +158,9 @@
               </v-chip>
             </div>
           </template>
+          <template v-slot:item.passive1="{ item }">
+            {{ $t(item.passive1 || item.skillName) }}
+          </template>
           <template v-slot:item.passive2="{ item }">
             <div v-if="item.skillType" class="p-2">
               <v-tooltip bottom>
@@ -176,11 +169,11 @@
                     {{ $t(item.skillType) }}
                   </v-chip>
                 </template>
-                <span>{{ item.skillDescription }}</span>
+                <span>{{ $t(item.skillDescription) }}</span>
               </v-tooltip>
             </div>
             <div v-else>
-              {{ item.passive2 }}
+              {{ $t(item.passive2) }}
             </div>
           </template>
           <template v-slot:item.wordTag2="{ item }">
