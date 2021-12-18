@@ -23,12 +23,12 @@ const routes = [
   {
     path: '/calculator',
     name: 'AdvacnedCalculator',
-    component: () => import(/* webpackChunkName: "calculator" */ '../components/AdvancedCalculator.vue'),
+    component: () => import(/* webpackChunkName: "calculator" */ '../components/CalculatorContainer.vue'),
     children: [
       {
         path: ':data',
         name: 'AdvacnedCalculatorData',
-        component: () => import(/* webpackChunkName: "calculator" */ '../components/AdvancedCalculator.vue'),
+        component: () => import(/* webpackChunkName: "calculator" */ '../components/CalculatorContainer.vue'),
       },
     ],
   },

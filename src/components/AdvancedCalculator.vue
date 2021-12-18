@@ -770,6 +770,11 @@ const convertArrayToObject = (array, key) => {
 
 export default {
   name: "AdvancedCalculator",
+  props: {
+    machineDataManager: {
+      type: Object,
+    },
+  },
   directives: {
     onClickaway,
   },
@@ -785,6 +790,7 @@ export default {
     loading: true,
     currentPosition: "",
     currentWeaponCategory: "",
+    session: -1,
     headers: [
       { text: "部位", value: "position", sort: false },
       { text: "圖示", value: "image", sortable: false },
@@ -1431,6 +1437,10 @@ export default {
     jobList() {
       return ['All-Rounder'].concat(Object.values(JOB_DATA).filter((job) => (this.data['パイロット'].main.options.aiJob || '').indexOf(job.text) >= 0).map((job) => job.text));
     },
+
+    isCompeletedMachine() {
+      return false;
+    },
   },
 
   watch: {
@@ -1442,7 +1452,12 @@ export default {
   methods: {
     loadLocalData() {
       this.displayLoadLocalData = false;
-      this.updateUrl(window.localStorage.getItem('gbmac-latest-data'));
+      this.$router.replace({
+        name: 'AdvacnedCalculatorData',
+        params: { data: window.localStorage.getItem('gbmac-latest-data') },
+      }, () => {
+        this.loadDataFromURL();
+      });
     },
     getSimplifiedSkillAmount() {
       let result = {
@@ -1482,18 +1497,17 @@ export default {
     getTagID(text) {
       return Object.values(TAG_DATA).find((data) => data.text === text).id;
     },
-    updateUrl(localData) {
+    updateUrl() {
       this.$router.replace({
-        name: "AdvacnedCalculatorData",
-        params: { data: localData || this.urldata },
-      }, () => {
-        if (localData) {
-          this.loadDataFromURL();
-        }
+        name: 'AdvacnedCalculatorData',
+        params: { data: this.urldata },
       });
-      if (!localData) {
-        window.localStorage.setItem('gbmac-latest-data', this.urldata);
-      }
+      window.localStorage.setItem('gbmac-latest-data', this.urldata);
+      this.session = this.isCompeletedMachine && this.machineDataManager && this.machineDataManager.save({
+        machine: this.urldata,
+        id: this.session,
+        preview: `${this.activeAttribute}屬/${this.jobGear.job}/格${this.accumulatedMeleeEX}/射${this.accumulatedRangeEX}/初充${this.getSimplifiedSkillAmount().initialCharge}%/CDR${this.getSimplifiedSkillAmount().cooldownReduction}%`,
+      });
     },
     loadDataFromURL() {
       let { data } = this.$route.params;
