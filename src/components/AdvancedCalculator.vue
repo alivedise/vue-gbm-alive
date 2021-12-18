@@ -1,5 +1,19 @@
 <template>
   <v-container>
+    <v-alert
+      dense
+      text
+      type="success"
+      v-show="displayLoadLocalData"
+    >
+      是否回復上次機體資料？
+      <v-btn @click="loadLocalData">
+        是
+      </v-btn>
+      <v-btn @click="displayLoadLocalData = false;">
+        否
+      </v-btn>
+    </v-alert>
     <v-dialog
       v-model="dialog"
       fullscreen
@@ -247,13 +261,13 @@
                   </v-col>
                 </v-row>
                 <v-row>
-                  <v-badge :class="rangeValueOrder" inline color="silver" :content="`=${Math.ceil(calculatedRangeAttack)}*(1+${getSimplifiedSkillAmount().exBoost}%+${getSimplifiedSkillAmount().rangeBoost}%)`">
+                  <v-badge :class="rangeValueOrder" inline color="silver" :content="`=${Math.ceil(calculatedRangeAttack)}*(1*(${getSimplifiedSkillAmount().exBoost}%+${getSimplifiedSkillAmount().rangeBoost}%))`">
                     <h1>
                       <v-chip outlined color="red" label small>射EX</v-chip>
                       {{ accumulatedRangeEX }}
                     </h1>
                   </v-badge>
-                  <v-badge :class="meleeValueOrder" inline color="silver" :content="`=${Math.ceil(calculatedMeleeAttack)}*(1+${getSimplifiedSkillAmount().exBoost}%+${getSimplifiedSkillAmount().meleeBoost}%)`">
+                  <v-badge :class="meleeValueOrder" inline color="silver" :content="`=${Math.ceil(calculatedMeleeAttack)}*(1*(${getSimplifiedSkillAmount().exBoost}%+${getSimplifiedSkillAmount().meleeBoost}%))`">
                     <h1>
                       <v-chip outlined color="red" label small>格EX</v-chip>
                       {{ accumulatedMeleeEX }}
@@ -826,6 +840,7 @@ export default {
     },
     partsById: {},
     achievementAffectedGearEffectRatio: 1.15,
+    displayLoadLocalData: false,
   }),
 
   computed: {
@@ -1425,6 +1440,10 @@ export default {
   },
 
   methods: {
+    loadLocalData() {
+      this.displayLoadLocalData = false;
+      this.updateUrl(window.localStorage.getItem('gbmac-latest-data'));
+    },
     getSimplifiedSkillAmount() {
       let result = {
         exBoost: 0,
@@ -1463,15 +1482,25 @@ export default {
     getTagID(text) {
       return Object.values(TAG_DATA).find((data) => data.text === text).id;
     },
-    updateUrl() {
+    updateUrl(localData) {
       this.$router.replace({
         name: "AdvacnedCalculatorData",
-        params: { data: this.urldata },
+        params: { data: localData || this.urldata },
+      }, () => {
+        if (localData) {
+          this.loadDataFromURL();
+        }
       });
+      if (!localData) {
+        window.localStorage.setItem('gbmac-latest-data', this.urldata);
+      }
     },
     loadDataFromURL() {
       let { data } = this.$route.params;
       if (!data) {
+        if (window.localStorage.getItem('gbmac-latest-data')) {
+          this.displayLoadLocalData = true;
+        }
         return;
       }
       data = JSON.parse(lzbase62.decompress(data));

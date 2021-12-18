@@ -2,7 +2,6 @@
   <v-app>
     <v-app-bar
       app
-      color="primary"
       dark
     >
       <h3 class="d-flex align-center">
@@ -43,6 +42,7 @@
 </template>
 
 <script>
+
 export default {
   name: 'App',
   mounted() {
