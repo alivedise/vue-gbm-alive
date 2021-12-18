@@ -4,7 +4,7 @@
       dense
       text
       type="success"
-      v-show="displayLoadLocalData"
+      v-show="false"
     >
       是否回復上次機體資料？
       <v-btn @click="loadLocalData">
@@ -1290,6 +1290,9 @@ export default {
         return "無";
       }
     },
+    simplifiedActiveAttribute() {
+      return this.activeAttribute[0];
+    },
     activeWordTags() {
       return Object.entries(this.activeWordTagMap)
         .filter(([, value]) => value >= 5)
@@ -1437,10 +1440,6 @@ export default {
     jobList() {
       return ['All-Rounder'].concat(Object.values(JOB_DATA).filter((job) => (this.data['パイロット'].main.options.aiJob || '').indexOf(job.text) >= 0).map((job) => job.text));
     },
-
-    isCompeletedMachine() {
-      return false;
-    },
   },
 
   watch: {
@@ -1450,8 +1449,23 @@ export default {
   },
 
   methods: {
+    loadMachineData(data) {
+      this.displayLoadLocalData = false;
+      this.session = data.id;
+      this.loading = true;
+      this.$router.replace({
+        params: { data: data.machine },
+      }, () => {
+        this.emptyData();
+        this.$nextTick(() => {
+          this.loadDataFromURL();
+          this.loading = false;
+        });
+      });
+    },
     loadLocalData() {
       this.displayLoadLocalData = false;
+
       this.$router.replace({
         name: 'AdvacnedCalculatorData',
         params: { data: window.localStorage.getItem('gbmac-latest-data') },
@@ -1503,10 +1517,16 @@ export default {
         params: { data: this.urldata },
       });
       window.localStorage.setItem('gbmac-latest-data', this.urldata);
-      this.session = this.isCompeletedMachine && this.machineDataManager && this.machineDataManager.save({
+      this.session = this.machineDataManager && this.machineDataManager.save({
         machine: this.urldata,
         id: this.session,
-        preview: `${this.activeAttribute}屬/${this.jobGear.job}/格${this.accumulatedMeleeEX}/射${this.accumulatedRangeEX}/初充${this.getSimplifiedSkillAmount().initialCharge}%/CDR${this.getSimplifiedSkillAmount().cooldownReduction}%`,
+        preview: `${this.simplifiedActiveAttribute}屬/${this.jobGear.job}/格${this.accumulatedMeleeEX}/射${this.accumulatedRangeEX}/初充${this.getSimplifiedSkillAmount().initialCharge}%/CDR${this.getSimplifiedSkillAmount().cooldownReduction}%`,
+      });
+    },
+    emptyData() {
+      Object.values(this.data).forEach((pc) => {
+        pc.main.reset();
+        pc.sub.reset();
       });
     },
     loadDataFromURL() {

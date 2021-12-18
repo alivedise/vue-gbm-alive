@@ -1,11 +1,11 @@
 export default class MachineDataManager {
-  MAX_SLOT = 10;
+  MAX_SLOT = 12;
 
   PREFIX = 'gbmac-machine-';
 
   constructor() {
     this.$machines = [];
-    // this.getMachineList();
+    this.getMachineList();
   }
 
   getMachineList() {
@@ -14,6 +14,13 @@ export default class MachineDataManager {
       if (machine) {
         this.$machines.push(JSON.parse(machine));
       }
+    });
+  }
+
+  clear() {
+    this.$machines = [];
+    new Array(this.MAX_SLOT).fill('x').some((_, i) => {
+      window.localStorage.removeItem(`${this.PREFIX}${i}`);
     });
   }
 

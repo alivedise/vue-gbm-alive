@@ -1,7 +1,7 @@
 <template>
   <v-container>
-    <SavedMachineList :machineDataManager="machineDataManager" />
-    <AdvancedCalculator :machineDataManager="machineDataManager" />
+    <SavedMachineList :machineDataManager="machineDataManager" @load="load" />
+    <AdvancedCalculator ref="calculator" :machineDataManager="machineDataManager" />
   </v-container>
 </template>
 
@@ -21,6 +21,11 @@ export default {
       machineDataManager: new MachineDataManager(),
     };
   },
+  methods: {
+    load(data) {
+      this.$refs.calculator.loadMachineData(data);
+    },
+  }
 }
 </script>
 
