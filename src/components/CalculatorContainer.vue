@@ -1,7 +1,7 @@
 <template>
   <v-container>
-    <SavedMachineList :machineDataManager="machineDataManager" @load="load" />
-    <AdvancedCalculator ref="calculator" :machineDataManager="machineDataManager" />
+    <SavedMachineList ref="list" :machineDataManager="machineDataManager" @load="load" />
+    <AdvancedCalculator ref="calculator" :machineDataManager="machineDataManager" @active="setActive" />
   </v-container>
 </template>
 
@@ -24,6 +24,9 @@ export default {
   methods: {
     load(data) {
       this.$refs.calculator.loadMachineData(data);
+    },
+    setActive(active) {
+      this.$refs.list.active = active;
     },
   }
 }

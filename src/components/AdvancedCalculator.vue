@@ -4,7 +4,7 @@
       dense
       text
       type="success"
-      v-show="false"
+      v-show="displayLoadLocalData"
     >
       是否回復上次機體資料？
       <v-btn @click="loadLocalData">
@@ -1454,6 +1454,7 @@ export default {
       this.session = data.id;
       this.loading = true;
       this.$router.replace({
+        name: 'AdvacnedCalculatorData',
         params: { data: data.machine },
       }, () => {
         this.emptyData();
@@ -1465,12 +1466,14 @@ export default {
     },
     loadLocalData() {
       this.displayLoadLocalData = false;
+      this.session = +window.localStorage.getItem('gbmac-latest-id');
 
       this.$router.replace({
         name: 'AdvacnedCalculatorData',
         params: { data: window.localStorage.getItem('gbmac-latest-data') },
       }, () => {
         this.loadDataFromURL();
+        this.$emit('active', this.session);
       });
     },
     getSimplifiedSkillAmount() {
@@ -1522,6 +1525,7 @@ export default {
         id: this.session,
         preview: `${this.simplifiedActiveAttribute}屬/${this.jobGear.job}/格${this.accumulatedMeleeEX}/射${this.accumulatedRangeEX}/初充${this.getSimplifiedSkillAmount().initialCharge}%/CDR${this.getSimplifiedSkillAmount().cooldownReduction}%`,
       });
+      window.localStorage.setItem('gbmac-latest-id', this.session);
     },
     emptyData() {
       Object.values(this.data).forEach((pc) => {
