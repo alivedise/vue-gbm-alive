@@ -11,7 +11,7 @@
         >
           <v-card height="150px">
             <v-container class="image-container">
-              <v-img height="auto" :src="machine.icon">
+              <AppCacheImage height="auto" :src="machine.icon">
                 <v-app-bar flat color="rgba(0, 0, 0, 0)">
                   <v-app-bar-nav-icon color="white"></v-app-bar-nav-icon>
 
@@ -31,7 +31,7 @@
                     <v-icon>mdi-dots-vertical</v-icon>
                   </v-btn>
                 </v-app-bar>
-              </v-img>
+              </AppCacheImage>
             </v-container>
             <v-chip class="ma-2 machine-name" color="primary" label>
               <v-icon left>
@@ -48,9 +48,14 @@
 
 <script>
 import axios from 'axios';
+import AppCacheImage from '@/components/AppCacheImage.vue';
 
 export default {
   name: 'MachineDatabase',
+
+  components: {
+    AppCacheImage,
+  },
 
   data: () => ({
     search: '',

@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-btn v-if="$vuetify.breakpoint.mobile"
+    <v-btn
       width="100%"
       @click.stop="showDrawer"
       v-show="machineDataManager.machines.length"

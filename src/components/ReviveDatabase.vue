@@ -90,12 +90,12 @@
       >
         <template v-slot:item.image="{ item }">
           <div class="p-2">
-            <v-img
+            <AppCacheImage
               :src="item.icon"
               :alt="item.machineName"
               height="30px"
               width="30px"
-            ></v-img>
+            />
           </div>
         </template>
         <template v-slot:item.position="{ item }">
@@ -185,9 +185,14 @@
 <script>
 import axios from "axios";
 import POSITION from "@/constants/position";
+import AppCacheImage from '@/components/AppCacheImage.vue';
 
 export default {
   name: "ReviveDatabase",
+
+  components: {
+    AppCacheImage,
+  },
 
   data: () => ({
     search: "",

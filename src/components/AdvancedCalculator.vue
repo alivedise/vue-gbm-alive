@@ -110,12 +110,12 @@
         >
           <template v-slot:item.image="{ item }">
             <div class="p-2">
-              <v-img
+              <AppCacheImage
                 :src="item.icon"
                 :alt="item.machineName"
                 height="30px"
                 width="30px"
-              ></v-img>
+              />
             </div>
           </template>
           <template v-slot:item.position="{ item }">
@@ -615,14 +615,17 @@
               @click.stop="updatePosition(value.original)"
             >
               <v-list-item-icon>
-                <v-img
+                <AppCacheImage
+                  v-if="!data[value.original].isEmpty"
                   height="30px"
                   width="30px"
-                  :src="
-                    data[value.original].isEmpty
-                      ? value.icon
-                      : data[value.original].main.icon
-                  "
+                  :src="data[value.original].main.icon"
+                />
+                <v-img
+                  v-else
+                  height="30px"
+                  width="30px"
+                  :src="value.icon"
                 />
               </v-list-item-icon>
               <v-list-item-content>
@@ -747,6 +750,7 @@ import CONDITION_ENVIRONMENT_DATA from '@/constants/CONDITION_ENVIRONMENT_DATA.j
 import CONDITION_TEAM_DATA from '@/constants/CONDITION_TEAM_DATA.json';
 import CONDITION_COUNTER_DATA from '@/constants/CONDITION_COUNTER_DATA.json';
 import CONDITION_OPERATE_DATA from '@/constants/CONDITION_OPERATE_DATA.json';
+import AppCacheImage from '@/components/AppCacheImage.vue';
 
 function add(a, b) {
   return {
@@ -777,6 +781,9 @@ export default {
   },
   directives: {
     onClickaway,
+  },
+  components: {
+    AppCacheImage,
   },
   data: () => ({
     labelFilter: [],
@@ -1094,37 +1101,24 @@ export default {
     },
     singleBuffRangeEX() {
       return Math.round(
-        (1 + 0.3) * (1 + this.getSimplifiedSkillAmount().effectBoost / 100) * this.accumulatedRangeEX,
+        (1 + 0.3 * (1 + this.getSimplifiedSkillAmount().effectBoost / 100)) * this.accumulatedRangeEX,
       );
     },
     doubleBuffRangeEX() {
       return Math.round(
-        2 * (1 + 0.3) * (1 + (this.getSimplifiedSkillAmount().effectBoost / 100))
+        (1 + (0.3 * (1 + (this.getSimplifiedSkillAmount().effectBoost / 100))) * (1 + (0.3 * (1 + (this.getSimplifiedSkillAmount().effectBoost / 100)))))
           * this.accumulatedRangeEX,
       );
     },
     singleBuffMeleeEX() {
       return Math.round(
-        (1 + 0.3) * (1 + this.getSimplifiedSkillAmount().effectBoost / 100) * this.accumulatedMeleeEX,
+        (1 + 0.3 * (1 + this.getSimplifiedSkillAmount().effectBoost / 100)) * this.accumulatedMeleeEX,
       );
     },
     doubleBuffMeleeEX() {
       return Math.round(
-        2 * (1 + 0.3) * (1 + (this.getSimplifiedSkillAmount().effectBoost / 100))
+        (1 + (0.3 * (1 + (this.getSimplifiedSkillAmount().effectBoost / 100))) * (1 + (0.3 * (1 + (this.getSimplifiedSkillAmount().effectBoost / 100)))))
           * this.accumulatedMeleeEX,
-      );
-    },
-    singleBuffMeleeEX() {
-      return Math.round(
-        1.3 * (1 + this.bestAmount.effectBoost / 100) * this.accumulatedMeleeEX
-      );
-    },
-    doubleBuffMeleeEX() {
-      return Math.round(
-        2 *
-          1.3 *
-          (1 + this.bestAmount.effectBoost / 100) *
-          this.accumulatedMeleeEX
       );
     },
     calculatedMeleeAttack() {

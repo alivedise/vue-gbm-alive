@@ -1,11 +1,8 @@
 <template>
   <v-navigation-drawer
-    :expand-on-hover="!$vuetify.breakpoint.mobile"
     v-model="drawer"
     absolute
-    :permanent="!$vuetify.breakpoint.mobile"
-    :mini-variant-width="66"
-    :temporary="$vuetify.breakpoint.mobile"
+    temporary
     :style="{ 'z-index': 9999 }"
     v-show="machineDataManager.machines.length"
   >
