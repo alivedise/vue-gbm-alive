@@ -356,102 +356,10 @@
                 </v-row>
                 <v-divider />
                 <br/>
-                <template>
-                  <v-container>
-                    <v-row>
-                      <v-col cols="2">
-                        <v-badge
-                          color="teal"
-                          :content="'EX加成'"
-                          :offset-x="35"
-                        >
-                          <v-progress-circular
-                            :indeterminate="shouldDisplayBoostLoading"
-                            :rotate="90"
-                            :size="70"
-                            :width="12"
-                            :value="getSimplifiedSkillAmount().exBoost"
-                            color="teal"
-                          >
-                            {{ getSimplifiedSkillAmount().exBoost || 0 }}%
-                          </v-progress-circular>
-                        </v-badge>
-                      </v-col>
-                      <v-col cols="2">
-                        <v-badge
-                          color="primary"
-                          :content="'射攻加成'"
-                          :offset-x="35"
-                        >
-                          <v-progress-circular
-                            :indeterminate="shouldDisplayBoostLoading"
-                            :rotate="360"
-                            :size="70"
-                            :width="12"
-                            :value="getSimplifiedSkillAmount().rangeBoost"
-                            color="primary"
-                          >
-                            {{ getSimplifiedSkillAmount().rangeBoost || 0 }}%
-                          </v-progress-circular>
-                        </v-badge>
-                      </v-col>
-                      <v-col cols="2">
-                      <v-badge
-                          color="secondary"
-                          :content="'格攻加成'"
-                          :offset-x="35"
-                        >
-                          <v-progress-circular
-                            :indeterminate="shouldDisplayBoostLoading"
-                            :rotate="100"
-                            :size="70"
-                            :width="12"
-                            :value="getSimplifiedSkillAmount().meleeBoost"
-                            color="secondary"
-                          >
-                            {{ getSimplifiedSkillAmount().meleeBoost || 0 }}%
-                          </v-progress-circular>
-                        </v-badge>
-                      </v-col>
-                      <v-col cols="2">
-                        <v-badge
-                          color="green"
-                          :content="'初始充能'"
-                          :offset-x="35"
-                        >
-                          <v-progress-circular
-                            :indeterminate="shouldDisplayBoostLoading"
-                            :rotate="180"
-                            :size="70"
-                            :width="12"
-                            :value="getSimplifiedSkillAmount().initialCharge || 0"
-                            color="green"
-                          >
-                            {{ getSimplifiedSkillAmount().initialCharge || 0}}%
-                          </v-progress-circular>
-                        </v-badge>
-                      </v-col>
-                      <v-col cols="2">
-                        <v-badge
-                          color="purple"
-                          :content="'減冷卻'"
-                          :offset-x="35"
-                        >
-                          <v-progress-circular
-                            :indeterminate="shouldDisplayBoostLoading"
-                            :rotate="270"
-                            :size="70"
-                            :width="12"
-                            :value="getSimplifiedSkillAmount().cooldownReduction"
-                            color="purple"
-                          >
-                            {{ getSimplifiedSkillAmount().cooldownReduction || 0 }}%
-                          </v-progress-circular>
-                        </v-badge>
-                      </v-col>
-                    </v-row>
-                  </v-container>
-                </template>
+                <SkillBoostVisualGroup
+                  :indeterminate="shouldDisplayBoostLoading"
+                  :boost="getSimplifiedSkillAmount()"
+                />
                 <v-divider />
                 <v-container>
                   <v-progress-linear
@@ -776,6 +684,7 @@ import CONDITION_TEAM_DATA from '@/constants/CONDITION_TEAM_DATA.json';
 import CONDITION_COUNTER_DATA from '@/constants/CONDITION_COUNTER_DATA.json';
 import CONDITION_OPERATE_DATA from '@/constants/CONDITION_OPERATE_DATA.json';
 import AppCacheImage from '@/components/AppCacheImage.vue';
+import SkillBoostVisualGroup from '@/components/SkillBoostVisualGroup.vue';
 
 function add(a, b) {
   return {
@@ -809,6 +718,7 @@ export default {
   },
   components: {
     AppCacheImage,
+    SkillBoostVisualGroup,
   },
   data: () => ({
     tagFilter: ['', ''],

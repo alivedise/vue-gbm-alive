@@ -13,7 +13,7 @@
       <v-list-item :class="{
         primary: active === machine.id,
       }" link v-for="machine in machineDataManager.machines" :key="machine.id" @click="load(machine)">
-        <v-list-item-icon v-show="!$vuetify.breakpoint.mobile">
+        <v-list-item-icon>
           <v-chip class="job text-center" small label :class="{
             primary: active === machine.id,
           }">
