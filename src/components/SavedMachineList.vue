@@ -1,7 +1,13 @@
 <template>
-  <v-navigation-drawer permanent expand-on-hover absolute
+  <v-navigation-drawer
+    :expand-on-hover="!$vuetify.breakpoint.mobile"
+    v-model="drawer"
+    absolute
+    :permanent="!$vuetify.breakpoint.mobile"
     :mini-variant-width="66"
+    :temporary="$vuetify.breakpoint.mobile"
     v-show="machineDataManager.machines.length"
+    :style="{ 'z-index': 9999 }"
   >
     <v-list
       nav
@@ -31,6 +37,9 @@ export default {
     machineDataManager: {
       type: Object,
     },
+    drawer: {
+      type: Boolean,
+    }
   },
   data() {
     return {
