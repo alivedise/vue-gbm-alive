@@ -361,42 +361,11 @@
                   :boost="getSimplifiedSkillAmount()"
                 />
                 <v-divider />
-                <v-container>
-                  <v-progress-linear
-                    v-model="getSimplifiedSkillAmount().effectBoost"
-                    color="amber darken"
-                    height="15"
-                  >
-                    強化效果上升<strong>{{ getSimplifiedSkillAmount().effectBoost }}%</strong>
-                  </v-progress-linear>
-                  <v-row>
-                    <v-col>
-                      <h2>
-                        <v-icon>mdi-arrow-up</v-icon>
-                        <h5>單攻擊強化</h5>
-                        <h4 :class="rangeValueOrder">
-                          <v-img src="@/assets/i_04.svg" width="20" class="d-inline-flex" />{{ singleBuffRangeEX }}
-                        </h4>
-                        <h4 :class="meleeValueOrder">
-                          <v-img src="@/assets/i_03.svg" width="20" class="d-inline-flex" />{{ singleBuffMeleeEX }}
-                        </h4>
-                      </h2>
-                    </v-col>
-                    <v-col>
-                      <h2>
-                        <v-icon>mdi-arrow-up</v-icon>
-                        <v-icon>mdi-arrow-up</v-icon>
-                        <h5>雙攻擊強化</h5>
-                        <h4 :class="rangeValueOrder">
-                          <v-img src="@/assets/i_04.svg" width="20" class="d-inline-flex" />{{ doubleBuffRangeEX }}
-                        </h4>
-                        <h4 :class="meleeValueOrder">
-                          <v-img src="@/assets/i_03.svg" width="20" class="d-inline-flex" />{{ doubleBuffMeleeEX }}
-                        </h4>
-                      </h2>
-                    </v-col>
-                  </v-row>
-                </v-container>
+                <BuffBoostDisplay
+                  :boost="getSimplifiedSkillAmount().effectBoost"
+                  :range="accumulatedRangeEX"
+                  :melee="accumulatedMeleeEX"
+                />
               </v-container>
             </v-expansion-panel-content>
           </v-expansion-panel>
@@ -685,6 +654,7 @@ import CONDITION_COUNTER_DATA from '@/constants/CONDITION_COUNTER_DATA.json';
 import CONDITION_OPERATE_DATA from '@/constants/CONDITION_OPERATE_DATA.json';
 import AppCacheImage from '@/components/AppCacheImage.vue';
 import SkillBoostVisualGroup from '@/components/SkillBoostVisualGroup.vue';
+import BuffBoostDisplay from '@/components/BuffBoostDisplay.vue';
 
 function add(a, b) {
   return {
@@ -719,6 +689,7 @@ export default {
   components: {
     AppCacheImage,
     SkillBoostVisualGroup,
+    BuffBoostDisplay,
   },
   data: () => ({
     tagFilter: ['', ''],
@@ -1033,28 +1004,6 @@ export default {
       return Math.round(
         (1 + (this.getSimplifiedSkillAmount().meleeBoost + this.getSimplifiedSkillAmount().exBoost) / 100) *
           this.calculatedMeleeAttack
-      );
-    },
-    singleBuffRangeEX() {
-      return Math.round(
-        (1 + 0.3 * (1 + this.getSimplifiedSkillAmount().effectBoost / 100)) * this.accumulatedRangeEX,
-      );
-    },
-    doubleBuffRangeEX() {
-      return Math.round(
-        (1 + (0.3 * (1 + (this.getSimplifiedSkillAmount().effectBoost / 100))) * (1 + (0.3 * (1 + (this.getSimplifiedSkillAmount().effectBoost / 100)))))
-          * this.accumulatedRangeEX,
-      );
-    },
-    singleBuffMeleeEX() {
-      return Math.round(
-        (1 + 0.3 * (1 + this.getSimplifiedSkillAmount().effectBoost / 100)) * this.accumulatedMeleeEX,
-      );
-    },
-    doubleBuffMeleeEX() {
-      return Math.round(
-        (1 + (0.3 * (1 + (this.getSimplifiedSkillAmount().effectBoost / 100))) * (1 + (0.3 * (1 + (this.getSimplifiedSkillAmount().effectBoost / 100)))))
-          * this.accumulatedMeleeEX,
       );
     },
     calculatedMeleeAttack() {
