@@ -6,8 +6,8 @@
     :permanent="!$vuetify.breakpoint.mobile"
     :mini-variant-width="66"
     :temporary="$vuetify.breakpoint.mobile"
-    v-show="machineDataManager.machines.length"
     :style="{ 'z-index': 9999 }"
+    v-show="machineDataManager.machines.length"
   >
     <v-list
       nav
@@ -16,8 +16,10 @@
       <v-list-item :class="{
         primary: active === machine.id,
       }" link v-for="machine in machineDataManager.machines" :key="machine.id" @click="load(machine)">
-        <v-list-item-icon>
-          <v-chip class="job text-center" small label>
+        <v-list-item-icon v-show="!$vuetify.breakpoint.mobile">
+          <v-chip class="job text-center" small label :class="{
+            primary: active === machine.id,
+          }">
             {{ machine.preview.split('/')[1][0] }}
           </v-chip>
         </v-list-item-icon>
@@ -48,6 +50,11 @@ export default {
   },
   methods: {
     load(machine) {
+      this.drawer = false;
+      if (this.active === machine.id) {
+        this.$emit('close');
+        return;
+      }
       this.active = machine.id;
       this.$emit('load', machine);
     },

@@ -1,9 +1,19 @@
 <template>
   <v-container>
-    <v-btn v-if="$vuetify.breakpoint.mobile" width="100%" @click.stop="drawer = !drawer">
+    <v-btn v-if="$vuetify.breakpoint.mobile"
+      width="100%"
+      @click.stop="drawer = !drawer"
+      v-show="machineDataManager.machines.length"
+    >
       已儲存機體列表
     </v-btn>
-    <SavedMachineList :drawer="drawer" ref="list" :machineDataManager="machineDataManager" @load="load" />
+    <SavedMachineList
+      :drawer="drawer"
+      ref="list"
+      :machineDataManager="machineDataManager"
+      @load="load"
+      @close="drawer = false"
+    />
     <AdvancedCalculator ref="calculator" :machineDataManager="machineDataManager" @active="setActive" />
   </v-container>
 </template>
