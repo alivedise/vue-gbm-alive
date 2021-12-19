@@ -39,13 +39,11 @@ export default {
     machineDataManager: {
       type: Object,
     },
-    drawer: {
-      type: Boolean,
-    }
   },
   data() {
     return {
       active: -1,
+      drawer: false,
     }
   },
   methods: {

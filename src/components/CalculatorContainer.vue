@@ -2,7 +2,7 @@
   <v-container>
     <v-btn v-if="$vuetify.breakpoint.mobile"
       width="100%"
-      @click.stop="drawer = !drawer"
+      @click.stop="showDrawer"
       v-show="machineDataManager.machines.length"
     >
       已儲存機體列表
@@ -12,7 +12,6 @@
       ref="list"
       :machineDataManager="machineDataManager"
       @load="load"
-      @close="drawer = false"
     />
     <AdvancedCalculator ref="calculator" :machineDataManager="machineDataManager" @active="setActive" />
   </v-container>
@@ -36,8 +35,10 @@ export default {
     };
   },
   methods: {
+    showDrawer() {
+      this.$refs.list.drawer = true;
+    },
     load(data) {
-      this.drawer = false;
       this.$refs.calculator.loadMachineData(data);
     },
     setActive(active) {

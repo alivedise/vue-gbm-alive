@@ -1452,6 +1452,9 @@ export default {
     loadMachineData(data) {
       this.displayLoadLocalData = false;
       this.session = data.id;
+      if (this.urldata === data.machine) {
+        return;
+      }
       this.loading = true;
       this.$router.replace({
         name: 'AdvacnedCalculatorData',
@@ -1536,7 +1539,7 @@ export default {
     loadDataFromURL() {
       let { data } = this.$route.params;
       if (!data) {
-        if (window.localStorage.getItem('gbmac-latest-data')) {
+        if (window.localStorage.getItem('gbmac-latest-id')) {
           this.displayLoadLocalData = true;
         }
         return;
