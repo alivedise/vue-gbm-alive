@@ -55,6 +55,9 @@ export default class PartCombinator {
     if (this.activeWordTags.length === 2) {
       this.activeWordTags.shift();
     }
+    if (this.activeWordTags.indexOf(tag) >= 0) {
+      return;
+    }
     this.activeWordTags.push(tag);
   }
 
@@ -100,6 +103,20 @@ export default class PartCombinator {
     } else {
       this.sub = part;
     }
+    this.resetActiveWordTags();
+    if (!part.wordTag1 && !this.main.wordTag1) {
+      return;
+    }
+    if (this.activeWordTags.length < 2) {
+      this.addWordTag(part.wordTag1 || this.main.wordTag1);
+    }
+    if (this.activeWordTags.length < 2) {
+      this.addWordTag(part.wordTag2 || this.main.wordTag2);
+    }
+  }
+
+  resetActiveWordTags() {
+    this.activeWordTags = this.activeWordTags.filter((tag) => this.wordTags.indexOf(tag) >= 0);
   }
 
   get main() {

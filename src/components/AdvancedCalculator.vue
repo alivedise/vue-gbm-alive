@@ -95,6 +95,31 @@
                 </v-chip>
               </v-chip-group>
             </v-col>
+            <!--v-col cols="2">
+              <v-select
+                :items="Object.values(tagMapByText)"
+                v-model="tagFilter[0]"
+                dense
+                solo
+              >
+                <template slot="label">
+                  詞彙
+                </template>
+                <template v-slot:selection="{ item }">
+                  <span class="d-flex justify-center" style="width: 100%;">
+                    {{ $t(item.text) }}
+                  </span>
+                </template>
+                <template v-slot:item="{ item }">
+                  <span class="d-flex justify-center" style="width: 100%;">
+                    {{ $t(item.text) }}
+                  </span>
+                </template>
+              </v-select>
+              <v-icon v-if="tagFilter[0]" @click="tagFilter[0] = ''">
+                mdi-close
+              </v-icon>
+            </v-col-->
           </v-row>
         </v-container>
         <v-data-table
@@ -786,6 +811,7 @@ export default {
     AppCacheImage,
   },
   data: () => ({
+    tagFilter: ['', ''],
     labelFilter: [],
     dialog: false,
     linearMode: false,
@@ -1389,6 +1415,9 @@ export default {
           a = a.filter((i) => i.cooldownReduction && !i.oneTimeCooldownReduction);
         }
       }
+      if (this.tagFilter[0]) {
+        a = a.filter((i) => i.wordTag1 === this.tagFilter[0] || i.wordTag2 === this.tagFilter[0]);
+      }
       const map = {};
       a.forEach((part) => {
         if (!map[part.position]) {
@@ -1503,6 +1532,9 @@ export default {
       this.dialog = false;
       this.currentPosition = "";
       this.currentWeaponCategory = '';
+      this.tagFilter[0] = '';
+      this.tagFilter[1] = '';
+      this.labelFilter = [];
       this.search = "";
     },
     getTagIcon(text) {
@@ -1637,6 +1669,7 @@ export default {
       }
     },
     selectPart(part) {
+      this.displayLoadLocalData = false;
       this.data[this.currentPosition].insert(part);
       this.bestFitCondition(part);
       this.closeTable();
@@ -1645,11 +1678,6 @@ export default {
     bestFitCondition(part) {
       if (this.jobList.indexOf(this.jobGear.job) < 0) {
         this.jobGear.job = 'All-Rounder';
-      }
-      // auto choose tags
-      if (part && this.data[this.currentPosition].activeWordTags.length === 0) {
-        this.data[this.currentPosition].addWordTag(part.wordTag1);
-        this.data[this.currentPosition].addWordTag(part.wordTag2);
       }
       if (this.activeWordTags.indexOf(this.wordTagGear.tag) < 0) {
         this.wordTagGear.tag = '';
@@ -1771,5 +1799,9 @@ export default {
 /deep/ .v-text-field.v-text-field--solo.v-input--dense > .v-input__control {
   max-height: 10px;
   height: 36px;
+}
+.scroll {
+  height:200px;/* or any height you want */
+  overflow-y:auto
 }
 </style>
