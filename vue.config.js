@@ -33,7 +33,7 @@ module.exports = {
           },
         },
       }, {
-        urlPattern: new RegExp('images'),
+        urlPattern: new RegExp('jpg|png'),
         handler: 'cacheFirst',
         options: {
           cacheName: 'wiki-cache',
