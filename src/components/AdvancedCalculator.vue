@@ -20,213 +20,16 @@
       hide-overlay
       transition="dialog-bottom-transition"
     >
-      <v-card>
-        <v-toolbar
-          dark
-          color="primary"
-        >
-          <v-btn
-            icon
-            dark
-            @click="closeTable"
-          >
-            <v-icon>mdi-close</v-icon>
-          </v-btn>
-          <v-toolbar-title>Click a part to choose it</v-toolbar-title>
-          <v-spacer></v-spacer>
-        </v-toolbar>
-        <v-container>
-          <v-row>
-            <v-col
-              cols="12"
-              sm="6"
-              md="3"
-            >
-              <v-text-field
-                v-model="search"
-                append-icon="mdi-magnify"
-                label="Search name"
-                single-line
-                hide-details
-              />
-            </v-col>
-            <v-col
-              cols="12"
-              sm="6"
-              md="3"
-            >
-              <v-chip-group
-                v-model="labelFilter"
-                @change="updateQuery"
-                column
-                multiple
-              >
-                <v-chip
-                  filter
-                  outlined
-                >
-                  雙重威力提升
-                </v-chip>
-                <v-chip
-                  filter
-                  outlined
-                  v-show="doubleBoost"
-                >
-                  特定部件威力提升
-                </v-chip>
-                <v-chip
-                  filter
-                  outlined
-                >
-                  初始充能
-                </v-chip>
-                <v-chip
-                  filter
-                  outlined
-                >
-                  冷卻時間
-                </v-chip>
-                <v-chip
-                  filter
-                  outlined
-                  v-show="cooldownReduction"
-                >
-                  僅限1次-冷卻
-                </v-chip>
-              </v-chip-group>
-            </v-col>
-            <!--v-col cols="2">
-              <v-select
-                :items="Object.values(tagMapByText)"
-                v-model="tagFilter[0]"
-                dense
-                solo
-              >
-                <template slot="label">
-                  詞彙
-                </template>
-                <template v-slot:selection="{ item }">
-                  <span class="d-flex justify-center" style="width: 100%;">
-                    {{ $t(item.text) }}
-                  </span>
-                </template>
-                <template v-slot:item="{ item }">
-                  <span class="d-flex justify-center" style="width: 100%;">
-                    {{ $t(item.text) }}
-                  </span>
-                </template>
-              </v-select>
-              <v-icon v-if="tagFilter[0]" @click="tagFilter[0] = ''">
-                mdi-close
-              </v-icon>
-            </v-col-->
-          </v-row>
-        </v-container>
-        <v-data-table
-          :headers="headers"
-          :items="mappedParts[currentPosition]"
-          :items-per-page="20"
-          item-key="key"
-          class="elevation-1"
-          :search="search"
-          :sort-by="'addTime'"
-          :sort-desc="true"
-          @click:row="selectPart"
-        >
-          <template v-slot:item.image="{ item }">
-            <div class="p-2">
-              <AppCacheImage
-                :src="item.icon"
-                :alt="item.machineName"
-                height="30px"
-                width="30px"
-              />
-            </div>
-          </template>
-          <template v-slot:item.position="{ item }">
-            <div class="p-2">
-              {{$t(item.position) + (item.integrated ? ` ${item.integrated}` : '')}}
-            </div>
-          </template>
-          <template v-slot:item.power="{ item }">
-            <div class="p-2">
-              <v-chip
-                v-if="item.power"
-                class="ma-2"
-                :color="getPowerColor(item.power)"
-                text-color="white"
-              >
-                {{ item.power }}
-              </v-chip>
-            </div>
-          </template>
-          <template v-slot:item.pierce="{ item }">
-            <div class="p-2">
-              <v-chip
-                v-if="item.pierce"
-                class="ma-2"
-                :color="getPowerColor(item.pierce)"
-                outlined
-              >
-                {{ item.pierce }}
-              </v-chip>
-            </div>
-          </template>
-          <template v-slot:item.machineName="{ item }">
-            <div class="p-2">
-              {{ $t(item.machineName) }}
-              <v-chip
-                label
-                class="ma-2"
-                x-small
-                color="red"
-                text-color="white"
-                v-if="item.isNew && item.addDate === '2021/12/8'"
-              >
-                NEW
-              </v-chip>
-            </div>
-          </template>
-          <template v-slot:item.wordTag1="{ item }">
-            <div class="p-2">
-              <v-chip label class="ma-2">
-                <v-icon left>
-                  {{ getTagIcon(item.wordTag1) }}
-                </v-icon>
-                {{ $t(item.wordTag1) }}
-              </v-chip>
-            </div>
-          </template>
-          <template v-slot:item.passive1="{ item }">
-            {{ $t(item.passive1 || item.skillName) }}
-          </template>
-          <template v-slot:item.passive2="{ item }">
-            <div v-if="item.skillType" class="p-2">
-              <v-tooltip bottom>
-                <template v-slot:activator="{ on, attrs }">
-                  <v-chip label outlined class="ma-2">
-                    {{ $t(item.skillType) }}
-                  </v-chip>
-                </template>
-                <span>{{ $t(item.skillDescription) }}</span>
-              </v-tooltip>
-            </div>
-            <div v-else>
-              {{ $t(item.passive2) }}
-            </div>
-          </template>
-          <template v-slot:item.wordTag2="{ item }">
-            <div class="p-2">
-              <v-chip label class="ma-2">
-                <v-icon left>
-                  {{ getTagIcon(item.wordTag2) }}
-                </v-icon>
-                {{ $t(item.wordTag2) }}
-              </v-chip>
-            </div>
-          </template>
-        </v-data-table>
-      </v-card>
+      <CalculatorPartPicker
+        :tagMapByText="tagMapByText"
+        :machines="machines"
+        :parts="parts"
+        :category="currentPosition"
+        :weaponCategory="currentWeaponCategory"
+        @select="selectPart"
+        @close="closeTable"
+        :getTagIcon="getTagIcon"
+      />
     </v-dialog>
     <v-row>
       <v-col>
@@ -365,6 +168,8 @@
                   :boost="getSimplifiedSkillAmount().effectBoost"
                   :range="accumulatedRangeEX"
                   :melee="accumulatedMeleeEX"
+                  :meleeValueOrder="meleeValueOrder"
+                  :rangeValueOrder="rangeValueOrder"
                 />
               </v-container>
             </v-expansion-panel-content>
@@ -548,7 +353,7 @@
                         "
                         @click.stop="data[value.original].toggleActivation(); updateUrl();"
                       >
-                        {{ data[value.original].main.name }}
+                        {{ $t(data[value.original].main.name) }}
                       </v-btn>
                       <v-btn
                         small
@@ -562,7 +367,7 @@
                         "
                         @click.stop="data[value.original].toggleActivation(); updateUrl();"
                       >
-                        {{ data[value.original].sub.name }}
+                        {{ $t(data[value.original].sub.name) }}
                       </v-btn>
                     </div>
                   </template>
@@ -655,6 +460,7 @@ import CONDITION_OPERATE_DATA from '@/constants/CONDITION_OPERATE_DATA.json';
 import AppCacheImage from '@/components/AppCacheImage.vue';
 import SkillBoostVisualGroup from '@/components/SkillBoostVisualGroup.vue';
 import BuffBoostDisplay from '@/components/BuffBoostDisplay.vue';
+import CalculatorPartPicker from '@/components/CalculatorPartPicker.vue';
 
 function add(a, b) {
   return {
@@ -677,7 +483,7 @@ const convertArrayToObject = (array, key) => {
 };
 
 export default {
-  name: "AdvancedCalculator",
+  name: 'AdvancedCalculator',
   props: {
     machineDataManager: {
       type: Object,
@@ -690,35 +496,18 @@ export default {
     AppCacheImage,
     SkillBoostVisualGroup,
     BuffBoostDisplay,
+    CalculatorPartPicker,
   },
   data: () => ({
-    tagFilter: ['', ''],
-    labelFilter: [],
     dialog: false,
     linearMode: false,
     panel: [0, 2],
-    onlyShowAltered: true,
-    search: "",
     parts: [],
     partTypeMap: [],
     loading: true,
     currentPosition: "",
     currentWeaponCategory: "",
     session: -1,
-    headers: [
-      { text: "部位", value: "position", sort: false },
-      { text: "圖示", value: "image", sortable: false },
-      { text: "名稱", value: "machineName" },
-      { text: "耐力", value: "stamina" },
-      { text: "轉換格攻", value: "accumluatedMeleeAttack" },
-      { text: "轉換射攻", value: "accumluatedRangeAttack" },
-      { text: "詞彙1", value: "wordTag1" },
-      { text: "詞彙2", value: "wordTag2" },
-      { text: "特性1/技能", value: "passive1" },
-      { text: "特性2/說明", value: "passive2" },
-      { text: "傷害", value: "power" },
-      { text: "貫通", value: "pierce" },
-    ],
     position: POSITION,
     data: {
       頭: new PartCombinator("頭"),
@@ -759,11 +548,23 @@ export default {
       operate: '',
     },
     partsById: {},
+    machines: {},
     achievementAffectedGearEffectRatio: 1.15,
     displayLoadLocalData: false,
   }),
 
   computed: {
+    tableData() {
+      return {
+        '耐久力': Math.round(this.calculatedArmor),
+        '格鬥攻擊力': Math.round(this.calculatedMeleeAttack),
+        '射擊攻擊力': Math.round(this.calculatedRangeAttack),
+        '格鬥防禦力': Math.round(this.calculatedMeleeDefense),
+        '射擊防禦力': Math.round(this.calculatedRangeDefense),
+        '物理耐性': Math.round(this.calculatedPhysicalResistence),
+        '光束耐性': Math.round(this.calculatedBeamResistence),
+      };
+    },
     shouldOrderRangeValueFirst() {
       return this.accumulatedRangeEX >= this.accumulatedMeleeEX;
     },
@@ -1214,84 +1015,6 @@ export default {
         }
       );
     },
-    tableData() {
-      return {
-        '耐久力': Math.round(this.calculatedArmor),
-        '格鬥攻擊力': Math.round(this.calculatedMeleeAttack),
-        '射擊攻擊力': Math.round(this.calculatedRangeAttack),
-        '格鬥防禦力': Math.round(this.calculatedMeleeDefense),
-        '射擊防禦力': Math.round(this.calculatedRangeDefense),
-        '物理耐性': Math.round(this.calculatedPhysicalResistence),
-        '光束耐性': Math.round(this.calculatedBeamResistence),
-      };
-    },
-    doubleBoost() {
-      return this.labelFilter.indexOf(0) >= 0;
-    },
-    specificBoost() {
-      return this.labelFilter.indexOf(1) >= 0;
-    },
-    initialCharge() {
-      return this.labelFilter.indexOf(2) >= 0;
-    },
-    cooldownReduction() {
-      return this.labelFilter.indexOf(3) >= 0;
-    },
-    oneTimeCooldownReduction() {
-      return this.labelFilter.indexOf(4) >= 0;
-    },
-    mappedParts() {
-      let a = this.parts.map((part) => ({
-        ...part,
-        machineName: this.$t(part.machineName) || this.$t(part.aiName),
-        power: part.skillTable.length
-          ? part.skillTable[part.skillTable.length - 1][2]
-          : "",
-        pierce: part.skillTable.length
-          ? part.skillTable[part.skillTable.length - 1][1]
-          : "",
-        accumluatedMeleeAttack: Math.floor(
-          +part.melee + +part.meleeDefense * 0.4
-        ),
-        accumluatedRangeAttack: Math.floor(
-          +part.range + +part.rangeDefense * 0.4
-        ),
-      }));
-      if (this.doubleBoost) {
-        if (this.specificBoost) {
-          a = a.filter((i) => i.specificBoost);
-        } else {
-          a = a.filter((i) => i.doubleBoost);
-        }
-      }
-      if (this.initialCharge) {
-        a = a.filter((i) => i.initialCharge);
-      }
-      if (this.cooldownReduction) {
-        if (this.oneTimeCooldownReduction) {
-          a = a.filter((i) => i.oneTimeCooldownReduction);
-        } else {
-          a = a.filter((i) => i.cooldownReduction && !i.oneTimeCooldownReduction);
-        }
-      }
-      if (this.tagFilter[0]) {
-        a = a.filter((i) => i.wordTag1 === this.tagFilter[0] || i.wordTag2 === this.tagFilter[0]);
-      }
-      const map = {};
-      a.forEach((part) => {
-        if (!map[part.position]) {
-          map[part.position] = [];
-        }
-        if (this.currentWeaponCategory) {
-          if (part.weaponType && part.weaponType !== this.currentWeaponCategory) {
-            return;
-          }
-        }
-
-        map[part.position].push(part);
-      });
-      return map;
-    },
 
     positionList() {
       return [
@@ -1305,14 +1028,6 @@ export default {
         this.$t("盾"),
         this.$t("AI"),
       ];
-    },
-
-    category() {
-      return this.$route.params.category;
-    },
-
-    keyword() {
-      return this.$route.query.keyword;
     },
 
     allJobList() {
@@ -1391,10 +1106,6 @@ export default {
       this.dialog = false;
       this.currentPosition = "";
       this.currentWeaponCategory = '';
-      this.tagFilter[0] = '';
-      this.tagFilter[1] = '';
-      this.labelFilter = [];
-      this.search = "";
     },
     getTagIcon(text) {
       return Object.values(TAG_DATA).find((data) => data.text === text)?.icon;
@@ -1570,31 +1281,6 @@ export default {
       this.currentPosition = "";
       this.searchName = "";
     },
-    getPowerColor(level) {
-      if (level) {
-        console.log(level);
-      }
-      const table = {
-        SS: "rainbow",
-        "SS－": "rainbow",
-        "S＋": "red darken-3",
-        S: "red darken-2",
-        "S－": "red darken-1",
-        "A＋": "orange darken-3",
-        A: "orange darken-2",
-        "A－": "orange darken-1",
-        "B＋": "yellow darken-3",
-        B: "yellow darken-2",
-        "B－": "yellow darken-1",
-        "C＋": "blue darken-3",
-        C: "blue darken-2",
-        "C－": "blue darken-1",
-      };
-      if (table[level]) {
-        return table[level];
-      }
-      return "black";
-    },
     updateCategory(link) {
       if (this.category && link.indexOf(this.category) >= 0) {
         this.$router.push("/revive");
@@ -1633,7 +1319,6 @@ export default {
         this.parts = d2.data.wiki;
         this.loading = false;
       });
-    this.search = this.keyword;
   },
 };
 </script>

@@ -11,7 +11,7 @@
 <script>
 export default {
   name: 'AppCacheImage',
-  props: ['height', 'width', 'src'],
+  props: ['height', 'width', 'src', 'position'],
   data() {
     return {
       failed: false,

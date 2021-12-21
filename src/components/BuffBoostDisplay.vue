@@ -50,6 +50,12 @@ export default {
     range: {
       type: Number,
     },
+    meleeValueOrder: {
+      type: String,
+    },
+    rangeValueOrder: {
+      type: String,
+    },
   },
   computed: {
     effectBoostAmount() {
