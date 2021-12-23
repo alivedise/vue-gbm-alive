@@ -104,6 +104,8 @@ async function test(url, category) {
                   id: original.wiki[existed].id || "",
                   integrated: original.wiki[existed].integrated || "",
                   integratedName: original.wiki[existed].integratedName || "",
+                  addDate,
+                  isAltered,
                   ...data
                 }; // update
               }

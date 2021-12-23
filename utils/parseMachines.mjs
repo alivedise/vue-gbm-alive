@@ -3,11 +3,23 @@ import fetch from "node-fetch";
 import fs from 'fs';
 import findElementWithText from './findElementWithText.mjs';
 import getMachineDetail from './parseMachineParts.mjs';
+import parsePart from './parsePart.mjs';
 
+const rawPart = fs.readFileSync('public/wiki.json');
 const raw = fs.readFileSync('public/machines.json');
 let original = JSON.parse(raw) || {
   machines: [],
 };
+
+let originalPart = JSON.parse(rawPart) || {
+  wiki: [],
+};
+
+let partMapByWikiUrl = {};
+
+originalPart.wiki.forEach((part) => {
+  partMapByWikiUrl[part.wikiUrl] = part;
+});
 
 // reset isNew
 original.machines.forEach((part) => {
@@ -67,13 +79,24 @@ async function test(url, category) {
             } else {
               original.machines.push(data);
             }
-            console.log(data);
+            return Promise.all(data.parts.filter((p) => typeof(p[1]) === 'object' && p[1].wikiUrl && !partMapByWikiUrl[p[1].wikiUrl])
+              .map((p) => parsePart(p[1].wikiUrl, '', isAltered).then((pData) => {
+                if (!pData) {
+                  console.error(p[1].wikiUrl);
+                } else {
+                  console.log(pData);
+                }
+                originalPart.wiki.push(pData);
+              })));
           });
         });
       }, Promise.resolve()).then(function() {
         //all executed
         var json = JSON.stringify(original);
         fs.writeFile('public/machines.json', json, 'utf8', () => {});
+
+        var json = JSON.stringify(originalPart);
+        fs.writeFile('public/wiki.json', json, 'utf8', () => {});
       });
     })
   );
