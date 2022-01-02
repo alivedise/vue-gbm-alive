@@ -1,20 +1,16 @@
 import fs from 'fs';
 
-const raw = fs.readFileSync('wiki.json');
+const raw = fs.readFileSync('public/wiki.json');
 let original = JSON.parse(raw) || {
   wiki: [],
 };
 
 // reset isNew
 original.wiki.forEach((part) => {
-  part.isNew = false;
-  if (part.machineName.indexOf('ガンダムバルバタウロス') >= 0 ||
-      part.machineName.indexOf('ガンダムダブルオーコマンドクアンタ') >= 0 ||
-      part.machineName.indexOf('RX-78-2 ガンダム［ENTRY GRADE／フルウェポンセット］') >= 0
-  ) {
-    part.isNew = true;
+  if (part.addDate.indexOf('2022') >= 0) {
+    part.addDate = part.addDate.replace('2022', '2021');
   }
 });
 
 var json = JSON.stringify(original);
-fs.writeFile('wiki.json', json, 'utf8', () => {});
+fs.writeFile('public/wiki.json', json, 'utf8', () => {});
