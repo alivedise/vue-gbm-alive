@@ -92,8 +92,11 @@ async function test(url, category) {
         });
       }, Promise.resolve()).then(function() {
         //all executed
-        var json = JSON.stringify(original);
-        fs.writeFile('public/machines.json', json, 'utf8', () => {});
+        //var json = JSON.stringify(original);
+        //fs.writeFile('public/machines.json', json, 'utf8', () => {});
+
+        var json = JSON.stringify(originalPart);
+        fs.writeFile('public/wiki.json', json, 'utf8', () => {});
       });
     })
   );
