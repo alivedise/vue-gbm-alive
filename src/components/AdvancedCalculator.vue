@@ -31,7 +31,7 @@
         :getTagIcon="getTagIcon"
       />
     </v-dialog>
-    <v-row>
+    <v-row id="my-build">
       <v-col>
         <v-expansion-panels
           v-model="panel"
@@ -442,6 +442,7 @@
 <script>
 import axios from "axios";
 import lzbase62 from "lzbase62";
+import domtoimage from 'dom-to-image';
 import { directive as onClickaway } from "vue-clickaway";
 import POSITION from "@/constants/position";
 import PartCombinator from "@/models/PartCombinator";
@@ -1293,6 +1294,14 @@ export default {
     },
     decompress(str) {
       return JSON.parse(lzbase62.decompress(str));
+    },
+    download() {
+      domtoimage.toJpeg(document.getElementById('my-build')).then(function (dataUrl) {
+        var link = document.createElement('a');
+        link.download = `build-${new Date().getTime()}.jpeg`;
+        link.href = dataUrl;
+        link.click();
+      });
     },
   },
 

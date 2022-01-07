@@ -1,11 +1,17 @@
 <template>
   <v-container>
     <v-btn
-      width="100%"
+      width="50%"
       @click.stop="showDrawer"
       v-show="machineDataManager.machines.length"
     >
       已儲存機體列表
+    </v-btn>
+    <v-btn
+      width="50%"
+      @click="download"
+    >
+      下載配置圖
     </v-btn>
     <SavedMachineList
       :drawer="drawer"
@@ -44,8 +50,11 @@ export default {
     setActive(active) {
       this.$refs.list.active = active;
     },
-  }
-}
+    download() {
+      this.$refs.calculator.download();
+    },
+  },
+};
 </script>
 
 <style>
