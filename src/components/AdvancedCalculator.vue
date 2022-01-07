@@ -834,6 +834,12 @@ export default {
           this.transformGear.type === 'armor' ? this.calculatedArmor : this.calculatedRangeDefense
         ) * this.achievementAffectedGearEffectRatio : 0;
     },
+    transformAffectedMeleeAttack() {
+      return this.transformGear.type && this.transformGear.type !== '射擊轉換' && this.transformGear.level
+        ? (this.transformMapByText[this.transformGear.type].values[this.transformGear.level - 1] || 0) * (
+          this.transformGear.type === 'armor' ? this.calculatedArmor : this.calculatedMeleeDefense
+        ) * this.achievementAffectedGearEffectRatio : 0;
+    },
     jobAffectedRangeAttackIncrementedRatio() {
       switch (this.jobGear.job) {
         case 'Long-Shooter':
