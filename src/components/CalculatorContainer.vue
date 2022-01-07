@@ -14,7 +14,7 @@
     <v-btn
       @click="refresh"
       color="secondary"
-      v-show="!forceRefresed"
+      v-show="false"
     >
       強制更新資料
     </v-btn>
