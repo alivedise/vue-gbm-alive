@@ -1,17 +1,22 @@
 <template>
   <v-container>
     <v-btn
-      width="50%"
       @click.stop="showDrawer"
       v-show="machineDataManager.machines.length"
     >
       已儲存機體列表
     </v-btn>
     <v-btn
-      width="50%"
       @click="download"
     >
       下載配置圖
+    </v-btn>
+    <v-btn
+      @click="refresh"
+      color="secondary"
+      v-show="!forceRefresed"
+    >
+      強制更新資料
     </v-btn>
     <SavedMachineList
       :drawer="drawer"
@@ -38,6 +43,7 @@ export default {
     return {
       machineDataManager: new MachineDataManager(),
       drawer: false,
+      forceRefresed: false,
     };
   },
   methods: {
@@ -52,6 +58,19 @@ export default {
     },
     download() {
       this.$refs.calculator.download();
+    },
+    refresh() {
+      this.$router.push({
+        query: {
+          t: new Date().getTime(),
+        },
+      }).then(() => {
+        return this.$router.push({
+          query: {},
+        });
+      }).then(() => {
+        this.forceRefresed = true;
+      });
     },
   },
 };
