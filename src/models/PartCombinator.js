@@ -9,10 +9,21 @@ export default class PartCombinator {
     ];
     this.activeSubposition = 0;
     this.activeWordTags = [];
+    this.disabled = false; // for integrated part
   }
 
   installCondition(ref) {
     this.ref = ref;
+  }
+
+  disable() {
+    this.disabled = true;
+    this.main.reset();
+    this.sub.reset();
+  }
+
+  enable() {
+    this.disabled = false;
   }
 
   get passive1Passed() {

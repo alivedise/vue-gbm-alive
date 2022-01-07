@@ -26,6 +26,7 @@ export default class Part {
   }
 
   updatePart(part) {
+    this.reset();
     Object.entries(part).forEach(([key, value]) => {
       this.options[key] = value;
       this.passives = [new PassiveSkill(this.options.passive1, this.options.passive1Table), new PassiveSkill(this.options.passive2, this.options.passive2Table)];
@@ -63,6 +64,9 @@ export default class Part {
     bonus += this.level * 0.5;
     if ((main.name.indexOf('BIG') >= 0 && this.name.indexOf('BIG') < 0) || (main.name.indexOf('BIG') < 0 && this.name.indexOf('BIG') >= 0)) {
       bonus += 20;
+    }
+    if (this.options.integrated) {
+      bonus /= 2;
     }
     return bonus / 100;
   }

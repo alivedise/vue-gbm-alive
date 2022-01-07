@@ -10,6 +10,7 @@ let object = JSON.parse(original) || {};
 
 wiki.wiki.forEach((data) => {
   if (data.id) {
+    object[data.id] = data;
     return;
   }
   let k = String(+decimalTranslator.generate().substr(0, 10));
@@ -23,5 +24,5 @@ wiki.wiki.forEach((data) => {
 var json = JSON.stringify(object);
 fs.writeFile('public/part_data_with_id.json', json, 'utf8', () => {});
 
-var json2 = JSON.stringify(wiki);
-fs.writeFile('public/wiki.json', json2, 'utf8', () => {});
+//var json2 = JSON.stringify(wiki);
+//fs.writeFile('public/wiki.json', json2, 'utf8', () => {});

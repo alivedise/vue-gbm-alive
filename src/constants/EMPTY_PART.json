@@ -1,8 +1,13 @@
 {
-  "id": 0,
+  "id": "",
+  "integrated": "",
+  "integratedName": "",
+  "addDate": "",
+  "isAltered": false,
   "position": "",
   "model": "",
   "icon": "",
+  "icon0": "",
   "machineName": "",
   "property": "",
   "source": [],
@@ -27,12 +32,12 @@
   "aiTalent": "",
   "passive1Table": [],
   "passive2Table": [],
+  "paramTable": [],
   "skillTable": [],
   "skillName": "",
   "skillType": "",
   "skillDescription": "",
   "wikiUrl": "",
-  "addDate": "",
   "isNew": false,
-  "isAltered": false
+  "doubleBoost": false
 }

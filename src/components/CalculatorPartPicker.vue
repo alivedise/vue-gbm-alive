@@ -133,6 +133,9 @@
               <v-btn v-model.lazy="altered">
                 只顯示改造
               </v-btn>
+              <v-btn v-model.lazy="hideIntegrated">
+                不顯示整合件
+              </v-btn>
             </v-btn-toggle>
           </v-col>
         </v-row>
@@ -352,6 +355,10 @@ export default {
     getTagIcon: {
       type: Function,
     },
+    pickingSub: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return {
@@ -362,9 +369,11 @@ export default {
       ITEM_COUNT_PER_PAGE: 24,
       sortBy: 'range',
       altered: true,
+      hideIntegrated: true,
       gridMode: false,
       weaponType: '',
       headers: [
+        { text: "部位", value: "position", sortable: false },
         { text: "圖示", value: "image", sortable: false },
         { text: "名稱", value: "machineName" },
         { text: "耐力", value: "stamina" },
@@ -442,6 +451,13 @@ export default {
     category(v) {
       if (v === 'パイロット') {
         this.altered = false;
+      }
+    },
+    pickingSub(v) {
+      if (!v) {
+        this.hideIntegrated = true;
+      } else {
+        this.hideIntegrated = false;
       }
     },
   },
@@ -541,6 +557,12 @@ export default {
 
         if (this.altered) {
           if (!part.isAltered) {
+            return;
+          }
+        }
+
+        if (this.hideIntegrated) {
+          if (part.integrated) {
             return;
           }
         }

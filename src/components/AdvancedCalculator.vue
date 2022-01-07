@@ -28,6 +28,7 @@
         :weaponCategory="currentWeaponCategory"
         @select="selectPart"
         @close="closeTable"
+        :pickingSub="pickingSub"
         :getTagIcon="getTagIcon"
       />
     </v-dialog>
@@ -320,6 +321,9 @@
               v-for="(value, key) in position"
               :key="key"
               @click.stop="updatePosition(value.original)"
+              :class="{
+                disabled: data[value.original].disabled,
+              }"
             >
               <v-list-item-icon>
                 <AppCacheImage
@@ -1038,6 +1042,13 @@ export default {
     jobList() {
       return ['All-Rounder'].concat(Object.values(JOB_DATA).filter((job) => (this.data['パイロット'].main.options.aiJob || '').indexOf(job.text) >= 0).map((job) => job.text));
     },
+
+    pickingSub() {
+      if (!this.currentPosition) {
+        return false;
+      }
+      return this.data[this.currentPosition].nextInsertingSubposition === 1;
+    },
   },
 
   watch: {
@@ -1172,6 +1183,7 @@ export default {
           pc.addWordTag(TAG_DATA[tag2].text);
         }
       });
+      this.checkIntegrated();
       this.jobGear.job = JOB_DATA[data[2][0] || 0].text;
       this.jobGear.level = data[2][1];
       this.wordTagGear.tag = data[3][0] !== '' ? TAG_DATA[data[3][0]].text : '';
@@ -1239,9 +1251,23 @@ export default {
           break;
       }
     },
+    checkIntegrated() {
+      Object.values(this.data).forEach((p) => {
+        p.enable();
+      });
+      Object.values(this.data).forEach((p) => {
+        if (p.main.options.integrated) {
+          const position = this.position[p.main.options.integrated.replace('＋', '').toLowerCase()].original;
+          console.log(position);
+          this.data[position].disable();
+          console.log(this.data[position].disabled);
+        }
+      });
+    },
     selectPart(part) {
       this.displayLoadLocalData = false;
       this.data[this.currentPosition].insert(part);
+      this.checkIntegrated(part);
       this.bestFitCondition(part);
       this.closeTable();
       this.updateUrl();
@@ -1270,6 +1296,9 @@ export default {
       });
     },
     updatePosition(position) {
+      if (this.data[position].disabled) {
+        return;
+      }
       this.currentPosition = position;
       if (['格闘武器', '射撃武器'].indexOf(position) >= 0) {
         if (this.data[position].nextInsertingSubposition === 1) {
@@ -1352,6 +1381,9 @@ export default {
 /deep/ .v-text-field.v-text-field--solo.v-input--dense > .v-input__control {
   max-height: 10px;
   height: 36px;
+}
+.disabled {
+  background-color: darkred;
 }
 .scroll {
   height:200px;/* or any height you want */
