@@ -48,7 +48,12 @@ export default class Part {
   }
 
   calculateSubBonus(main) {
+    let base = 0;
     let bonus = 0;
+    if ((main.name.indexOf('BIG') >= 0 && this.name.indexOf('BIG') < 0) || (main.name.indexOf('BIG') < 0 && this.name.indexOf('BIG') >= 0)) {
+      base += 20;
+    }
+    base += this.level * 0.5;
     if (main.wordTag1 === this.wordTag1 || main.wordTag1 === this.wordTag2) {
       bonus += 10;
     }
@@ -61,14 +66,7 @@ export default class Part {
     if (bonus > 30) {
       bonus = 30;
     }
-    bonus += this.level * 0.5;
-    if ((main.name.indexOf('BIG') >= 0 && this.name.indexOf('BIG') < 0) || (main.name.indexOf('BIG') < 0 && this.name.indexOf('BIG') >= 0)) {
-      bonus += 20;
-    }
-    if (this.options.integrated) {
-      bonus /= 2;
-    }
-    return bonus / 100;
+    return (bonus + base) / (100 * (this.options.integrated ? 2 : 1));
   }
 
   get name() {

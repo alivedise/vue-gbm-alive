@@ -87,6 +87,9 @@
         :search="keyword"
         :sort-by="'addTime'"
         :sort-desc="true"
+        :footer-props="{
+          itemsPerPageOptions: [20, 30, 50, -1],
+        }"
       >
         <template v-slot:item.image="{ item }">
           <div class="p-2">

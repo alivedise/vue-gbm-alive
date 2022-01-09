@@ -144,13 +144,16 @@
       v-if="!gridMode"
       :headers="headers"
       :items="mappedParts[category]"
-      :items-per-page="20"
+      :items-per-page="30"
       item-key="key"
       class="elevation-1"
       :search="search"
       :sort-by="'addTime'"
       :sort-desc="true"
       @click:row="selectPart"
+      :footer-props="{
+        itemsPerPageOptions: [20, 30, 50, -1],
+      }"
     >
       <template v-slot:item.image="{ item }">
         <div class="p-2">

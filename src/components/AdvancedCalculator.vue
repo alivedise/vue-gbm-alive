@@ -419,6 +419,7 @@
                   :key="index"
                   :content=" activeWordTagMap[tag] "
                   inline
+                  :title="$t(tag)"
                 >
                   <v-icon
                     x-small
