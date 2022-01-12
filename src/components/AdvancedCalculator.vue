@@ -317,6 +317,7 @@
           ></v-progress-linear>
           <v-list>
             <v-list-item
+              @mouseleave="shouldDisplayWordTagPicker[value.original]=false"
               three-line
               v-for="(value, key) in position"
               :key="key"
@@ -377,7 +378,32 @@
                   </template>
                 </v-list-item-title>
                 <v-list-item-subtitle
-                  v-if="data[value.original].activePassive1($t)"
+                  class="align-right"
+                  v-if="shouldDisplayWordTagPicker[value.original]"
+                >
+                  <v-btn-toggle @click.prevent.stop>
+                    <v-btn
+                      x-small
+                      tile
+                      :color="data[value.original].activeWordTags.indexOf(data[value.original].main.wordTag1) >= 0 ? 'primary' : 'secondary'"
+                      v-if="data[value.original].main.wordTag1"
+                      @click="updateWordTag(value.original, data[value.original].main.wordTag1)"
+                    >
+                      {{ $t(data[value.original].main.wordTag1) }}
+                    </v-btn>
+                    <v-btn
+                      x-small
+                      tile
+                      :color="data[value.original].activeWordTags.indexOf(data[value.original].main.wordTag2) >= 0 ? 'primary' : 'secondary'"
+                      v-if="data[value.original].main.wordTag2"
+                      @click="updateWordTag(value.original, data[value.original].main.wordTag2)"
+                    >
+                      {{ $t(data[value.original].main.wordTag2) }}
+                    </v-btn>
+                  </v-btn-toggle>
+                </v-list-item-subtitle>
+                <v-list-item-subtitle
+                  v-else-if="data[value.original].activePassive1($t)"
                   :class="{
                     'overflow-x-hidden': true,
                     'white--text': data[value.original].passive1Passed
@@ -395,7 +421,32 @@
                   -
                 </v-list-item-subtitle>
                 <v-list-item-subtitle
-                  v-if="data[value.original].activePassive2($t)"
+                  class="align-right"
+                  v-if="shouldDisplayWordTagPicker[value.original]"
+                >
+                  <v-btn-toggle @click.prevent.stop right absolute>
+                    <v-btn
+                      x-small
+                      tile
+                      :color="data[value.original].activeWordTags.indexOf(data[value.original].sub.wordTag1) >= 0 ? 'primary' : 'secondary'"
+                      v-if="data[value.original].sub.wordTag1"
+                      @click="updateWordTag(value.original, data[value.original].sub.wordTag1)"
+                    >
+                      {{ $t(data[value.original].sub.wordTag1) }}
+                    </v-btn>
+                    <v-btn
+                      x-small
+                      tile
+                      :color="data[value.original].activeWordTags.indexOf(data[value.original].sub.wordTag2) >= 0 ? 'primary' : 'secondary'"
+                      v-if="data[value.original].sub.wordTag2"
+                      @click="updateWordTag(value.original, data[value.original].sub.wordTag2)"
+                    >
+                      {{ $t(data[value.original].sub.wordTag2) }}
+                    </v-btn>
+                  </v-btn-toggle>
+                </v-list-item-subtitle>
+                <v-list-item-subtitle
+                  v-else-if="data[value.original].activePassive2($t)"
                   :class="{
                     'overflow-x-hidden': true,
                     'white--text': data[value.original].passive2Passed
@@ -413,7 +464,7 @@
                   -
                 </v-list-item-subtitle>
               </v-list-item-content>
-              <v-list-item-action width="80px" @click.stop>
+              <v-list-item-action width="80px" @click.stop @mouseenter="shouldDisplayWordTagPicker[value.original]=true">
                 <v-badge
                   v-for="(tag, index) in data[value.original].wordTags"
                   :key="index"
@@ -430,7 +481,7 @@
                         ? 'primary'
                         : 'secondary'
                     "
-                    @click.stop="data[value.original].addWordTag(tag);bestFitCondition();updateUrl();"
+                    @click.stop="updateWordTag(data.original, tag)"
                   >
                     {{ getTagIcon(tag) }}
                   </v-icon>
@@ -525,6 +576,17 @@ export default {
       格闘武器: new PartCombinator("格闘武器"),
       射撃武器: new PartCombinator("射撃武器"),
       パイロット: new PartCombinator("パイロット"),
+    },
+    shouldDisplayWordTagPicker: {
+      頭: false,
+      胴体: false,
+      腕: false,
+      脚部: false,
+      背中: false,
+      盾: false,
+      格闘武器: false,
+      射撃武器: false,
+      パイロット: false,
     },
     TAG,
     TAGGEAR,
@@ -1302,8 +1364,16 @@ export default {
         },
       });
     },
+    updateWordTag(position, tag) {
+      this.data[position].addWordTag(tag);
+      this.bestFitCondition();
+      this.updateUrl();
+    },
     updatePosition(position) {
       if (this.data[position].disabled) {
+        return;
+      }
+      if (this.shouldDisplayWordTagPicker[position]) {
         return;
       }
       this.currentPosition = position;
@@ -1395,5 +1465,9 @@ export default {
 .scroll {
   height:200px;/* or any height you want */
   overflow-y:auto
+}
+.align-right {
+  display: flex;
+  justify-content: flex-end;
 }
 </style>

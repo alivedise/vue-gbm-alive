@@ -15,7 +15,7 @@ original.wiki.forEach((part) => {
 });
 
 const NEW_ONLY_MODE = true;
-const NO_UPDATE = false;
+const NO_UPDATE = true;
 
 const CATEGORY_URL = {
   module: 'https://wiki.dengekionline.com/gbm/%E3%83%A2%E3%82%B8%E3%83%A5%E3%83%BC%E3%83%AB%EF%BC%88%E6%A0%BC%E9%97%98%EF%BC%89%E4%B8%80%E8%A6%A7',
@@ -104,7 +104,7 @@ async function test(url, category) {
                   id: original.wiki[existed].id || "",
                   integrated: original.wiki[existed].integrated || "",
                   integratedName: original.wiki[existed].integratedName || "",
-                  addDate,
+                  addDate: original.wiki[existed].addDate || addDate,
                   isAltered,
                   ...data
                 }; // update
