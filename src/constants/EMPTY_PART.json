@@ -39,5 +39,6 @@
   "skillDescription": "",
   "wikiUrl": "",
   "isNew": false,
-  "doubleBoost": false
+  "doubleBoost": false,
+  "linked": []
 }

@@ -3,7 +3,7 @@ import fs from 'fs';
 let wikiRawdata = fs.readFileSync('public/wiki.json');
 let wiki = JSON.parse(wikiRawdata);
 
-let machineRawdata = fs.readFileSync('public/mahcines.json');
+let machineRawdata = fs.readFileSync('public/machines.json');
 let machine = JSON.parse(machineRawdata);
 
 const mapByWikiurl = {};
@@ -11,6 +11,7 @@ const machineMapByName = {};
 
 wiki.wiki.forEach((data) => {
   mapByWikiurl[data.wikiUrl] = data;
+  data.linked = [];
 });
 
 machine.machines.forEach((m) => {
@@ -39,18 +40,21 @@ Object.values(machineMapByName).forEach((m) => {
     console.error('cannot find', rawMachineName);
     return;
   }
+  console.log(originalMachine, m);
   m.parts.forEach((dp) => {
-    if (!Array.isArray(dp[1])) {
+    if (typeof dp[1] !== 'object') {
       return;
     }
     const matched = originalMachine.parts.find((op) => {
+      console.log(op, dp);
       return op[0] === dp[0];
     });
+    console.log(matched);
     if (!matched) {
       return;
     }
     const a = mapByWikiurl[dp[1].wikiUrl];
-    const b = mapByWikiurl[matched.wikiUrl];
+    const b = mapByWikiurl[matched[1].wikiUrl];
     if (!a.linked) {
       a.linked = [];
     }
@@ -59,6 +63,7 @@ Object.values(machineMapByName).forEach((m) => {
     }
     a.linked.push(b.id);
     b.linked.push(a.id);
+    console.log(a, b);
   });
 });
 

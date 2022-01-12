@@ -381,24 +381,19 @@
                   class="align-right"
                   v-if="shouldDisplayWordTagPicker[value.original]"
                 >
-                  <v-btn-toggle @click.prevent.stop>
+                  <v-btn-toggle
+                    @click.prevent.stop
+                    v-if="data[value.original].main.wordTags.length"
+                  >
                     <v-btn
                       x-small
                       tile
-                      :color="data[value.original].activeWordTags.indexOf(data[value.original].main.wordTag1) >= 0 ? 'primary' : 'secondary'"
-                      v-if="data[value.original].main.wordTag1"
-                      @click="updateWordTag(value.original, data[value.original].main.wordTag1)"
+                      :color="data[value.original].activeWordTags.indexOf(tag) >= 0 ? 'primary' : 'secondary'"
+                      @click="updateWordTag(value.original, tag)"
+                      v-for="(tag, i) in value.original, data[value.original].main.wordTags"
+                      :key="i"
                     >
-                      {{ $t(data[value.original].main.wordTag1) }}
-                    </v-btn>
-                    <v-btn
-                      x-small
-                      tile
-                      :color="data[value.original].activeWordTags.indexOf(data[value.original].main.wordTag2) >= 0 ? 'primary' : 'secondary'"
-                      v-if="data[value.original].main.wordTag2"
-                      @click="updateWordTag(value.original, data[value.original].main.wordTag2)"
-                    >
-                      {{ $t(data[value.original].main.wordTag2) }}
+                      {{ $t(tag) }}
                     </v-btn>
                   </v-btn-toggle>
                 </v-list-item-subtitle>
@@ -424,24 +419,19 @@
                   class="align-right"
                   v-if="shouldDisplayWordTagPicker[value.original]"
                 >
-                  <v-btn-toggle @click.prevent.stop right absolute>
+                  <v-btn-toggle
+                    @click.prevent.stop
+                    v-if="data[value.original].sub.wordTags.length"
+                  >
                     <v-btn
                       x-small
                       tile
-                      :color="data[value.original].activeWordTags.indexOf(data[value.original].sub.wordTag1) >= 0 ? 'primary' : 'secondary'"
-                      v-if="data[value.original].sub.wordTag1"
-                      @click="updateWordTag(value.original, data[value.original].sub.wordTag1)"
+                      :color="data[value.original].activeWordTags.indexOf(tag) >= 0 ? 'primary' : 'secondary'"
+                      @click="updateWordTag(value.original, tag)"
+                      v-for="(tag, i) in value.original, data[value.original].sub.wordTags"
+                      :key="i"
                     >
-                      {{ $t(data[value.original].sub.wordTag1) }}
-                    </v-btn>
-                    <v-btn
-                      x-small
-                      tile
-                      :color="data[value.original].activeWordTags.indexOf(data[value.original].sub.wordTag2) >= 0 ? 'primary' : 'secondary'"
-                      v-if="data[value.original].sub.wordTag2"
-                      @click="updateWordTag(value.original, data[value.original].sub.wordTag2)"
-                    >
-                      {{ $t(data[value.original].sub.wordTag2) }}
+                      {{ $t(tag) }}
                     </v-btn>
                   </v-btn-toggle>
                 </v-list-item-subtitle>
@@ -464,11 +454,11 @@
                   -
                 </v-list-item-subtitle>
               </v-list-item-content>
-              <v-list-item-action width="80px" @click.stop @mouseenter="shouldDisplayWordTagPicker[value.original]=true">
+              <v-list-item-action width="80px" @mouseenter="shouldDisplayWordTagPicker[value.original]=true">
                 <v-badge
-                  v-for="(tag, index) in data[value.original].wordTags"
+                  v-for="(tag, index) in data[value.original].activeWordTags"
                   :key="index"
-                  :content=" activeWordTagMap[tag] "
+                  :content="activeWordTagMap[tag] "
                   inline
                   :title="$t(tag)"
                 >
@@ -476,12 +466,8 @@
                     x-small
                     label
                     outlined
-                    :color="
-                      data[value.original].activeWordTags.indexOf(tag) >= 0
-                        ? 'primary'
-                        : 'secondary'
-                    "
-                    @click.stop="updateWordTag(data.original, tag)"
+                    color="primary"
+                    @click.stop="shouldDisplayWordTagPicker[value.original]=true"
                   >
                     {{ getTagIcon(tag) }}
                   </v-icon>
@@ -1232,7 +1218,7 @@ export default {
             machineName: this.$t(this.partsById[+main[0]].machineName || this.partsById[+main[0]].aiName),
           };
           if (mainPart) {
-            pc.insert(mainPart);
+            pc.insert(mainPart, this.partsById);
           }
         }
         if (sub[0]) {
@@ -1241,7 +1227,7 @@ export default {
             machineName: this.$t(this.partsById[+sub[0]].machineName || this.partsById[+sub[0]].aiName),
           };
           if (subPart) {
-            pc.insert(subPart);
+            pc.insert(subPart, this.partsById);
           }
         }
         pc.activeSubposition = +active;
@@ -1335,7 +1321,7 @@ export default {
     },
     selectPart(part) {
       this.displayLoadLocalData = false;
-      this.data[this.currentPosition].insert(part);
+      this.data[this.currentPosition].insert(part, this.partsById);
       this.checkIntegrated(part);
       this.bestFitCondition(part);
       this.closeTable();

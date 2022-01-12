@@ -12,6 +12,7 @@ export default class Part {
     if (this.options.passive1) {
       this.passives = [new PassiveSkill(this.options.passive1, this.options.passive1Table), new PassiveSkill(this.options.passive2, this.options.passive2Table)];
     }
+    this.linked = [];
   }
 
   reset() {
@@ -19,10 +20,15 @@ export default class Part {
       this.options[key] = value;
       this.passives = [new PassiveSkill(this.options.passive1, this.options.passive1Table), new PassiveSkill(this.options.passive2, this.options.passive2Table)];
     });
+    this.linked = [];
   }
 
   get id() {
     return +this.options.id;
+  }
+
+  link(part) {
+    this.linked.push(part);
   }
 
   updatePart(part) {
@@ -79,6 +85,14 @@ export default class Part {
 
   get wordTag2() {
     return this.options.wordTag2;
+  }
+
+  get wordTags() {
+    return [this.options.wordTag1, this.options.wordTag2, ...this.linkedWordTags].filter((d) => d !== '');
+  }
+
+  get linkedWordTags() {
+    return this.linked.map((p) => [p.wordTag1, p.wordTag2]).flat();
   }
 
   get icon() {

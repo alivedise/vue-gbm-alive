@@ -84,7 +84,7 @@ export default class PartCombinator {
   }
 
   get wordTags() {
-    return [this.main.wordTag1, this.main.wordTag2, this.sub.wordTag1, this.sub.wordTag2].filter((d) => d !== '');
+    return [...this.main.wordTags, ...this.sub.wordTags].filter((d) => d !== '');
   }
 
   get nextInsertingSubposition() {
@@ -97,13 +97,9 @@ export default class PartCombinator {
     return this.activeSubposition;
   }
  
-  insert(part, pos) {
-    let inserting = -1;
-    if (typeof(pos) !== 'undefined') {
-      inserting = pos;
-    } else {
-      inserting = this.nextInsertingSubposition;
-    }
+  insert(part, map) {
+    const inserting = this.nextInsertingSubposition;
+    this.map = map;
     if (inserting === 0) {
       this.main = part;
       if (this.sub.options.weaponType && this.main.options.weaponType) {
@@ -140,10 +136,20 @@ export default class PartCombinator {
 
   set main(partConfig) {
     this.parts[0].updatePart(partConfig);
+    if (partConfig.linked && partConfig.linked.length) {
+      partConfig.linked.forEach((id) => {
+        this.parts[0].link(this.map[id]);
+      });
+    }
   }
 
   set sub(partConfig) {
     this.parts[1].updatePart(partConfig);
+    if (partConfig.linked && partConfig.linked.length) {
+      partConfig.linked.forEach((id) => {
+        this.parts[1].link(this.map[id]);
+      });
+    }
   }
 
   get activePart() {
