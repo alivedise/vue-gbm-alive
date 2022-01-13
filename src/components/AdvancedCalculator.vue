@@ -1,18 +1,9 @@
 <template>
   <v-container>
-    <v-alert
-      dense
-      text
-      type="success"
-      v-show="displayLoadLocalData"
-    >
+    <v-alert dense text type="success" v-show="displayLoadLocalData">
       是否回復上次機體資料？
-      <v-btn @click="loadLocalData">
-        是
-      </v-btn>
-      <v-btn @click="displayLoadLocalData = false;">
-        否
-      </v-btn>
+      <v-btn @click="loadLocalData"> 是 </v-btn>
+      <v-btn @click="displayLoadLocalData = false"> 否 </v-btn>
     </v-alert>
     <v-dialog
       v-model="dialog"
@@ -34,10 +25,7 @@
     </v-dialog>
     <v-row id="my-build">
       <v-col>
-        <v-expansion-panels
-          v-model="panel"
-          multiple
-        >
+        <v-expansion-panels v-model="panel" multiple>
           <v-expansion-panel>
             <v-expansion-panel-header>
               特性總加乘EX威力
@@ -51,9 +39,10 @@
                       bottom
                       inline
                       tile
-                      class="d-flex justify-center" style="width: 100%;"
+                      class="d-flex justify-center"
+                      style="width: 100%"
                     >
-                      {{(activeAttribute ? activeAttribute[0] : '') || '無'}}
+                      {{ (activeAttribute ? activeAttribute[0] : "") || "無" }}
                     </v-badge>
                   </v-col>
                   <v-col cols="6">
@@ -66,7 +55,7 @@
                       solo
                     >
                       <template v-slot:selection="{ item }">
-                        <span class="d-flex justify-center" style="width: 100%;">
+                        <span class="d-flex justify-center" style="width: 100%">
                           {{ item }}
                         </span>
                       </template>
@@ -82,7 +71,7 @@
                       solo
                     >
                       <template v-slot:selection="{ item }">
-                        <span class="d-flex justify-center" style="width: 100%;">
+                        <span class="d-flex justify-center" style="width: 100%">
                           {{ item.label }}
                         </span>
                       </template>
@@ -90,13 +79,27 @@
                   </v-col>
                 </v-row>
                 <v-row>
-                  <v-badge :class="rangeValueOrder" inline color="silver" :content="`=${Math.ceil(calculatedRangeAttack)}*(1*(${getSimplifiedSkillAmount().exBoost}%+${getSimplifiedSkillAmount().rangeBoost}%))`">
+                  <v-badge
+                    :class="rangeValueOrder"
+                    inline
+                    color="silver"
+                    :content="`=${Math.ceil(calculatedRangeAttack)}*(1*(${
+                      getSimplifiedSkillAmount().exBoost
+                    }%+${getSimplifiedSkillAmount().rangeBoost}%))`"
+                  >
                     <h1>
                       <v-chip outlined color="red" label small>射EX</v-chip>
                       {{ accumulatedRangeEX }}
                     </h1>
                   </v-badge>
-                  <v-badge :class="meleeValueOrder" inline color="silver" :content="`=${Math.ceil(calculatedMeleeAttack)}*(1*(${getSimplifiedSkillAmount().exBoost}%+${getSimplifiedSkillAmount().meleeBoost}%))`">
+                  <v-badge
+                    :class="meleeValueOrder"
+                    inline
+                    color="silver"
+                    :content="`=${Math.ceil(calculatedMeleeAttack)}*(1*(${
+                      getSimplifiedSkillAmount().exBoost
+                    }%+${getSimplifiedSkillAmount().meleeBoost}%))`"
+                  >
                     <h1>
                       <v-chip outlined color="red" label small>格EX</v-chip>
                       {{ accumulatedMeleeEX }}
@@ -105,10 +108,7 @@
                 </v-row>
                 <v-row>
                   <v-col cols="12">
-                    <v-theme-provider
-                      light
-                      v-if="bestCondition"
-                    >
+                    <v-theme-provider light v-if="bestCondition">
                       <v-alert
                         border="left"
                         colored-border
@@ -117,39 +117,101 @@
                       >
                         <v-container>
                           <v-row align="center">
-                            <v-btn-toggle class="mr-1"  dense v-model="conditionMap.category" @change="updateUrl" v-if="currentWeaponCategoryConditionList.length">
-                              <v-btn v-for="category in currentWeaponCategoryConditionList" :key="category" :value="category">
-                                {{$t(category)}}
+                            <v-btn-toggle
+                              class="mr-1"
+                              dense
+                              v-model="conditionMap.category"
+                              @change="updateUrl"
+                              v-if="currentWeaponCategoryConditionList.length"
+                            >
+                              <v-btn
+                                v-for="category in currentWeaponCategoryConditionList"
+                                :key="category"
+                                :value="category"
+                              >
+                                {{ $t(category) }}
                               </v-btn>
                             </v-btn-toggle>
-                            <v-btn-toggle class="mr-1" dense v-model="conditionMap.type" @change="updateUrl">
-                              <v-btn v-for="type in currentAttackTypeList" :key="type" :value="type">
-                                {{$t(type)}}
+                            <v-btn-toggle
+                              class="mr-1"
+                              dense
+                              v-model="conditionMap.type"
+                              @change="updateUrl"
+                            >
+                              <v-btn
+                                v-for="type in currentAttackTypeList"
+                                :key="type"
+                                :value="type"
+                              >
+                                {{ $t(type) }}
                               </v-btn>
                             </v-btn-toggle>
-                            <v-btn-toggle class="mr-1"  dense v-model="conditionMap.team" @change="updateUrl" v-if="currentTeamList.length" >
-                              <v-btn v-for="team in currentTeamList" :key="team" :value="team">
-                                {{$t(team)}}
+                            <v-btn-toggle
+                              class="mr-1"
+                              dense
+                              v-model="conditionMap.team"
+                              @change="updateUrl"
+                              v-if="currentTeamList.length"
+                            >
+                              <v-btn
+                                v-for="team in currentTeamList"
+                                :key="team"
+                                :value="team"
+                              >
+                                {{ $t(team) }}
                               </v-btn>
                             </v-btn-toggle>
-                            <v-btn-toggle class="mr-1"  dense v-model="conditionMap.environment" @change="updateUrl" v-if="currentEnvironmentConditionList.length" >
-                              <v-btn v-for="environment in currentEnvironmentConditionList" :key="environment" :value="environment">
-                                {{$t(environment)}}
+                            <v-btn-toggle
+                              class="mr-1"
+                              dense
+                              v-model="conditionMap.environment"
+                              @change="updateUrl"
+                              v-if="currentEnvironmentConditionList.length"
+                            >
+                              <v-btn
+                                v-for="environment in currentEnvironmentConditionList"
+                                :key="environment"
+                                :value="environment"
+                              >
+                                {{ $t(environment) }}
                               </v-btn>
                             </v-btn-toggle>
-                            <v-btn-toggle class="mr-1"  dense v-if="currentBuffCondition.length" v-model="conditionMap.buff">
-                              <v-btn disabled value="強化状態">
-                                強化時
+                            <v-btn-toggle
+                              class="mr-1"
+                              dense
+                              v-if="currentBuffCondition.length"
+                              v-model="conditionMap.buff"
+                            >
+                              <v-btn disabled value="強化状態"> 強化時 </v-btn>
+                            </v-btn-toggle>
+                            <v-btn-toggle
+                              class="mr-1"
+                              dense
+                              v-model="conditionMap.counter"
+                              @change="updateUrl"
+                              v-if="currentCounterConditionList.length"
+                            >
+                              <v-btn
+                                v-for="counter in currentCounterConditionList"
+                                :key="counter"
+                                :value="counter"
+                              >
+                                {{ $t(counter) }}
                               </v-btn>
                             </v-btn-toggle>
-                            <v-btn-toggle class="mr-1"  dense v-model="conditionMap.counter" @change="updateUrl" v-if="currentCounterConditionList.length" >
-                              <v-btn v-for="counter in currentCounterConditionList" :key="counter" :value="counter">
-                                {{$t(counter)}}
-                              </v-btn>
-                            </v-btn-toggle>
-                            <v-btn-toggle class="mr-1"  dense v-model="conditionMap.operate" @change="updateUrl" v-if="currentOperateConditionList.length" >
-                              <v-btn v-for="operate in currentOperateConditionList" :key="operate" :value="operate">
-                                {{$t(operate)}}
+                            <v-btn-toggle
+                              class="mr-1"
+                              dense
+                              v-model="conditionMap.operate"
+                              @change="updateUrl"
+                              v-if="currentOperateConditionList.length"
+                            >
+                              <v-btn
+                                v-for="operate in currentOperateConditionList"
+                                :key="operate"
+                                :value="operate"
+                              >
+                                {{ $t(operate) }}
                               </v-btn>
                             </v-btn-toggle>
                           </v-row>
@@ -159,7 +221,7 @@
                   </v-col>
                 </v-row>
                 <v-divider />
-                <br/>
+                <br />
                 <SkillBoostVisualGroup
                   :indeterminate="shouldDisplayBoostLoading"
                   :boost="getSimplifiedSkillAmount()"
@@ -189,7 +251,9 @@
           </v-expansion-panel>
 
           <v-expansion-panel>
-            <v-expansion-panel-header>詞彙及齒輪 / 轉換齒輪</v-expansion-panel-header>
+            <v-expansion-panel-header
+              >詞彙及齒輪 / 轉換齒輪</v-expansion-panel-header
+            >
             <v-expansion-panel-content>
               <v-container v-if="activeWordTags.length">
                 <v-row v-for="tag in activeWordTags" :key="tag">
@@ -215,7 +279,7 @@
                       dense
                     >
                       <template v-slot:selection="{ item }">
-                        <span class="d-flex justify-center" style="width: 100%;">
+                        <span class="d-flex justify-center" style="width: 100%">
                           {{ item.label }}
                         </span>
                       </template>
@@ -226,11 +290,7 @@
               <v-container>
                 <v-row align="center">
                   <v-col cols="4">
-                    <v-btn
-                      width="100%"
-                    >
-                      轉換齒輪
-                    </v-btn>
+                    <v-btn width="100%"> 轉換齒輪 </v-btn>
                   </v-col>
                   <v-col cols="4">
                     <v-select
@@ -241,7 +301,7 @@
                       solo
                     >
                       <template v-slot:selection="{ item }">
-                        <span class="d-flex justify-center" style="width: 100%;">
+                        <span class="d-flex justify-center" style="width: 100%">
                           {{ item }}
                         </span>
                       </template>
@@ -256,7 +316,7 @@
                       solo
                     >
                       <template v-slot:selection="{ item }">
-                        <span class="d-flex justify-center" style="width: 100%;">
+                        <span class="d-flex justify-center" style="width: 100%">
                           {{ item.label }}
                         </span>
                       </template>
@@ -265,12 +325,7 @@
                 </v-row>
                 <v-row align="center">
                   <v-col cols="4">
-                    <v-btn
-                      tile
-                      width="100%"
-                    >
-                      能力齒輪
-                    </v-btn>
+                    <v-btn tile width="100%"> 能力齒輪 </v-btn>
                   </v-col>
                   <v-col cols="4">
                     <v-select
@@ -281,7 +336,7 @@
                       solo
                     >
                       <template v-slot:selection="{ item }">
-                        <span class="d-flex justify-center" style="width: 100%;">
+                        <span class="d-flex justify-center" style="width: 100%">
                           {{ item }}
                         </span>
                       </template>
@@ -296,7 +351,7 @@
                       solo
                     >
                       <template v-slot:selection="{ item }">
-                        <span class="d-flex justify-center" style="width: 100%;">
+                        <span class="d-flex justify-center" style="width: 100%">
                           {{ item.label }}
                         </span>
                       </template>
@@ -317,7 +372,7 @@
           ></v-progress-linear>
           <v-list>
             <v-list-item
-              @mouseleave="shouldDisplayWordTagPicker[value.original]=false"
+              @mouseleave="shouldDisplayWordTagPicker[value.original] = false"
               three-line
               v-for="(value, key) in position"
               :key="key"
@@ -333,12 +388,7 @@
                   width="30px"
                   :src="data[value.original].main.icon"
                 />
-                <v-img
-                  v-else
-                  height="30px"
-                  width="30px"
-                  :src="value.icon"
-                />
+                <v-img v-else height="30px" width="30px" :src="value.icon" />
               </v-list-item-icon>
               <v-list-item-content>
                 <v-list-item-title>
@@ -356,7 +406,10 @@
                             ? 'primary'
                             : 'secondary'
                         "
-                        @click.stop="data[value.original].toggleActivation(); updateUrl();"
+                        @click.stop="
+                          data[value.original].toggleActivation();
+                          updateUrl();
+                        "
                       >
                         {{ $t(data[value.original].main.name) }}
                       </v-btn>
@@ -370,7 +423,10 @@
                             ? 'primary'
                             : 'secondary'
                         "
-                        @click.stop="data[value.original].toggleActivation(); updateUrl();"
+                        @click.stop="
+                          data[value.original].toggleActivation();
+                          updateUrl();
+                        "
                       >
                         {{ $t(data[value.original].sub.name) }}
                       </v-btn>
@@ -388,9 +444,14 @@
                     <v-btn
                       x-small
                       tile
-                      :color="data[value.original].activeWordTags.indexOf(tag) >= 0 ? 'primary' : 'secondary'"
+                      :color="
+                        data[value.original].activeWordTags.indexOf(tag) >= 0
+                          ? 'primary'
+                          : 'secondary'
+                      "
                       @click="updateWordTag(value.original, tag)"
-                      v-for="(tag, i) in value.original, data[value.original].main.wordTags"
+                      v-for="(tag, i) in (value.original,
+                      data[value.original].main.wordTags)"
                       :key="i"
                     >
                       {{ $t(tag) }}
@@ -401,20 +462,16 @@
                   v-else-if="data[value.original].activePassive1($t)"
                   :class="{
                     'overflow-x-hidden': true,
-                    'white--text': data[value.original].passive1Passed
+                    'white--text': data[value.original].passive1Passed,
                   }"
                 >
                   <v-icon small v-if="data[value.original].passive1Passed">
                     mdi-check-bold
                   </v-icon>
-                  <v-icon v-else>
-                    mdi-alert-circle-outline
-                  </v-icon>
+                  <v-icon v-else> mdi-alert-circle-outline </v-icon>
                   {{ $t(data[value.original].activePassive1($t)) }}
                 </v-list-item-subtitle>
-                <v-list-item-subtitle v-else>
-                  -
-                </v-list-item-subtitle>
+                <v-list-item-subtitle v-else> - </v-list-item-subtitle>
                 <v-list-item-subtitle
                   class="align-right"
                   v-if="shouldDisplayWordTagPicker[value.original]"
@@ -426,9 +483,14 @@
                     <v-btn
                       x-small
                       tile
-                      :color="data[value.original].activeWordTags.indexOf(tag) >= 0 ? 'primary' : 'secondary'"
+                      :color="
+                        data[value.original].activeWordTags.indexOf(tag) >= 0
+                          ? 'primary'
+                          : 'secondary'
+                      "
                       @click="updateWordTag(value.original, tag)"
-                      v-for="(tag, i) in value.original, data[value.original].sub.wordTags"
+                      v-for="(tag, i) in (value.original,
+                      data[value.original].sub.wordTags)"
                       :key="i"
                     >
                       {{ $t(tag) }}
@@ -439,27 +501,30 @@
                   v-else-if="data[value.original].activePassive2($t)"
                   :class="{
                     'overflow-x-hidden': true,
-                    'white--text': data[value.original].passive2Passed
+                    'white--text': data[value.original].passive2Passed,
                   }"
                 >
                   <v-icon small v-if="data[value.original].passive2Passed">
                     mdi-check-bold
                   </v-icon>
-                  <v-icon v-else>
-                    mdi-alert-circle-outline
-                  </v-icon>
-                  {{ $t(data[value.original].activePassive2($t))}}
+                  <v-icon v-else> mdi-alert-circle-outline </v-icon>
+                  {{ $t(data[value.original].activePassive2($t)) }}
                 </v-list-item-subtitle>
-                <v-list-item-subtitle v-else>
-                  -
-                </v-list-item-subtitle>
+                <v-list-item-subtitle v-else> - </v-list-item-subtitle>
               </v-list-item-content>
-              <v-list-item-action width="80px" @mouseenter="shouldDisplayWordTagPicker[value.original]=true">
-                <v-badge
+              <v-list-item-action
+                class="tag-container"
+                width="80px"
+                @mouseenter="shouldDisplayWordTagPicker[value.original] = true"
+                @click.stop="
+                  shouldDisplayWordTagPicker[value.original] =
+                    !shouldDisplayWordTagPicker[value.original]
+                "
+              >
+                <v-row
+                  align="center"
                   v-for="(tag, index) in data[value.original].activeWordTags"
                   :key="index"
-                  :content="activeWordTagMap[tag] "
-                  inline
                   :title="$t(tag)"
                 >
                   <v-icon
@@ -467,11 +532,13 @@
                     label
                     outlined
                     color="primary"
-                    @click.stop="shouldDisplayWordTagPicker[value.original]=!shouldDisplayWordTagPicker[value.original]"
                   >
                     {{ getTagIcon(tag) }}
                   </v-icon>
-                </v-badge>
+                  <span class="count">
+                    {{activeWordTagMap[tag]}}
+                  </span>
+                </v-row>
               </v-list-item-action>
             </v-list-item>
           </v-list>
@@ -484,7 +551,7 @@
 <script>
 import axios from "axios";
 import lzbase62 from "lzbase62";
-import domtoimage from 'dom-to-image';
+import domtoimage from "dom-to-image";
 import { directive as onClickaway } from "vue-clickaway";
 import POSITION from "@/constants/position";
 import PartCombinator from "@/models/PartCombinator";
@@ -494,16 +561,16 @@ import TAG_DATA from "@/constants/TAG_DATA.json";
 import JOB_DATA from "@/constants/JOB_DATA.json";
 import TRANSFORM_GEAR_DATA from "@/constants/TRANSFORM_GEAR_DATA.json";
 import PARAMETER_GEAR_DATA from "@/constants/PARAMETER_GEAR_DATA.json";
-import CONDITION_CATEGORY_DATA from '@/constants/CONDITION_CATEGORY_DATA.json';
-import CONDITION_ATTACK_TYPE_DATA from '@/constants/CONDITION_ATTACK_TYPE_DATA.json';
-import CONDITION_ENVIRONMENT_DATA from '@/constants/CONDITION_ENVIRONMENT_DATA.json';
-import CONDITION_TEAM_DATA from '@/constants/CONDITION_TEAM_DATA.json';
-import CONDITION_COUNTER_DATA from '@/constants/CONDITION_COUNTER_DATA.json';
-import CONDITION_OPERATE_DATA from '@/constants/CONDITION_OPERATE_DATA.json';
-import AppCacheImage from '@/components/AppCacheImage.vue';
-import SkillBoostVisualGroup from '@/components/SkillBoostVisualGroup.vue';
-import BuffBoostDisplay from '@/components/BuffBoostDisplay.vue';
-import CalculatorPartPicker from '@/components/CalculatorPartPicker.vue';
+import CONDITION_CATEGORY_DATA from "@/constants/CONDITION_CATEGORY_DATA.json";
+import CONDITION_ATTACK_TYPE_DATA from "@/constants/CONDITION_ATTACK_TYPE_DATA.json";
+import CONDITION_ENVIRONMENT_DATA from "@/constants/CONDITION_ENVIRONMENT_DATA.json";
+import CONDITION_TEAM_DATA from "@/constants/CONDITION_TEAM_DATA.json";
+import CONDITION_COUNTER_DATA from "@/constants/CONDITION_COUNTER_DATA.json";
+import CONDITION_OPERATE_DATA from "@/constants/CONDITION_OPERATE_DATA.json";
+import AppCacheImage from "@/components/AppCacheImage.vue";
+import SkillBoostVisualGroup from "@/components/SkillBoostVisualGroup.vue";
+import BuffBoostDisplay from "@/components/BuffBoostDisplay.vue";
+import CalculatorPartPicker from "@/components/CalculatorPartPicker.vue";
 
 function add(a, b) {
   return {
@@ -526,7 +593,7 @@ const convertArrayToObject = (array, key) => {
 };
 
 export default {
-  name: 'AdvancedCalculator',
+  name: "AdvancedCalculator",
   props: {
     machineDataManager: {
       type: Object,
@@ -577,29 +644,29 @@ export default {
     TAG,
     TAGGEAR,
     jobGear: {
-      job: 'All-Rounder',
+      job: "All-Rounder",
       level: 0,
     },
     wordTagGear: {
-      tag: '',
+      tag: "",
       level: 0,
     },
     parameterGear: {
-      type: '射擊攻擊力',
+      type: "射擊攻擊力",
       level: 0,
     },
     transformGear: {
-      type: '射擊轉換',
+      type: "射擊轉換",
       level: 0,
     },
     conditionMap: {
-      team: '',
-      type: 'ビーム',
-      category: '',
-      buff: '強化状態',
-      armor: '',
-      counter: '',
-      operate: '',
+      team: "",
+      type: "ビーム",
+      category: "",
+      buff: "強化状態",
+      armor: "",
+      counter: "",
+      operate: "",
     },
     partsById: {},
     machines: {},
@@ -610,62 +677,110 @@ export default {
   computed: {
     tableData() {
       return {
-        '耐久力': Math.round(this.calculatedArmor),
-        '格鬥攻擊力': Math.round(this.calculatedMeleeAttack),
-        '射擊攻擊力': Math.round(this.calculatedRangeAttack),
-        '格鬥防禦力': Math.round(this.calculatedMeleeDefense),
-        '射擊防禦力': Math.round(this.calculatedRangeDefense),
-        '物理耐性': Math.round(this.calculatedPhysicalResistence),
-        '光束耐性': Math.round(this.calculatedBeamResistence),
+        耐久力: Math.round(this.calculatedArmor),
+        格鬥攻擊力: Math.round(this.calculatedMeleeAttack),
+        射擊攻擊力: Math.round(this.calculatedRangeAttack),
+        格鬥防禦力: Math.round(this.calculatedMeleeDefense),
+        射擊防禦力: Math.round(this.calculatedRangeDefense),
+        物理耐性: Math.round(this.calculatedPhysicalResistence),
+        光束耐性: Math.round(this.calculatedBeamResistence),
       };
     },
     shouldOrderRangeValueFirst() {
       return this.accumulatedRangeEX >= this.accumulatedMeleeEX;
     },
     meleeValueOrder() {
-      return this.shouldOrderRangeValueFirst ? 'order-2' : 'order-1';
+      return this.shouldOrderRangeValueFirst ? "order-2" : "order-1";
     },
     rangeValueOrder() {
-      return this.shouldOrderRangeValueFirst ? 'order-1' : 'order-2';
+      return this.shouldOrderRangeValueFirst ? "order-1" : "order-2";
     },
     shouldDisableJobSelector() {
-      return this.data['パイロット'].main.isEmpty;
+      return this.data["パイロット"].main.isEmpty;
     },
     shouldDisableJobLevelSelector() {
-      return this.jobGear.job === 'All-Rounder';
+      return this.jobGear.job === "All-Rounder";
     },
     currentAttackTypeList() {
-      return [...new Set(Object.values(CONDITION_ATTACK_TYPE_DATA).map((c) => c.text))];
+      return [
+        ...new Set(
+          Object.values(CONDITION_ATTACK_TYPE_DATA).map((c) => c.text)
+        ),
+      ];
     },
     currentWeaponCategoryConditionList() {
-      return [...new Set(Object.values(this.data).map((pc) => {
-        return pc.activePart.passives;
-      }).flat().filter((passive) => passive?.$conditionType === 'category').map((passive) => (passive.$condition)))];
+      return [
+        ...new Set(
+          Object.values(this.data)
+            .map((pc) => {
+              return pc.activePart.passives;
+            })
+            .flat()
+            .filter((passive) => passive?.$conditionType === "category")
+            .map((passive) => passive.$condition)
+        ),
+      ];
     },
     currentTeamList() {
-      return [...new Set(Object.values(this.data).map((pc) => {
-        return pc.activePart.passives;
-      }).flat().filter((passive) => passive?.$conditionType === 'team').map((passive) => (passive.$condition)))];
+      return [
+        ...new Set(
+          Object.values(this.data)
+            .map((pc) => {
+              return pc.activePart.passives;
+            })
+            .flat()
+            .filter((passive) => passive?.$conditionType === "team")
+            .map((passive) => passive.$condition)
+        ),
+      ];
     },
     currentEnvironmentConditionList() {
-      return [...new Set(Object.values(this.data).map((pc) => {
-        return pc.activePart.passives;
-      }).flat().filter((passive) => passive?.$conditionType === 'environment').map((passive) => (passive.$condition)))];
+      return [
+        ...new Set(
+          Object.values(this.data)
+            .map((pc) => {
+              return pc.activePart.passives;
+            })
+            .flat()
+            .filter((passive) => passive?.$conditionType === "environment")
+            .map((passive) => passive.$condition)
+        ),
+      ];
     },
     currentBuffCondition() {
-      return Object.values(this.data).map((pc) => {
-        return pc.activePart.passives;
-      }).flat().filter((passive) => passive?.$conditionType === 'buff').map((passive) => (passive.$condition));
+      return Object.values(this.data)
+        .map((pc) => {
+          return pc.activePart.passives;
+        })
+        .flat()
+        .filter((passive) => passive?.$conditionType === "buff")
+        .map((passive) => passive.$condition);
     },
     currentCounterConditionList() {
-      return [...new Set(Object.values(this.data).map((pc) => {
-        return pc.activePart.passives;
-      }).flat().filter((passive) => passive?.$conditionType === 'counter').map((passive) => (passive.$condition)))];
+      return [
+        ...new Set(
+          Object.values(this.data)
+            .map((pc) => {
+              return pc.activePart.passives;
+            })
+            .flat()
+            .filter((passive) => passive?.$conditionType === "counter")
+            .map((passive) => passive.$condition)
+        ),
+      ];
     },
     currentOperateConditionList() {
-      return [...new Set(Object.values(this.data).map((pc) => {
-        return pc.activePart.passives;
-      }).flat().filter((passive) => passive?.$conditionType === 'operate').map((passive) => (passive.$condition)))];
+      return [
+        ...new Set(
+          Object.values(this.data)
+            .map((pc) => {
+              return pc.activePart.passives;
+            })
+            .flat()
+            .filter((passive) => passive?.$conditionType === "operate")
+            .map((passive) => passive.$condition)
+        ),
+      ];
     },
     mappedConditionMap() {
       return {
@@ -676,19 +791,19 @@ export default {
       };
     },
     shouldDisplayBoostLoading() {
-      return this.loading && this.$route.params.data !== '';
+      return this.loading && this.$route.params.data !== "";
     },
     jobMapByText() {
-      return convertArrayToObject(Object.values(JOB_DATA), 'text');
+      return convertArrayToObject(Object.values(JOB_DATA), "text");
     },
     tagMapByText() {
-      return convertArrayToObject(Object.values(TAG_DATA), 'text');
+      return convertArrayToObject(Object.values(TAG_DATA), "text");
     },
     transformMapByText() {
-      return convertArrayToObject(Object.values(TRANSFORM_GEAR_DATA), 'text');
+      return convertArrayToObject(Object.values(TRANSFORM_GEAR_DATA), "text");
     },
     parameterMapByText() {
-      return convertArrayToObject(Object.values(PARAMETER_GEAR_DATA), 'text');
+      return convertArrayToObject(Object.values(PARAMETER_GEAR_DATA), "text");
     },
     parasmeterGearList() {
       return Object.values(PARAMETER_GEAR_DATA).map((g) => g.text);
@@ -698,12 +813,27 @@ export default {
     },
     conditionMapByText() {
       return {
-        type: convertArrayToObject(Object.values(CONDITION_ATTACK_TYPE_DATA), 'text'),
-        category: convertArrayToObject(Object.values(CONDITION_CATEGORY_DATA), 'text'),
-        team: convertArrayToObject(Object.values(CONDITION_TEAM_DATA), 'text'),
-        environment: convertArrayToObject(Object.values(CONDITION_ENVIRONMENT_DATA), 'text'),
-        counter: convertArrayToObject(Object.values(CONDITION_COUNTER_DATA), 'text'),
-        operate: convertArrayToObject(Object.values(CONDITION_OPERATE_DATA), 'text'),
+        type: convertArrayToObject(
+          Object.values(CONDITION_ATTACK_TYPE_DATA),
+          "text"
+        ),
+        category: convertArrayToObject(
+          Object.values(CONDITION_CATEGORY_DATA),
+          "text"
+        ),
+        team: convertArrayToObject(Object.values(CONDITION_TEAM_DATA), "text"),
+        environment: convertArrayToObject(
+          Object.values(CONDITION_ENVIRONMENT_DATA),
+          "text"
+        ),
+        counter: convertArrayToObject(
+          Object.values(CONDITION_COUNTER_DATA),
+          "text"
+        ),
+        operate: convertArrayToObject(
+          Object.values(CONDITION_OPERATE_DATA),
+          "text"
+        ),
       };
     },
     debugData() {
@@ -729,17 +859,42 @@ export default {
         1, // data version
         rows, // parts data
         [+this.jobMapByText[this.jobGear.job]?.id, this.jobGear.level], // job
-        [this.wordTagGear.tag !== '' ? this.tagMapByText[this.wordTagGear.tag]?.id : '', this.wordTagGear.level], // tag
-        [+this.transformMapByText[this.transformGear.type]?.id, this.transformGear.level], // transform
-        [+this.parameterMapByText[this.parameterGear.type]?.id, this.parameterGear.level], // parameter
+        [
+          this.wordTagGear.tag !== ""
+            ? this.tagMapByText[this.wordTagGear.tag]?.id
+            : "",
+          this.wordTagGear.level,
+        ], // tag
+        [
+          +this.transformMapByText[this.transformGear.type]?.id,
+          this.transformGear.level,
+        ], // transform
+        [
+          +this.parameterMapByText[this.parameterGear.type]?.id,
+          this.parameterGear.level,
+        ], // parameter
         [0, 0], // last gear,
         [
-          this.conditionMap.type ? +this.conditionMapByText.type[this.conditionMap.type].id : '',
-          this.conditionMap.category ? +this.conditionMapByText.category[this.conditionMap.category].id : '',
-          this.conditionMap.environment ? +this.conditionMapByText.environment[this.conditionMap.environment].id : '',
-          this.conditionMap.team ? +this.conditionMapByText.team[this.conditionMap.team].id : '',
-          this.conditionMap.counter ? +this.conditionMapByText.counter[this.conditionMap.counter].id : '',
-          this.conditionMap.operate ? +this.conditionMapByText.operate[this.conditionMap.operate].id : '',
+          this.conditionMap.type
+            ? +this.conditionMapByText.type[this.conditionMap.type].id
+            : "",
+          this.conditionMap.category
+            ? +this.conditionMapByText.category[this.conditionMap.category].id
+            : "",
+          this.conditionMap.environment
+            ? +this.conditionMapByText.environment[
+                this.conditionMap.environment
+              ].id
+            : "",
+          this.conditionMap.team
+            ? +this.conditionMapByText.team[this.conditionMap.team].id
+            : "",
+          this.conditionMap.counter
+            ? +this.conditionMapByText.counter[this.conditionMap.counter].id
+            : "",
+          this.conditionMap.operate
+            ? +this.conditionMapByText.operate[this.conditionMap.operate].id
+            : "",
         ], // extra condition setting
       ];
       return lzbase62.compress(JSON.stringify(data));
@@ -851,48 +1006,74 @@ export default {
     },
     accumulatedRangeEX() {
       return Math.round(
-        (1 + (this.getSimplifiedSkillAmount().rangeBoost + this.getSimplifiedSkillAmount().exBoost) / 100) *
+        (1 +
+          (this.getSimplifiedSkillAmount().rangeBoost +
+            this.getSimplifiedSkillAmount().exBoost) /
+            100) *
           this.calculatedRangeAttack
       );
     },
     accumulatedMeleeEX() {
       return Math.round(
-        (1 + (this.getSimplifiedSkillAmount().meleeBoost + this.getSimplifiedSkillAmount().exBoost) / 100) *
+        (1 +
+          (this.getSimplifiedSkillAmount().meleeBoost +
+            this.getSimplifiedSkillAmount().exBoost) /
+            100) *
           this.calculatedMeleeAttack
       );
     },
     calculatedMeleeAttack() {
-      return (Object.values(this.data).reduce((a, b) => a + b.meleeAttack, 0)
-        + this.jobAffectedMeleeAttack
-        + (this.transformAffectedMeleeAttack || 0)
-        + (this.parameterAffectedMeleeAttack || 0)
-        + this.wordTagGearAffectedMeleeAttack)
-        * this.wordTagGearAffectedMeleeAttackRatio * this.jobAffectedMeleeAttackIncrementedRatio;
+      return (
+        (Object.values(this.data).reduce((a, b) => a + b.meleeAttack, 0) +
+          this.jobAffectedMeleeAttack +
+          (this.transformAffectedMeleeAttack || 0) +
+          (this.parameterAffectedMeleeAttack || 0) +
+          this.wordTagGearAffectedMeleeAttack) *
+        this.wordTagGearAffectedMeleeAttackRatio *
+        this.jobAffectedMeleeAttackIncrementedRatio
+      );
     },
     calculatedRangeAttack() {
-      return (Object.values(this.data).reduce((a, b) => a + b.rangeAttack, 0)
-        + this.jobAffectedRangeAttack
-        + this.transformAffectedRangeAttack
-        + this.parameterAffectedRangeAttack
-        + this.wordTagGearAffectedRangeAttack)
-        * this.wordTagGearAffectedRangeAttackRatio * this.jobAffectedRangeAttackIncrementedRatio;
+      return (
+        (Object.values(this.data).reduce((a, b) => a + b.rangeAttack, 0) +
+          this.jobAffectedRangeAttack +
+          this.transformAffectedRangeAttack +
+          this.parameterAffectedRangeAttack +
+          this.wordTagGearAffectedRangeAttack) *
+        this.wordTagGearAffectedRangeAttackRatio *
+        this.jobAffectedRangeAttackIncrementedRatio
+      );
     },
     transformAffectedRangeAttack() {
-      return this.transformGear.type && this.transformGear.type !== '格鬥轉換' && this.transformGear.level
-        ? (this.transformMapByText[this.transformGear.type].values[this.transformGear.level - 1] || 0) * (
-          this.transformGear.type === 'armor' ? this.calculatedArmor : this.calculatedRangeDefense
-        ) * this.achievementAffectedGearEffectRatio : 0;
+      return this.transformGear.type &&
+        this.transformGear.type !== "格鬥轉換" &&
+        this.transformGear.level
+        ? (this.transformMapByText[this.transformGear.type].values[
+            this.transformGear.level - 1
+          ] || 0) *
+            (this.transformGear.type === "armor"
+              ? this.calculatedArmor
+              : this.calculatedRangeDefense) *
+            this.achievementAffectedGearEffectRatio
+        : 0;
     },
     transformAffectedMeleeAttack() {
-      return this.transformGear.type && this.transformGear.type !== '射擊轉換' && this.transformGear.level
-        ? (this.transformMapByText[this.transformGear.type].values[this.transformGear.level - 1] || 0) * (
-          this.transformGear.type === 'armor' ? this.calculatedArmor : this.calculatedMeleeDefense
-        ) * this.achievementAffectedGearEffectRatio : 0;
+      return this.transformGear.type &&
+        this.transformGear.type !== "射擊轉換" &&
+        this.transformGear.level
+        ? (this.transformMapByText[this.transformGear.type].values[
+            this.transformGear.level - 1
+          ] || 0) *
+            (this.transformGear.type === "armor"
+              ? this.calculatedArmor
+              : this.calculatedMeleeDefense) *
+            this.achievementAffectedGearEffectRatio
+        : 0;
     },
     jobAffectedRangeAttackIncrementedRatio() {
       switch (this.jobGear.job) {
-        case 'Long-Shooter':
-        case 'Middle-Shooter':
+        case "Long-Shooter":
+        case "Middle-Shooter":
           return 1.1;
         default:
           return 1;
@@ -907,7 +1088,15 @@ export default {
       }
       return this.activeWordTags.reduce((a, current) => {
         if (current === this.wordTagGear.tag && this.wordTagGear.level) {
-          return a + ((this.TAGGEAR[this.wordTagGear.tag][this.wordTagGear.level - 1][0] / 100) * this.TAG[this.wordTagGear.tag].rangeAttack) / 100;
+          return (
+            a +
+            ((this.TAGGEAR[this.wordTagGear.tag][
+              this.wordTagGear.level - 1
+            ][0] /
+              100) *
+              this.TAG[this.wordTagGear.tag].rangeAttack) /
+              100
+          );
         }
         return a + this.TAG[this.wordTagGear.tag].rangeAttack / 100;
       }, 1);
@@ -922,19 +1111,27 @@ export default {
       if (!this.wordTagGear.level) {
         return 0;
       }
-      return this.TAGGEAR[this.wordTagGear.tag][this.wordTagGear.level - 1][1].rangeAttack;
+      return this.TAGGEAR[this.wordTagGear.tag][this.wordTagGear.level - 1][1]
+        .rangeAttack;
     },
     parameterAffectedRangeAttack() {
-      return this.parameterGear.type && this.parameterGear.level ? (this.parameterMapByText[this.parameterGear.type].values[this.parameterGear.level - 1]?.rangeAttack || 0) : 0;
+      return this.parameterGear.type && this.parameterGear.level
+        ? this.parameterMapByText[this.parameterGear.type].values[
+            this.parameterGear.level - 1
+          ]?.rangeAttack || 0
+        : 0;
     },
     jobAffectedRangeAttack() {
-      return this.jobGear.job && this.jobGear.level ? (this.jobMapByText[this.jobGear.job].values[this.jobGear.level - 1]?.rangeAttack || 0) * this.achievementAffectedGearEffectRatio : 0;
+      return this.jobGear.job && this.jobGear.level
+        ? (this.jobMapByText[this.jobGear.job].values[this.jobGear.level - 1]
+            ?.rangeAttack || 0) * this.achievementAffectedGearEffectRatio
+        : 0;
     },
     // melee
     jobAffectedMeleeAttackIncrementedRatio() {
       switch (this.jobGear.job) {
-        case 'In-Fighter':
-        case 'Out-Fighter':
+        case "In-Fighter":
+        case "Out-Fighter":
           return 1.1;
         default:
           return 1;
@@ -949,7 +1146,15 @@ export default {
       }
       return this.activeWordTags.reduce((a, current) => {
         if (current === this.wordTagGear.tag && this.wordTagGear.level) {
-          return a + ((this.TAGGEAR[this.wordTagGear.tag][this.wordTagGear.level - 1][0] / 100) * this.TAG[this.wordTagGear.tag].meleeAttack) / 100;
+          return (
+            a +
+            ((this.TAGGEAR[this.wordTagGear.tag][
+              this.wordTagGear.level - 1
+            ][0] /
+              100) *
+              this.TAG[this.wordTagGear.tag].meleeAttack) /
+              100
+          );
         }
         return a + this.TAG[this.wordTagGear.tag].meleeAttack / 100;
       }, 1);
@@ -964,15 +1169,21 @@ export default {
       if (!this.wordTagGear.level) {
         return 0;
       }
-      return this.TAGGEAR[this.wordTagGear.tag][this.wordTagGear.level - 1][1].meleeAttack;
+      return this.TAGGEAR[this.wordTagGear.tag][this.wordTagGear.level - 1][1]
+        .meleeAttack;
     },
     parameterAffectedMeleeAttack() {
       return this.parameterGear.type && this.parameterGear.level
-          ? (this.parameterMapByText[this.parameterGear.type].values[this.parameterGear.level - 1].meleeAttack || 0)
-          : 0;
+        ? this.parameterMapByText[this.parameterGear.type].values[
+            this.parameterGear.level - 1
+          ].meleeAttack || 0
+        : 0;
     },
     jobAffectedMeleeAttack() {
-      return this.jobGear.job && this.jobGear.level ? (this.jobMapByText[this.jobGear.job].values[this.jobGear.level - 1]?.meleeAttack || 0) * this.achievementAffectedGearEffectRatio : 0;
+      return this.jobGear.job && this.jobGear.level
+        ? (this.jobMapByText[this.jobGear.job].values[this.jobGear.level - 1]
+            ?.meleeAttack || 0) * this.achievementAffectedGearEffectRatio
+        : 0;
     },
     calculatedMeleeDefense() {
       return Object.values(this.data).reduce((a, b) => a + b.meleeDefense, 0);
@@ -1003,9 +1214,9 @@ export default {
     },
     attributeMap() {
       const properties = {
-        "Power": 0,
-        "Technique": 0,
-        "Speed": 0,
+        Power: 0,
+        Technique: 0,
+        Speed: 0,
       };
       Object.values(this.data).forEach((p) => {
         const t = p.main.attribute;
@@ -1020,10 +1231,14 @@ export default {
       return properties;
     },
     attributeMapString() {
-      return Object.entries(this.attributeMap).map(([k, v]) => (`${k[0]}:${v}`)).join(' ');
+      return Object.entries(this.attributeMap)
+        .map(([k, v]) => `${k[0]}:${v}`)
+        .join(" ");
     },
     activeAttribute() {
-      const r = Object.entries(this.attributeMap).filter(([, value]) => value >= 5);
+      const r = Object.entries(this.attributeMap).filter(
+        ([, value]) => value >= 5
+      );
       if (r.length) {
         return r[0][0];
       } else {
@@ -1091,11 +1306,20 @@ export default {
     },
 
     allJobList() {
-      return Object.values(JOB_DATA).map(j => j.text);
+      return Object.values(JOB_DATA).map((j) => j.text);
     },
 
     jobList() {
-      return ['All-Rounder'].concat(Object.values(JOB_DATA).filter((job) => (this.data['パイロット'].main.options.aiJob || '').indexOf(job.text) >= 0).map((job) => job.text));
+      return ["All-Rounder"].concat(
+        Object.values(JOB_DATA)
+          .filter(
+            (job) =>
+              (this.data["パイロット"].main.options.aiJob || "").indexOf(
+                job.text
+              ) >= 0
+          )
+          .map((job) => job.text)
+      );
     },
 
     pickingSub() {
@@ -1120,28 +1344,34 @@ export default {
         return;
       }
       this.loading = true;
-      this.$router.replace({
-        name: 'AdvacnedCalculatorData',
-        params: { data: data.machine },
-      }, () => {
-        this.emptyData();
-        this.$nextTick(() => {
-          this.loadDataFromURL();
-          this.loading = false;
-        });
-      });
+      this.$router.replace(
+        {
+          name: "AdvacnedCalculatorData",
+          params: { data: data.machine },
+        },
+        () => {
+          this.emptyData();
+          this.$nextTick(() => {
+            this.loadDataFromURL();
+            this.loading = false;
+          });
+        }
+      );
     },
     loadLocalData() {
       this.displayLoadLocalData = false;
-      this.session = +window.localStorage.getItem('gbmac-latest-id');
+      this.session = +window.localStorage.getItem("gbmac-latest-id");
 
-      this.$router.replace({
-        name: 'AdvacnedCalculatorData',
-        params: { data: window.localStorage.getItem('gbmac-latest-data') },
-      }, () => {
-        this.loadDataFromURL();
-        this.$emit('active', this.session);
-      });
+      this.$router.replace(
+        {
+          name: "AdvacnedCalculatorData",
+          params: { data: window.localStorage.getItem("gbmac-latest-data") },
+        },
+        () => {
+          this.loadDataFromURL();
+          this.$emit("active", this.session);
+        }
+      );
     },
     getSimplifiedSkillAmount() {
       let result = {
@@ -1163,7 +1393,7 @@ export default {
       this.updateUrl();
     },
     getGearLevelList(max) {
-      return new Array(max + 1).fill('x').map((_, i) => ({
+      return new Array(max + 1).fill("x").map((_, i) => ({
         label: `LV.${i}`,
         text: `LV.${i}`,
         value: i,
@@ -1172,7 +1402,7 @@ export default {
     closeTable() {
       this.dialog = false;
       this.currentPosition = "";
-      this.currentWeaponCategory = '';
+      this.currentWeaponCategory = "";
     },
     getTagIcon(text) {
       return Object.values(TAG_DATA).find((data) => data.text === text)?.icon;
@@ -1182,16 +1412,22 @@ export default {
     },
     updateUrl() {
       this.$router.replace({
-        name: 'AdvacnedCalculatorData',
+        name: "AdvacnedCalculatorData",
         params: { data: this.urldata },
       });
-      window.localStorage.setItem('gbmac-latest-data', this.urldata);
-      this.session = this.machineDataManager && this.machineDataManager.save({
-        machine: this.urldata,
-        id: this.session,
-        preview: `${this.simplifiedActiveAttribute}屬/${this.jobGear.job}/格${this.accumulatedMeleeEX}/射${this.accumulatedRangeEX}/初充${this.getSimplifiedSkillAmount().initialCharge}%/CDR${this.getSimplifiedSkillAmount().cooldownReduction}%`,
-      });
-      window.localStorage.setItem('gbmac-latest-id', this.session);
+      window.localStorage.setItem("gbmac-latest-data", this.urldata);
+      this.session =
+        this.machineDataManager &&
+        this.machineDataManager.save({
+          machine: this.urldata,
+          id: this.session,
+          preview: `${this.simplifiedActiveAttribute}屬/${this.jobGear.job}/格${
+            this.accumulatedMeleeEX
+          }/射${this.accumulatedRangeEX}/初充${
+            this.getSimplifiedSkillAmount().initialCharge
+          }%/CDR${this.getSimplifiedSkillAmount().cooldownReduction}%`,
+        });
+      window.localStorage.setItem("gbmac-latest-id", this.session);
     },
     emptyData() {
       Object.values(this.data).forEach((pc) => {
@@ -1202,7 +1438,7 @@ export default {
     loadDataFromURL() {
       let { data } = this.$route.params;
       if (!data) {
-        if (window.localStorage.getItem('gbmac-latest-id')) {
+        if (window.localStorage.getItem("gbmac-latest-id")) {
           this.displayLoadLocalData = true;
         }
         return;
@@ -1215,7 +1451,10 @@ export default {
         if (main[0]) {
           const mainPart = {
             ...this.partsById[+main[0]],
-            machineName: this.$t(this.partsById[+main[0]].machineName || this.partsById[+main[0]].aiName),
+            machineName: this.$t(
+              this.partsById[+main[0]].machineName ||
+                this.partsById[+main[0]].aiName
+            ),
           };
           if (mainPart) {
             pc.insert(mainPart, this.partsById);
@@ -1224,7 +1463,10 @@ export default {
         if (sub[0]) {
           const subPart = {
             ...this.partsById[+sub[0]],
-            machineName: this.$t(this.partsById[+sub[0]].machineName || this.partsById[+sub[0]].aiName),
+            machineName: this.$t(
+              this.partsById[+sub[0]].machineName ||
+                this.partsById[+sub[0]].aiName
+            ),
           };
           if (subPart) {
             pc.insert(subPart, this.partsById);
@@ -1241,18 +1483,34 @@ export default {
       this.checkIntegrated();
       this.jobGear.job = JOB_DATA[data[2][0] || 0].text;
       this.jobGear.level = data[2][1];
-      this.wordTagGear.tag = data[3][0] !== '' ? TAG_DATA[data[3][0]].text : '';
+      this.wordTagGear.tag = data[3][0] !== "" ? TAG_DATA[data[3][0]].text : "";
       this.wordTagGear.level = data[3][1];
       this.transformGear.type = TRANSFORM_GEAR_DATA[data[4][0]].text;
       this.transformGear.level = data[4][1];
       this.parameterGear.type = PARAMETER_GEAR_DATA[data[5][0]].text;
       this.parameterGear.level = data[5][1];
-      this.conditionMap.type = data[7][0] !== '' ? CONDITION_ATTACK_TYPE_DATA[+data[7][0]]?.text || '' : '';
-      this.conditionMap.category = data[7][1] !== '' ? CONDITION_CATEGORY_DATA[+data[7][1]]?.text || '' : '';
-      this.conditionMap.environment = data[7][2] !== '' ? CONDITION_ENVIRONMENT_DATA[+data[7][2]]?.text || '' : '';
-      this.conditionMap.team = data[7][3] !== '' ? CONDITION_TEAM_DATA[+data[7][3]]?.text || '' : '';
-      this.conditionMap.counter = data[7][4] !== '' ? CONDITION_COUNTER_DATA[+data[7][4]]?.text || '' : '';
-      this.conditionMap.operate = data[7][5] !== '' ? CONDITION_OPERATE_DATA[+data[7][5]]?.text || '' : '';
+      this.conditionMap.type =
+        data[7][0] !== ""
+          ? CONDITION_ATTACK_TYPE_DATA[+data[7][0]]?.text || ""
+          : "";
+      this.conditionMap.category =
+        data[7][1] !== ""
+          ? CONDITION_CATEGORY_DATA[+data[7][1]]?.text || ""
+          : "";
+      this.conditionMap.environment =
+        data[7][2] !== ""
+          ? CONDITION_ENVIRONMENT_DATA[+data[7][2]]?.text || ""
+          : "";
+      this.conditionMap.team =
+        data[7][3] !== "" ? CONDITION_TEAM_DATA[+data[7][3]]?.text || "" : "";
+      this.conditionMap.counter =
+        data[7][4] !== ""
+          ? CONDITION_COUNTER_DATA[+data[7][4]]?.text || ""
+          : "";
+      this.conditionMap.operate =
+        data[7][5] !== ""
+          ? CONDITION_OPERATE_DATA[+data[7][5]]?.text || ""
+          : "";
     },
     checkCondition(conditionString, conditions) {
       const [type, condition] = conditionString.split(":");
@@ -1312,7 +1570,10 @@ export default {
       });
       Object.values(this.data).forEach((p) => {
         if (p.main.options.integrated) {
-          const position = this.position[p.main.options.integrated.replace('＋', '').toLowerCase()].original;
+          const position =
+            this.position[
+              p.main.options.integrated.replace("＋", "").toLowerCase()
+            ].original;
           console.log(position);
           this.data[position].disable();
           console.log(this.data[position].disabled);
@@ -1329,16 +1590,21 @@ export default {
     },
     bestFitCondition(part) {
       if (this.jobList.indexOf(this.jobGear.job) < 0) {
-        this.jobGear.job = 'All-Rounder';
+        this.jobGear.job = "All-Rounder";
       }
       if (this.activeWordTags.indexOf(this.wordTagGear.tag) < 0) {
-        this.wordTagGear.tag = '';
+        this.wordTagGear.tag = "";
         // pick one if cleared
         if (this.activeWordTags.length) {
           this.wordTagGear.tag = this.activeWordTags[0];
         }
       }
-      if (part && part.$condition && part.$conditionType === 'category' && this.conditionMap.category === '') {
+      if (
+        part &&
+        part.$condition &&
+        part.$conditionType === "category" &&
+        this.conditionMap.category === ""
+      ) {
         this.conditionMap.category = part.$conditionType;
       }
     },
@@ -1363,9 +1629,10 @@ export default {
         return;
       }
       this.currentPosition = position;
-      if (['格闘武器', '射撃武器'].indexOf(position) >= 0) {
+      if (["格闘武器", "射撃武器"].indexOf(position) >= 0) {
         if (this.data[position].nextInsertingSubposition === 1) {
-          this.currentWeaponCategory = this.data[position].main.options.weaponType;
+          this.currentWeaponCategory =
+            this.data[position].main.options.weaponType;
         }
       }
       this.dialog = true;
@@ -1388,12 +1655,14 @@ export default {
       return JSON.parse(lzbase62.decompress(str));
     },
     download() {
-      domtoimage.toJpeg(document.getElementById('my-build')).then(function (dataUrl) {
-        var link = document.createElement('a');
-        link.download = `build-${new Date().getTime()}.jpeg`;
-        link.href = dataUrl;
-        link.click();
-      });
+      domtoimage
+        .toJpeg(document.getElementById("my-build"))
+        .then(function (dataUrl) {
+          var link = document.createElement("a");
+          link.download = `build-${new Date().getTime()}.jpeg`;
+          link.href = dataUrl;
+          link.click();
+        });
     },
   },
 
@@ -1416,7 +1685,8 @@ export default {
         return axios.get(`${prefix}wiki.json`, {
           responseType: "json",
         });
-      }).then((d2) => {
+      })
+      .then((d2) => {
         this.parts = d2.data.wiki;
         this.loading = false;
       });
@@ -1449,11 +1719,17 @@ export default {
   background-color: darkred;
 }
 .scroll {
-  height:200px;/* or any height you want */
-  overflow-y:auto
+  height: 200px; /* or any height you want */
+  overflow-y: auto;
 }
 .align-right {
   display: flex;
   justify-content: flex-end;
+}
+.tag-container {
+  margin: 5px;
+  font-size: 8px;
+  padding: 16px;
+  margin-left: 5px !important;
 }
 </style>

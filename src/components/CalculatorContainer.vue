@@ -12,6 +12,14 @@
       下載配置圖
     </v-btn>
     <v-btn
+      @click="copy"
+    >
+      取得機體網址
+      <v-icon v-if="copied" color="green">
+        mdi-check
+      </v-icon>
+    </v-btn>
+    <v-btn
       @click="refresh"
       color="secondary"
       v-show="false"
@@ -44,9 +52,24 @@ export default {
       machineDataManager: new MachineDataManager(),
       drawer: false,
       forceRefresed: false,
+      copied: false,
     };
   },
+  watch: {
+    '$route.path': () => {
+      this.copied = false;
+    },
+  },
   methods: {
+    copy() {
+      const input = document.createElement('input');
+      document.body.appendChild(input);
+      input.value = window.location.href;
+      input.select();
+      document.execCommand("copy");
+      document.body.removeChild(input);
+      this.copied = true;
+    },
     showDrawer() {
       this.$refs.list.drawer = true;
     },

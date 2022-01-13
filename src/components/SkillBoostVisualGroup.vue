@@ -2,42 +2,42 @@
   <v-container>
     <v-row v-if="!$vuetify.breakpoint.mobile">
       <v-col cols="2">
-        <v-badge color="teal" :content="'EX加成'" :offset-x="35">
+        <v-badge color="primary" :content="'EX加成'" :offset-x="35">
           <v-progress-circular
             :indeterminate="indeterminate"
             :rotate="90"
             :size="70"
             :width="12"
             :value="boost.exBoost"
-            color="teal"
+            color="primary"
           >
             {{ boost.exBoost || 0 }}%
           </v-progress-circular>
         </v-badge>
       </v-col>
       <v-col cols="2">
-        <v-badge color="primary" :content="'射攻加成'" :offset-x="35">
+        <v-badge color="teal" :content="'射攻加成'" :offset-x="35">
           <v-progress-circular
             :indeterminate="indeterminate"
             :rotate="360"
             :size="70"
             :width="12"
             :value="boost.rangeBoost"
-            color="primary"
+            color="teal"
           >
             {{ boost.rangeBoost || 0 }}%
           </v-progress-circular>
         </v-badge>
       </v-col>
       <v-col cols="2">
-        <v-badge color="secondary" :content="'格攻加成'" :offset-x="35">
+        <v-badge color="orange" :content="'格攻加成'" :offset-x="35">
           <v-progress-circular
             :indeterminate="indeterminate"
             :rotate="100"
             :size="70"
             :width="12"
             :value="boost.meleeBoost"
-            color="secondary"
+            color="orange"
           >
             {{ boost.meleeBoost || 0 }}%
           </v-progress-circular>
@@ -77,7 +77,7 @@
         :indeterminate="indeterminate"
         :value="boost.exBoost"
           :height="30"
-        color="teal"
+        color="primary"
       >
         <template v-slot:default="{ value }">
           <strong>EX威力增加{{ Math.ceil(value) }}%</strong>
@@ -87,7 +87,7 @@
           :indeterminate="indeterminate"
           :value="boost.rangeBoost"
           :height="30"
-          color="primary"
+          color="teal"
         >
           <template v-slot:default="{ value }">
             <strong>射擊威力增加{{ Math.ceil(value) }}%</strong>
@@ -97,7 +97,7 @@
           :indeterminate="indeterminate"
           :value="boost.meleeBoost"
           :height="30"
-          color="secondary"
+          color="orange"
         >
           <template v-slot:default="{ value }">
             <strong>格鬥威力增加{{ Math.ceil(value) }}%</strong>

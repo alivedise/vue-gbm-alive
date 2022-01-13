@@ -81,7 +81,7 @@ export default class Part {
   }
 
   get name() {
-    return this.options.machineName.replace('【改造】', '');
+    return this.options.machineName.replace('【改造】', '').replace('【改造BIG】', '');
   }
 
   get wordTag1() {
