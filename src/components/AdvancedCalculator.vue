@@ -603,6 +603,8 @@ const convertArrayToObject = (array, key) => {
   }, initialValue);
 };
 
+let uniq = a => [...new Set(a)];
+
 export default {
   name: "AdvancedCalculator",
   props: {
@@ -1701,13 +1703,13 @@ export default {
         responseType: "json",
       }).then((d3) => {
         let pool = [];
-        const ban = ['鋼', '彈', '改', '型', '造', '用', '薩', '克', '版', '第', '色'];
+        const ban = ['鋼', '彈', '改', '型', '造', '用', '薩', '克', '版', '第', '色', '号', '機', '士'];
         d3.data.machines.forEach((machine) => {
-          const source = this.$t(machine.machineName).replace('新手活動', '');
+          const source = this.$t(machine.machineName).replace('新手活動', '').replace('吉姆', '').replace('測試', '');
           const chars = source.split('').filter((x) => (/^[\u4E00-\u9FA5]+$/.test(x))).filter(x => ban.indexOf(x) < 0);
           pool = pool.concat(chars);
         });
-        this.pool = pool;
+        this.pool = uniq(pool);
       });
     }
   },
