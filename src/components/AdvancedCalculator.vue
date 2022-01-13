@@ -27,12 +27,14 @@
       <v-col>
         <div class="d-flex">
           <v-text-field clearable v-model="machineName" @change="updateUrl" label="機體名稱" maxlength="20">
-            <v-icon
-              slot="append"
-              @click="generateName"
-            >
-              mdi-refresh
-            </v-icon>
+            <v-btn slot="append"
+                @click="generateName">
+              <v-icon
+              >
+                mdi-refresh
+              </v-icon>
+              隨機產生
+            </v-btn>
           </v-text-field>
         </div>
         <v-expansion-panels v-model="panel" multiple>
