@@ -26,7 +26,7 @@
     <v-row id="my-build">
       <v-col>
         <div class="d-flex">
-          <v-text-field clearable v-model="machineName" label="機體名稱" maxlength="20">
+          <v-text-field clearable v-model="machineName" @change="updateUrl" label="機體名稱" maxlength="20">
             <v-icon
               slot="append"
               @click="generateName"
