@@ -25,6 +25,16 @@
     </v-dialog>
     <v-row id="my-build">
       <v-col>
+        <div class="d-flex">
+          <v-text-field clearable v-model="machineName" label="機體名稱" maxlength="20">
+            <v-icon
+              slot="append"
+              @click="generateName"
+            >
+              mdi-refresh
+            </v-icon>
+          </v-text-field>
+        </div>
         <v-expansion-panels v-model="panel" multiple>
           <v-expansion-panel>
             <v-expansion-panel-header>
@@ -571,6 +581,7 @@ import AppCacheImage from "@/components/AppCacheImage.vue";
 import SkillBoostVisualGroup from "@/components/SkillBoostVisualGroup.vue";
 import BuffBoostDisplay from "@/components/BuffBoostDisplay.vue";
 import CalculatorPartPicker from "@/components/CalculatorPartPicker.vue";
+import generateGundamName from '@/utility/generateGundamName';
 
 function add(a, b) {
   return {
@@ -672,6 +683,8 @@ export default {
     machines: {},
     achievementAffectedGearEffectRatio: 1.15,
     displayLoadLocalData: false,
+    machineName: '',
+    pool: [],
   }),
 
   computed: {
@@ -896,6 +909,7 @@ export default {
             ? +this.conditionMapByText.operate[this.conditionMap.operate].id
             : "",
         ], // extra condition setting
+        this.machineName || '',
       ];
       return lzbase62.compress(JSON.stringify(data));
     },
@@ -1337,6 +1351,12 @@ export default {
   },
 
   methods: {
+    generateName() {
+      this.getMachines().then(() => {
+        this.machineName = generateGundamName(this.pool, this.$t);
+        this.updateUrl();
+      });
+    },
     loadMachineData(data) {
       this.displayLoadLocalData = false;
       this.session = data.id;
@@ -1421,6 +1441,7 @@ export default {
         this.machineDataManager.save({
           machine: this.urldata,
           id: this.session,
+          name: this.machineName,
           preview: `${this.simplifiedActiveAttribute}屬/${this.jobGear.job}/格${
             this.accumulatedMeleeEX
           }/射${this.accumulatedRangeEX}/初充${
@@ -1511,6 +1532,7 @@ export default {
         data[7][5] !== ""
           ? CONDITION_OPERATE_DATA[+data[7][5]]?.text || ""
           : "";
+      this.machineName = data[8] || '';
     },
     checkCondition(conditionString, conditions) {
       const [type, condition] = conditionString.split(":");
@@ -1587,6 +1609,11 @@ export default {
       this.bestFitCondition(part);
       this.closeTable();
       this.updateUrl();
+      if (!this.machineName) {
+        this.$nextTick(() => {
+          this.generateName();
+        });
+      }
     },
     bestFitCondition(part) {
       if (this.jobList.indexOf(this.jobGear.job) < 0) {
@@ -1664,6 +1691,25 @@ export default {
           link.click();
         });
     },
+    getMachines() {
+      if (this.pool.length) {
+        return Promise.resolve();
+      }
+      const prefix =
+        process.env.NODE_ENV === "production" ? "/vue-gbm-alive/" : "/";
+      return axios.get(`${prefix}machines.json`, {
+        responseType: "json",
+      }).then((d3) => {
+        let pool = [];
+        const ban = ['鋼', '彈', '改', '型', '造', '用', '薩', '克', '版', '第', '色'];
+        d3.data.machines.forEach((machine) => {
+          const source = this.$t(machine.machineName).replace('新手活動', '');
+          const chars = source.split('').filter((x) => (/^[\u4E00-\u9FA5]+$/.test(x))).filter(x => ban.indexOf(x) < 0);
+          pool = pool.concat(chars);
+        });
+        this.pool = pool;
+      });
+    }
   },
 
   mounted() {
@@ -1675,6 +1721,7 @@ export default {
     Object.values(this.data).forEach((pc) => {
       pc.installCondition(this);
     });
+    window.gcn = generateGundamName;
     axios
       .get(`${prefix}part_data_with_id.json`, {
         responseType: "json",

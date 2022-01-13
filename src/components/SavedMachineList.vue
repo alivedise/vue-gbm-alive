@@ -21,7 +21,8 @@
           </v-chip>
         </v-list-item-icon>
         <v-list-item-content>
-          <v-list-item-title>{{`${machine.preview.split('/')[0]}/${machine.preview.split('/')[1]}`}}</v-list-item-title>
+          <v-list-item-title>{{machine.name || '(未命名)'}}</v-list-item-title>
+          <v-list-item-subtitle>{{`${machine.preview.split('/')[0]}/${machine.preview.split('/')[1]}`}}</v-list-item-subtitle>
           <v-list-item-subtitle>{{ new Date(machine.timestamp).toLocaleDateString() }} {{new Date(machine.timestamp).toLocaleTimeString()}}</v-list-item-subtitle>
         </v-list-item-content>
       </v-list-item>

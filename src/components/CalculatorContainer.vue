@@ -26,13 +26,21 @@
     >
       強制更新資料
     </v-btn>
+    <v-btn v-if="name" outlined>
+      {{name}}
+    </v-btn>
     <SavedMachineList
       :drawer="drawer"
       ref="list"
       :machineDataManager="machineDataManager"
       @load="load"
     />
-    <AdvancedCalculator ref="calculator" :machineDataManager="machineDataManager" @active="setActive" />
+    <AdvancedCalculator
+      ref="calculator"
+      :machineDataManager="machineDataManager"
+      @active="setActive"
+      @namechange="setName"
+    />
   </v-container>
 </template>
 
@@ -53,6 +61,7 @@ export default {
       drawer: false,
       forceRefresed: false,
       copied: false,
+      name: '',
     };
   },
   watch: {
@@ -72,6 +81,9 @@ export default {
     },
     showDrawer() {
       this.$refs.list.drawer = true;
+    },
+    setName(name) {
+      this.name = name;
     },
     load(data) {
       this.$refs.calculator.loadMachineData(data);
