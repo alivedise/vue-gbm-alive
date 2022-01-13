@@ -1,6 +1,7 @@
 import EMPTY from '@/constants/EMPTY_PART.json';
 import PassiveSkill from '@/models/PassiveSkill.mjs';
 
+let uniq = a => [...new Set(a)];
 export default class Part {
   constructor(options = null) {
     if (!options) {
@@ -37,6 +38,10 @@ export default class Part {
       this.options[key] = value;
       this.passives = [new PassiveSkill(this.options.passive1, this.options.passive1Table), new PassiveSkill(this.options.passive2, this.options.passive2Table)];
     });
+  }
+
+  get isRainbowRarity() {
+    return this.options.icon !== this.options.icon0;
   }
 
   get attribute() {
@@ -88,10 +93,13 @@ export default class Part {
   }
 
   get wordTags() {
-    return [this.options.wordTag1, this.options.wordTag2, ...this.linkedWordTags].filter((d) => d !== '');
+    return uniq([this.options.wordTag1, this.options.wordTag2, ...this.linkedWordTags].filter((d) => d !== ''));
   }
 
   get linkedWordTags() {
+    if (!this.isRainbowRarity) {
+      return [];
+    }
     return this.linked.map((p) => [p.wordTag1, p.wordTag2]).flat();
   }
 

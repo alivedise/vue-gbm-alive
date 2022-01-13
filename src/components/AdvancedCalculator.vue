@@ -467,7 +467,7 @@
                     label
                     outlined
                     color="primary"
-                    @click.stop="shouldDisplayWordTagPicker[value.original]=true"
+                    @click.stop="shouldDisplayWordTagPicker[value.original]=!shouldDisplayWordTagPicker[value.original]"
                   >
                     {{ getTagIcon(tag) }}
                   </v-icon>
