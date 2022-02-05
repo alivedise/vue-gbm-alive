@@ -100,6 +100,7 @@ Object.entries(object).forEach(([k, v]) => {
     .replace(/上昇し/ig, '上升，')
     .replace(/射擊威力が/ig, '射擊威力')
     .replace(/の時/ig, '時')
+    .replace(/グレネード/ig, '榴彈')
     .replace(/敵機を(\d+)体撃墜した/ig, (x, b, c) => `敵${b}體擊墜時`)
     .replace(/格闘攻撃力が(\d+)以/ig, (x, b, c) => `格攻${b}以`)
     .replace(/射擊攻撃力が(\d+)以/ig, (x, b, c) => `射攻${b}以`)
