@@ -435,6 +435,7 @@
                         "
                         @click.stop="
                           data[value.original].toggleActivation();
+                          updateConditionCandidates();
                           updateUrl();
                         "
                       >
@@ -452,6 +453,7 @@
                         "
                         @click.stop="
                           data[value.original].toggleActivation();
+                          updateConditionCandidates();
                           updateUrl();
                         "
                       >
