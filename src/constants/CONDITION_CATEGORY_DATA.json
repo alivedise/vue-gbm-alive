@@ -2,71 +2,85 @@
   "0": {
     "text": "サーベル",
     "id": "0",
-    "value": "saber"
+    "value": "saber",
+    "subCategory": "short_weapon"
   },
   "1": {
     "text": "ダブルサーベル",
     "id": "1",
-    "value": "doublesaber"
+    "value": "doublesaber",
+    "subCategory": "short_weapon"
   },
   "2": {
     "text": "アックス",
     "id": "2",
-    "value": "axe"
+    "value": "axe",
+    "subCategory": "short_weapon"
   },
   "3": {
     "text": "大剣",
     "id": "3",
-    "value": "bigsword"
+    "value": "bigsword",
+    "subCategory": "short_weapon"
   },
   "4": {
     "text": "ランス",
     "id": "4",
-    "value": "lance"
+    "value": "lance",
+    "subCategory": "short_weapon"
   },
   "5": {
     "text": "モジュール",
     "id": "5",
-    "value": "module"
+    "value": "module",
+    "subCategory": "short_weapon"
   },
   "6": {
     "text": "ムチ",
     "id": "6",
-    "value": "whip"
+    "value": "whip",
+    "subCategory": "short_weapon"
   },
   "7": {
     "text": "ツインブレード",
     "id": "7",
-    "value": "twinblade"
+    "value": "twinblade",
+    "subCategory": "short_weapon"
   },
   "8": {
     "text": "ライフル",
     "id": "8",
-    "value": "rifle"
+    "value": "rifle",
+    "subCategory": "long_weapon"
   },
   "9": {
     "text": "ロングライフル",
     "id": "9",
-    "value": "longrifle"
+    "value": "longrifle",
+    "subCategory": "long_weapon"
   },
   "10": {
     "text": "ダブルライフル",
     "id": "10",
-    "value": "doublerifle"
+    "value": "doublerifle",
+    "subCategory": "long_weapon"
   },
   "11": {
     "text": "マシンガン",
     "id": "11",
-    "value": "machinegun"
+    "value": "machinegun",
+    "subCategory": "long_weapon"
   },
   "12": {
     "text": "バズーカ",
     "id": "12",
-    "value": "bazooka"
+    "value": "bazooka",
+    "subCategory": "long_weapon"
   },
   "13": {
     "text": "ガトリングガン",
     "id": "13",
-    "value": "gatlinggun"
+    "value": "gatlinggun",
+    "subCategory": "long_weapon"
   }
 }

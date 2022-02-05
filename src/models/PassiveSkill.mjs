@@ -1,3 +1,7 @@
+import CATEGORY from '@/constants/CONDITION_CATEGORY_DATA.json';
+
+const categoryList = Array.from(Object.values(CATEGORY));
+
 export default class PassiveSkill {
   constructor(description, table) {
     this.description = description;
@@ -22,8 +26,10 @@ export default class PassiveSkill {
         return this.$condition === env.type;
       case 'job':
         return env.job === this.$condition;
-      case 'category':
-        return env.category === this.$condition;
+      case 'short_weapon':
+        return env.short_weapon === this.$condition;
+      case 'long_weapon':
+        return env.long_weapon === this.$condition;
       case 'buff':
         return env.buff === this.$condition;
       case 'team':
@@ -71,7 +77,7 @@ export default class PassiveSkill {
     const category = /(.*)カテゴリ装備/ig.exec(this.description);
     if (category) {
       this.$condition = category[1];
-      this.$conditionType = 'category';
+      this.$conditionType = categoryList.find((v) => v.text === this.$condition)?.subCategory;
       return;
     }
     const env = /(.*)出撃時/ig.exec(this.description);

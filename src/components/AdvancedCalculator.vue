@@ -132,16 +132,31 @@
                             <v-btn-toggle
                               class="mr-1"
                               dense
-                              v-model="conditionMap.category"
+                              v-model="conditionMap.short_weapon"
                               @change="updateUrl"
-                              v-if="currentWeaponCategoryConditionList.length"
+                              v-if="conditionCandidates.short_weapon.length"
                             >
                               <v-btn
-                                v-for="category in currentWeaponCategoryConditionList"
-                                :key="category"
-                                :value="category"
+                                v-for="weapon in conditionCandidates.short_weapon"
+                                :key="weapon"
+                                :value="weapon"
                               >
-                                {{ $t(category) }}
+                                {{ $t(weapon) }}
+                              </v-btn>
+                            </v-btn-toggle>
+                            <v-btn-toggle
+                              class="mr-1"
+                              dense
+                              v-model="conditionMap.long_weapon"
+                              @change="updateUrl"
+                              v-if="conditionCandidates.long_weapon.length"
+                            >
+                              <v-btn
+                                v-for="weapon in conditionCandidates.long_weapon"
+                                :key="weapon"
+                                :value="weapon"
+                              >
+                                {{ $t(weapon) }}
                               </v-btn>
                             </v-btn-toggle>
                             <v-btn-toggle
@@ -163,10 +178,10 @@
                               dense
                               v-model="conditionMap.team"
                               @change="updateUrl"
-                              v-if="currentTeamList.length"
+                              v-if="conditionCandidates.team.length"
                             >
                               <v-btn
-                                v-for="team in currentTeamList"
+                                v-for="team in conditionCandidates.team"
                                 :key="team"
                                 :value="team"
                               >
@@ -178,10 +193,10 @@
                               dense
                               v-model="conditionMap.environment"
                               @change="updateUrl"
-                              v-if="currentEnvironmentConditionList.length"
+                              v-if="conditionCandidates.environment.length"
                             >
                               <v-btn
-                                v-for="environment in currentEnvironmentConditionList"
+                                v-for="environment in conditionCandidates.environment"
                                 :key="environment"
                                 :value="environment"
                               >
@@ -191,7 +206,7 @@
                             <v-btn-toggle
                               class="mr-1"
                               dense
-                              v-if="currentBuffCondition.length"
+                              v-if="conditionCandidates.buff.length"
                               v-model="conditionMap.buff"
                             >
                               <v-btn disabled value="強化状態"> 強化時 </v-btn>
@@ -201,10 +216,10 @@
                               dense
                               v-model="conditionMap.counter"
                               @change="updateUrl"
-                              v-if="currentCounterConditionList.length"
+                              v-if="conditionCandidates.counter.length"
                             >
                               <v-btn
-                                v-for="counter in currentCounterConditionList"
+                                v-for="counter in conditionCandidates.condition"
                                 :key="counter"
                                 :value="counter"
                               >
@@ -216,10 +231,10 @@
                               dense
                               v-model="conditionMap.operate"
                               @change="updateUrl"
-                              v-if="currentOperateConditionList.length"
+                              v-if="conditionCandidates.operate.length"
                             >
                               <v-btn
-                                v-for="operate in currentOperateConditionList"
+                                v-for="operate in conditionCandidates.operate"
                                 :key="operate"
                                 :value="operate"
                               >
@@ -678,6 +693,8 @@ export default {
       team: "",
       type: "ビーム",
       category: "",
+      short_weapon: "",
+      long_weapon: "",
       buff: "強化状態",
       armor: "",
       counter: "",
@@ -689,6 +706,15 @@ export default {
     displayLoadLocalData: false,
     machineName: '',
     pool: [],
+    conditionCandidates: {
+      team: [],
+      long_weapon: [],
+      buff: [],
+      environment: [],
+      short_weapon: [],
+      operate: [],
+      counter: [],
+    }
   }),
 
   computed: {
@@ -722,80 +748,6 @@ export default {
       return [
         ...new Set(
           Object.values(CONDITION_ATTACK_TYPE_DATA).map((c) => c.text)
-        ),
-      ];
-    },
-    currentWeaponCategoryConditionList() {
-      return [
-        ...new Set(
-          Object.values(this.data)
-            .map((pc) => {
-              return pc.activePart.passives;
-            })
-            .flat()
-            .filter((passive) => passive?.$conditionType === "category")
-            .map((passive) => passive.$condition)
-        ),
-      ];
-    },
-    currentTeamList() {
-      return [
-        ...new Set(
-          Object.values(this.data)
-            .map((pc) => {
-              return pc.activePart.passives;
-            })
-            .flat()
-            .filter((passive) => passive?.$conditionType === "team")
-            .map((passive) => passive.$condition)
-        ),
-      ];
-    },
-    currentEnvironmentConditionList() {
-      return [
-        ...new Set(
-          Object.values(this.data)
-            .map((pc) => {
-              return pc.activePart.passives;
-            })
-            .flat()
-            .filter((passive) => passive?.$conditionType === "environment")
-            .map((passive) => passive.$condition)
-        ),
-      ];
-    },
-    currentBuffCondition() {
-      return Object.values(this.data)
-        .map((pc) => {
-          return pc.activePart.passives;
-        })
-        .flat()
-        .filter((passive) => passive?.$conditionType === "buff")
-        .map((passive) => passive.$condition);
-    },
-    currentCounterConditionList() {
-      return [
-        ...new Set(
-          Object.values(this.data)
-            .map((pc) => {
-              return pc.activePart.passives;
-            })
-            .flat()
-            .filter((passive) => passive?.$conditionType === "counter")
-            .map((passive) => passive.$condition)
-        ),
-      ];
-    },
-    currentOperateConditionList() {
-      return [
-        ...new Set(
-          Object.values(this.data)
-            .map((pc) => {
-              return pc.activePart.passives;
-            })
-            .flat()
-            .filter((passive) => passive?.$conditionType === "operate")
-            .map((passive) => passive.$condition)
         ),
       ];
     },
@@ -895,9 +847,7 @@ export default {
           this.conditionMap.type
             ? +this.conditionMapByText.type[this.conditionMap.type].id
             : "",
-          this.conditionMap.category
-            ? +this.conditionMapByText.category[this.conditionMap.category].id
-            : "",
+          "", // category, deprecated
           this.conditionMap.environment
             ? +this.conditionMapByText.environment[
                 this.conditionMap.environment
@@ -911,6 +861,12 @@ export default {
             : "",
           this.conditionMap.operate
             ? +this.conditionMapByText.operate[this.conditionMap.operate].id
+            : "",
+          this.conditionMap.short_weapon
+            ? +this.conditionMapByText.category[this.conditionMap.short_weapon].id
+            : "",
+          this.conditionMap.long_weapon
+            ? +this.conditionMapByText.category[this.conditionMap.long_weapon].id
             : "",
         ], // extra condition setting
         this.machineName || '',
@@ -1355,6 +1311,28 @@ export default {
   },
 
   methods: {
+    updateConditionCandidates() {
+      const CONDITION_WITH_CANDIDATES = ['short_weapon', 'long_weapon', 'team', 'environment', 'buff', 'counter', 'operate'];
+      CONDITION_WITH_CANDIDATES.forEach((c) => {
+        this.conditionCandidates[c] = [
+          ...new Set(
+            Object.values(this.data)
+              .map((pc) => {
+                return pc.activePart.passives;
+              })
+              .flat()
+              .filter((passive) => passive?.$conditionType === c)
+              .map((passive) => passive.$condition)
+          ),
+        ];
+        if (this.conditionMap[c] === '' && this.conditionCandidates[c].length) {
+          this.conditionMap[c] = this.conditionCandidates[c][0];
+        }
+        if (!this.conditionCandidates[c].length && this.conditionMap[c]) {
+          this.conditionMap[c] = '';
+        }
+      });
+    },
     generateName() {
       this.getMachines().then(() => {
         this.machineName = generateGundamName(this.pool, this.$t);
@@ -1518,10 +1496,8 @@ export default {
         data[7][0] !== ""
           ? CONDITION_ATTACK_TYPE_DATA[+data[7][0]]?.text || ""
           : "";
-      this.conditionMap.category =
-        data[7][1] !== ""
-          ? CONDITION_CATEGORY_DATA[+data[7][1]]?.text || ""
-          : "";
+      // DEPRECATED
+      this.conditionMap.category = "";
       this.conditionMap.environment =
         data[7][2] !== ""
           ? CONDITION_ENVIRONMENT_DATA[+data[7][2]]?.text || ""
@@ -1536,7 +1512,16 @@ export default {
         data[7][5] !== ""
           ? CONDITION_OPERATE_DATA[+data[7][5]]?.text || ""
           : "";
+      this.conditionMap.short_weapon =
+        data[7][6] !== ""
+          ? CONDITION_CATEGORY_DATA[+data[7][6]]?.text || ""
+          : "";
+      this.conditionMap.long_weapon =
+        data[7][7] !== ""
+          ? CONDITION_CATEGORY_DATA[+data[7][7]]?.text || ""
+          : "";
       this.machineName = data[8] || '';
+      this.updateConditionCandidates();
     },
     checkCondition(conditionString, conditions) {
       const [type, condition] = conditionString.split(":");
@@ -1552,6 +1537,8 @@ export default {
           }
           break;
         case "category":
+        case 'short_weapon':
+        case 'long_weapon':
         case "environment":
         case "team":
         case "job":
@@ -1573,6 +1560,8 @@ export default {
       const [conditionType, conditionList] = copy.shift();
       switch (conditionType) {
         case "category":
+        case "short_weapon":
+        case "long_weapon":
         case "environment":
         case "team":
         case "job":
@@ -1610,7 +1599,7 @@ export default {
       this.displayLoadLocalData = false;
       this.data[this.currentPosition].insert(part, this.partsById);
       this.checkIntegrated(part);
-      this.bestFitCondition(part);
+      this.bestFitCondition();
       this.closeTable();
       this.updateUrl();
       if (!this.machineName) {
@@ -1619,7 +1608,7 @@ export default {
         });
       }
     },
-    bestFitCondition(part) {
+    bestFitCondition(position) {
       if (this.jobList.indexOf(this.jobGear.job) < 0) {
         this.jobGear.job = "All-Rounder";
       }
@@ -1630,14 +1619,7 @@ export default {
           this.wordTagGear.tag = this.activeWordTags[0];
         }
       }
-      if (
-        part &&
-        part.$condition &&
-        part.$conditionType === "category" &&
-        this.conditionMap.category === ""
-      ) {
-        this.conditionMap.category = part.$conditionType;
-      }
+      this.updateConditionCandidates();
     },
     endCompose() {},
     updateQuery() {
