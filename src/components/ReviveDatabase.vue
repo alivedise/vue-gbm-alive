@@ -139,7 +139,7 @@
               x-small
               color="red"
               text-color="white"
-              v-if="item.isNew && item.addDate === '2022/2/2'"
+              v-if="item.isNew && item.addDate === '2022/2/9'"
             >
               NEW
             </v-chip>
