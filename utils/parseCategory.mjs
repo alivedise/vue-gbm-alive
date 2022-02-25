@@ -14,8 +14,8 @@ original.wiki.forEach((part) => {
   // part.isNew = false;
 });
 
-const NEW_ONLY_MODE = false;
-const NO_UPDATE = false;
+const NEW_ONLY_MODE = true;
+const NO_UPDATE = true;
 
 const CATEGORY_URL = {
   module: 'https://wiki.dengekionline.com/gbm/%E3%83%A2%E3%82%B8%E3%83%A5%E3%83%BC%E3%83%AB%EF%BC%88%E6%A0%BC%E9%97%98%EF%BC%89%E4%B8%80%E8%A6%A7',
