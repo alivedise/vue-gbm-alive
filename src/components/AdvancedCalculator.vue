@@ -1063,6 +1063,7 @@ export default {
         return 1;
       }
       return this.activeWordTags.reduce((a, current) => {
+        console.log(current, this.wordTagGear);
         if (current === this.wordTagGear.tag && this.wordTagGear.level) {
           return (
             a +
@@ -1074,7 +1075,8 @@ export default {
               100
           );
         }
-        return a + this.TAG[this.wordTagGear.tag].rangeAttack / 100;
+        console.log(this.TAG[current].rangeAttack);
+        return a + this.TAG[current].rangeAttack / 100;
       }, 1);
     },
     wordTagGearAffectedRangeAttack() {

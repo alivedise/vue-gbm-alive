@@ -139,7 +139,7 @@
               x-small
               color="red"
               text-color="white"
-              v-if="item.isNew && (item.addDate === '2022/3/9')"
+              v-if="item.isNew && (item.addDate.startsWith('2022/3'))"
             >
               NEW
             </v-chip>
@@ -210,8 +210,9 @@ export default {
       { text: "耐力", value: "stamina" },
       { text: "轉換格攻", value: "accumluatedMeleeAttack" },
       { text: "轉換射攻", value: "accumluatedRangeAttack" },
-      { text: "格防", value: "meleeDefense" },
-      { text: "射防", value: "rangeDefense" },
+    //  { text: "格防", value: "meleeDefense" },
+    //  { text: "射防", value: "rangeDefense" },
+      { text: "物耐", value: "phyRes"},
       { text: "詞彙1", value: "wordTag1" },
       { text: "詞彙2", value: "wordTag2" },
       { text: "特性1/技能", value: "passive1" },
