@@ -13,6 +13,17 @@ module.exports = {
     'vuetify',
   ],
 
+  chainWebpack: (config) => {
+    config
+      .plugin('html')
+      .tap((args) => {
+        args[0].meta = {
+          cache: { 'http-equiv': 'cache-control', content: 'no-cache' },
+        };
+        return args;
+      });
+  },
+
   pwa: {
     name: 'GBM alive',
     themeColor: '#0186d1',
